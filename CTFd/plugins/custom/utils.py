@@ -70,12 +70,12 @@ def ctk_scores_date(mode,cat_id):
     #team mode
     if mode == 'team':
         solves = db.session.query(
-                        Challenges.value.label("points"),
+                        C3CategoryChallenge.value.label("points"),
                         Solves.challenge_id.label("challenge_id"),
                         Solves.team_id.label("team_id"),
                         Submissions.date.label("date"),
-                ).join(Challenges, C3CategoryChallenge
-                ).filter(Challenges.id == Solves.challenge_id
+                ).join(C3CategoryChallenge
+                ).filter(C3CategoryChallenge.id == Solves.challenge_id
                 ).filter(C3CategoryChallenge.c3_category == cat_id
                 ).order_by(asc(Solves.date)).all()
     #user mode
@@ -85,12 +85,12 @@ def ctk_scores_date(mode,cat_id):
         for player in players:
             user_ids.insert(0, player.id)
         solves = db.session.query(
-                        Challenges.value.label("points"),
+                        C3CategoryChallenge.value.label("points"),
                         Solves.challenge_id.label("challenge_id"),
                         Solves.user_id.label("user_id"),
                         Submissions.date.label("date"),
-                ).join(Challenges, C3CategoryChallenge
-                ).filter(Challenges.id == Solves.challenge_id
+                ).join(C3CategoryChallenge
+                ).filter(C3CategoryChallenge.id == Solves.challenge_id
                 ).filter(C3CategoryChallenge.c3_category == cat_id
                 ).filter(Solves.user_id.in_(user_ids)
                 ).order_by(asc(Solves.date)).all()
@@ -159,7 +159,7 @@ def ctk_countermeasure_scores(mode, account_id):
         db.session.commit()
     if mode == 'team':   
         #countermeasure
-        if published.countermeasure_published == False:
+        if published.countermeasure_published is None:
             counter_exist = None
         else:
             counter_exist = db.session.query(db.func.sum(ChallengeCounterMeasure.points)).filter_by(team_id = account_id).scalar()  
@@ -192,16 +192,14 @@ def ctk_challenge(mode):
     selected = aliased(C3_selected_cat)
     #team mode
     if mode == 'team':
-        chals = Challenges.query.join(C3CategoryChallenge
-                ).join(selected,(selected.team_id == user.team_id)
-                ).filter(or_(Challenges.state != 'hidden', Challenges.state is None)
-                ).filter(C3CategoryChallenge.c3_category == selected.ctf_category_id).order_by(Challenges.value.asc()).all()
+        chals = C3CategoryChallenge.query.join(selected,(selected.team_id == user.team_id)
+                ).filter(or_(C3CategoryChallenge.state != 'hidden', C3CategoryChallenge.state is None)
+                ).filter(C3CategoryChallenge.c3_category == selected.ctf_category_id).order_by(C3CategoryChallenge.value.asc()).all()
     #user mode
     if mode == 'user':
-        chals = Challenges.query.join(C3CategoryChallenge
-                ).join(selected,(selected.user_id == user.id)
-                ).filter(or_(Challenges.state != 'hidden', Challenges.state is None)
-                ).filter(C3CategoryChallenge.c3_category == selected.ctf_category_id).order_by(Challenges.value.asc()).all()
+        chals = C3CategoryChallenge.query.join(selected,(selected.user_id == user.id)
+                ).filter(or_(C3CategoryChallenge.state != 'hidden', C3CategoryChallenge.state is None)
+                ).filter(C3CategoryChallenge.c3_category == selected.ctf_category_id).order_by(C3CategoryChallenge.value.asc()).all()
     return chals
 
 #get the challenge total counts
@@ -212,17 +210,13 @@ def ctk_total_challenge(mode,c3):
     selected = aliased(C3_selected_cat)
     #team mode
     if mode == 'team':
-        chals = Challenges.query.join(C3CategoryChallenge
-                ).join(selected,(selected.team_id == user.team_id)
-                ).filter(or_(Challenges.state != 'hidden', Challenges.state is None)
+        chals = C3CategoryChallenge.query.join(selected,(selected.team_id == user.team_id)
+                ).filter(or_(C3CategoryChallenge.state != 'hidden', C3CategoryChallenge.state is None)
                 ).filter(C3CategoryChallenge.c3_category == c3).count()
     #user mode
     if mode == 'user':
-        cat_exist = db.session.query(C3_category).all()
-        pprint(cat_exist)
-        chals = Challenges.query.join(C3CategoryChallenge
-                ).join(selected,(selected.user_id == user.id)
-                ).filter(or_(Challenges.state != 'hidden', Challenges.state is None)
+        chals = C3CategoryChallenge.query.join(selected,(selected.user_id == user.id)
+                ).filter(or_(C3CategoryChallenge.state != 'hidden', C3CategoryChallenge.state is None)
                 ).filter(C3CategoryChallenge.c3_category == c3).count()
     return chals
 
@@ -516,12 +510,12 @@ def custom_get_standings(count=None, admin=False, fields=None, c3=None, chronicl
         scores = (
             db.session.query(
                 Solves.team_id.label("account_id"),
-                db.func.sum(Challenges.value).label("score"),
+                db.func.sum(C3CategoryChallenge.value).label("score"),
                 db.func.max(Solves.id).label("id"),
                 db.func.max(Solves.date).label("date")
             )
-            .join(Challenges, C3CategoryChallenge)
-            .filter(Challenges.value != 0)
+            .join(C3CategoryChallenge)
+            .filter(C3CategoryChallenge.value != 0)
             .filter(C3CategoryChallenge.c3_category == c3)
             .group_by(Solves.team_id)
         )
@@ -542,12 +536,12 @@ def custom_get_standings(count=None, admin=False, fields=None, c3=None, chronicl
         scores = (
             db.session.query(
                 Solves.user_id.label("account_id"),
-                db.func.sum(Challenges.value).label("score"),
+                db.func.sum(C3CategoryChallenge.value).label("score"),
                 db.func.max(Solves.id).label("id"),
                 db.func.max(Solves.date).label("date")
             )
-            .join(Challenges, C3CategoryChallenge)
-            .filter(Challenges.value != 0)
+            .join(C3CategoryChallenge)
+            .filter(C3CategoryChallenge.value != 0)
             .filter(C3CategoryChallenge.c3_category == c3)
             .group_by(Solves.user_id)
         )
@@ -677,12 +671,12 @@ def multiple_custom_get_standings(count=None, admin=False, fields=None, c3=None,
     scores = (
         db.session.query(
             Solves.account_id.label("account_id"),
-            db.func.sum(Challenges.value).label("score"),
+            db.func.sum(C3CategoryChallenge.value).label("score"),
             db.func.max(Solves.id).label("id"),
             db.func.max(Solves.date).label("date")
         )
-        .join(Challenges, MultiChallenge)
-        .filter(Challenges.value != 0)
+        .join(C3CategoryChallenge, MultiChallenge)
+        .filter(C3CategoryChallenge.value != 0)
         .filter(MultiChallenge.c3_category == c3)
         .group_by(Solves.account_id)
     )
@@ -801,12 +795,12 @@ def custom_get_user_standings(count=None, admin=False, fields=None, c3=None):
     scores = (
         db.session.query(
             Solves.user_id.label("user_id"),
-            db.func.sum(Challenges.value).label("score"),
+            db.func.sum(C3CategoryChallenge.value).label("score"),
             db.func.max(Solves.id).label("id"),
             db.func.max(Solves.date).label("date"),
         )
-        .join(Challenges, C3CategoryChallenge)
-        .filter(Challenges.value != 0)
+        .join(C3CategoryChallenge)
+        .filter(C3CategoryChallenge.value != 0)
         .filter(C3CategoryChallenge.c3_category == c3)
         .group_by(Solves.user_id)
     )
@@ -919,11 +913,12 @@ def get_ctk_cat_status(c3=None, id=None, mode=None):
         chals = ctk_total_challenge(mode='user',c3=c3)
         solves = db.session.query(
                         Solves
-                    ).join(Challenges, C3CategoryChallenge
+                    ).join(C3CategoryChallenge
                     ).filter(Solves.user_id == user.id
-                    ).filter(Challenges.id == Solves.challenge_id
+                    ).filter(C3CategoryChallenge.id == Solves.challenge_id
                     ).filter(C3CategoryChallenge.c3_category == c3
                     ).count()
+        
         #players = db.session.query(Teams).filter(Teams.hidden!=1).count()
         players = db.session.query(CTK_Config).filter(CTK_Config.type != 'admin').filter(CTK_Config.mode == 'users')
         all_players = players.all()
@@ -937,9 +932,9 @@ def get_ctk_cat_status(c3=None, id=None, mode=None):
         chals = ctk_total_challenge(mode='team',c3=c3)
         solves = db.session.query(
                         Solves
-                    ).join(Challenges, C3CategoryChallenge
+                    ).join(C3CategoryChallenge
                     ).filter(Solves.team_id == user.team_id
-                    ).filter(Challenges.id == Solves.challenge_id
+                    ).filter(C3CategoryChallenge.id == Solves.challenge_id
                     ).filter(C3CategoryChallenge.c3_category == c3
                     ).count()
         # players = db.session.query(Teams).filter(Teams.hidden!=1, Teams.banned!=1).count() | Mysql
@@ -954,9 +949,9 @@ def get_ctk_cat_status(c3=None, id=None, mode=None):
         chals = ctk_total_challenge(mode='user',c3=c3)
         solves = db.session.query(
                         Solves
-                    ).join(Challenges, C3CategoryChallenge
+                    ).join(C3CategoryChallenge
                     ).filter(Solves.user_id == user.id
-                    ).filter(Challenges.id == Solves.challenge_id
+                    ).filter(C3CategoryChallenge.id == Solves.challenge_id
                     ).filter(C3CategoryChallenge.c3_category == c3
                     ).count()
         #players = db.session.query(Teams).filter(Teams.hidden!=1).count()
@@ -980,9 +975,9 @@ def get_ctk_cat_status(c3=None, id=None, mode=None):
             chals = ctk_total_challenge(mode='team',c3=c3)
             solves = db.session.query(
                             Solves
-                        ).join(Challenges, C3CategoryChallenge
+                        ).join(C3CategoryChallenge
                         ).filter(Solves.team_id == account_id
-                        ).filter(Challenges.id == Solves.challenge_id
+                        ).filter(C3CategoryChallenge.id == Solves.challenge_id
                         ).filter(C3CategoryChallenge.c3_category == c3
                         ).count()
             # players = db.session.query(Teams).filter(Teams.hidden!=1, Teams.banned!=1).count() | Mysql
@@ -996,9 +991,9 @@ def get_ctk_cat_status(c3=None, id=None, mode=None):
             chals = ctk_total_challenge(mode='user',c3=c3)
             solves = db.session.query(
                             Solves
-                        ).join(Challenges, C3CategoryChallenge
+                        ).join(C3CategoryChallenge
                         ).filter(Solves.user_id == account_id
-                        ).filter(Challenges.id == Solves.challenge_id
+                        ).filter(C3CategoryChallenge.id == Solves.challenge_id
                         ).filter(C3CategoryChallenge.c3_category == c3
                         ).count()
             #players = db.session.query(Teams).filter(Teams.hidden!=1).count()
@@ -1043,12 +1038,12 @@ def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
 #get score c3_category
 def get_team_score(team_id,c3,date):
         t = []
-        score = db.func.sum(Challenges.value).label("score")
+        score = db.func.sum(C3CategoryChallenge.value).label("score")
         solves_date = db.session.query(
                 Solves.team_id,
                 Submissions.date,
                 score
-        ).join(Challenges, C3CategoryChallenge).filter(Challenges.id == Solves.challenge_id).filter(Solves.team_id == team_id).filter(C3CategoryChallenge.c3_category == c3).filter(Solves.date <= date)
+        ).join(C3CategoryChallenge).filter(C3CategoryChallenge.id == Solves.challenge_id).filter(Solves.team_id == team_id).filter(C3CategoryChallenge.c3_category == c3).filter(Solves.date <= date)
         award_score = db.func.sum(Awards.value).label("award_score")
         award = db.session.query(award_score).filter_by(team_id=team_id)
         team = solves_date.group_by(Solves.team_id).first()
@@ -1064,12 +1059,12 @@ def get_team_score(team_id,c3,date):
 
 def get_user_score_date(user_id,c3,date):
         t = []
-        score = db.func.sum(Challenges.value).label("score")
+        score = db.func.sum(C3CategoryChallenge.value).label("score")
         solves_date = db.session.query(
                 Solves.user_id,
                 Solves.date,
                 score
-        ).join(Challenges, C3CategoryChallenge).filter(Challenges.id == Solves.challenge_id).filter(Solves.user_id == user_id).filter(C3CategoryChallenge.c3_category == c3).filter(Solves.date <= date)
+        ).join(C3CategoryChallenge).filter(C3CategoryChallenge.id == Solves.challenge_id).filter(Solves.user_id == user_id).filter(C3CategoryChallenge.c3_category == c3).filter(Solves.date <= date)
         award_score = db.func.sum(Awards.value).label("award_score")
         award = db.session.query(award_score).filter_by(user_id=user_id)
         user = solves_date.group_by(Solves.user_id).first()
@@ -1141,12 +1136,12 @@ def get_ctk_team_standings(count=None, admin=False, fields=None, c3=None):
     scores = (
             db.session.query(
                 Solves.team_id.label("account_id"),
-                db.func.sum(Challenges.value).label("score"),
+                db.func.sum(C3CategoryChallenge.value).label("score"),
                 db.func.max(Solves.id).label("id"),
                 db.func.max(Solves.date).label("date")
             )
-            .join(Challenges, C3CategoryChallenge)
-            .filter(Challenges.value != 0)
+            .join(C3CategoryChallenge)
+            .filter(C3CategoryChallenge.value != 0)
             .filter(C3CategoryChallenge.c3_category == c3)
             .group_by(Solves.team_id)
         )
@@ -1583,12 +1578,12 @@ def get_alltimeuser_standings(count=None, admin=False, fields=None):
     scores = (
         db.session.query(
             Solves.user_id.label("user_id"),
-            db.func.sum(Challenges.value).label("score"),
+            db.func.sum(C3CategoryChallenge.value).label("score"),
             db.func.max(Solves.id).label("id"),
             db.func.max(Solves.date).label("date"),
         )
-        .join(Challenges)
-        .filter(Challenges.value != 0)
+        .join(C3CategoryChallenge)
+        .filter(C3CategoryChallenge.value != 0)
         .filter(Solves.user_id.in_(user_ids))
         .group_by(Solves.user_id)
     )

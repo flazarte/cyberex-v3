@@ -93,7 +93,7 @@ from CTFd.utils.helpers import get_infos, get_errors, markup
 from CTFd.utils.config.visibility import scores_visible
 from CTFd.utils import config, get_config,  email
 from CTFd.utils.config.pages import get_page
-from sqlalchemy.sql import not_
+from sqlalchemy.sql import not_, column
 from CTFd.plugins.custom.CTK_Challenge import CTKpost
 import decimal
 #import multiple choice modul plugin | Required Module
@@ -358,11 +358,11 @@ def view_challenge_list():
     
     #game category filter for Beginner, Intermediate and advanced
     if request.method == 'GET' and game_category is None:
-        query = Challenges.query.join(C3CategoryChallenge).filter(*filters).order_by(Challenges.id.asc())
+        query = Challenges.query.filter(*filters).order_by(Challenges.id.asc())
         challenges = query.all()
         total = query.count()
     else:
-        query = Challenges.query.join(C3CategoryChallenge).filter(*filters).filter(C3CategoryChallenge.c3_category==game_category).order_by(Challenges.id.asc())
+        query = Challenges.query.filter(*filters).filter(Challenges.c3_category==game_category).order_by(Challenges.id.asc())
         challenges = query.all()
         results = []
         for x in challenges:
@@ -377,7 +377,7 @@ def view_challenge_list():
         return jsonify({'challenges': results })
         
 
-    query = Challenges.query.join(C3CategoryChallenge).filter(*filters).order_by(Challenges.id.asc())
+    query = Challenges.query.filter(*filters).order_by(Challenges.id.asc())
     challenges = query.all()
     total = query.count()
     return render_template('plugins/custom/admin/challenges/challenges.html', cat=get_category(), challenges=challenges, total=total, q=q, field=field)
@@ -2280,9 +2280,12 @@ def ctk_register():
         registration_code = request.form.get("registration_code", "")
 
         name_len = len(name) == 0
-        names = Users.query.add_columns("name", "id").filter_by(name=name).first()
+        name_column = column('name')
+        id_column = column('id')
+        email_column = column('email')
+        names = Users.query.add_columns(name_column, id_column).filter_by(name=name).first()
         emails = (
-            Users.query.add_columns("email", "id")
+            Users.query.add_columns(email_column,  id_column)
             .filter_by(email=email_address)
             .first()
         )
