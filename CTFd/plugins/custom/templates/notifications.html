@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="py-5 text-center custom-banner-image" style="background-image: url('{{url_for('c3.static', filename='images/banner/page-banner.png')}}');">
+	<div class="banner-overlay">
+		<div class="row py-lg-5">
+			<div class="col-lg-6 col-md-8 mx-auto">
+				<h1 id="c3_cat_name" class="fw-light banner-text " >Cyber <small>e</small>X Notifications</h1>
+				<p class="lead text-muted">
+					<!-- Description here -->
+				</p>
+			</div>
+	</div>
+</div>
+</section>
+<div class="album py-5 bg-light">
+    <div class="container" style="text-transform: none;">
+		{% if not notifications %}
+		<h2 class="text-center">There are no notifications yet</h2>
+		{% endif %}
+		{% for notification in notifications %}
+		<div class="card bg-light mb-4">
+			<div class="card-body">
+				<h3 class="card-title">{{ notification.title }}</h3>
+				<blockquote class="blockquote mb-0">
+					<p>{{ notification.html }}</p>
+					<small class="text-muted"><span data-time="{{ notification.date | isoformat }}"></span></small>
+				</blockquote>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+	
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/custom.js', d='09101992')}}"></script>
+{% endblock %}
+
+{% block entrypoint %}
+	<script defer src="{{ url_for('views.themes', path='js/pages/notifications.js') }}"></script>
+{% endblock %}

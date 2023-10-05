@@ -1,0 +1,54 @@
+{% extends "challenge.html" %}
+
+{% block description %}
+{{ challenge.html }}
+{% endblock %}
+
+{% block solves %}
+<a class="nav-link solves-participants" id="v-pills-add-todo-list-tab" data-toggle="pill" href="#solves" role="tab"
+    aria-controls="v-pills-add-todo-list" aria-selected="false">
+    <div class="d-flex">
+        <i class="fa fa-check fa-2x btn-icon" style="
+                  margin-right: 15px;
+                  width: 70px;
+                  height: 55px;
+                  line-height: 55px;
+                "></i>
+        <div style="display: inline-block">
+            <b>Conquered</b>
+            <p class="challenge-tab-p" id="ctk-solves">
+                {% if solves != None %} {{ solves }} {% if solves > 1
+                  %}Conquered{% else %}Conquered{% endif %} {% endif %}
+            </p>
+        </div>
+    </div>
+</a>
+{% endblock %}
+
+{% block input %}
+<div class="form-group" style="background-color:#f4f0f01c;padding-bottom: 20px;padding-top: 20px;padding-left: 20px;padding-right: 20px;text-transform: none;">
+    <input id="challenge-id" class="challenge-id" type="hidden" value="{{ challenge.id }}">
+    <input id="challenge-input" class="challenge-id" type="hidden">
+    <label>Question: <p id="multiplequestion"></p></label>
+    <div id="multiplechoice"></div>
+</div>
+ 
+{% endblock %}
+
+{% block submit %}
+<button id="challenge-submit" type="button" class="btn btn-lg btn-block submit-flag challenge-submit"
+    style="float: unset !important;">CHECKMATE
+</button>
+{% endblock %}
+
+{% block knowledge %}
+  <div id="knowledge-section"></div>
+{% endblock %}
+
+{% block writeups %}
+  <div id="upload-section"></div>
+{% endblock %}
+
+{% block countermeasure %}
+    <div id="upload-counter"></div>
+{% endblock %}

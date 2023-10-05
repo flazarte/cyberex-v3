@@ -1,0 +1,120 @@
+<div role="tabpanel" class="tab-pane config-section" id="lockout">
+    <form action="{{url_for('c3.c3_update_api',c3_id=0)}}" method="POST" autocomplete="off" class="w-100"
+        enctype=multipart/form-data>
+        <h5>Cyber Exercise Category Lockout Setting</h5>
+
+        <small class="form-text text-muted">
+            Set Cyber eX Category Lockout Setting.
+        </small>
+
+        <ul class="nav nav-tabs mt-3" role="tablist">
+            <li class="nav-item active">
+                <a class="nav-link active" href="#lockout-list" role="tab" data-toggle="tab">
+                    List
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="lockout-list">
+                <div class="col-md-12 py-3">
+                    <small>Cyber Exercise Category List.</small>
+                </div>
+                <div class="float-right pb-3">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-secondary" data-toggle="tooltip"
+                            title="Edit Category" id="lockout-edit-button">
+                            <i class="btn-fa fas fa-pencil-alt"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" data-toggle="tooltip" disabled
+                            title="Delete Category" id="">
+                            <i class="btn-fa fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="lockout-list" class="pt-3">
+                    <table id="lockout-list" class="table table-striped border">
+                        <thead>
+                            <tr>
+                                <td class="d-block border-right border-bottom text-center" data-checkbox>
+                                    <div class="form-check">
+                                        <!-- <input type="checkbox" class="form-check-input" data-checkbox-all>&nbsp; -->
+                                    </div>
+                                </td>
+                                <th class="sort-col text-center"><b>ID</b></th>
+                                <th class="sort-col"><b>Name</b></th>
+                                <th class="sort-col"><b>Unlock Percentage</b></th>
+                            </tr>
+                        </thead>
+                        <tbody id="lockout-list">
+                            {% if lockout %}
+                            {% for lock in lockout%}
+                            {% for c3_cat in cat %}
+                            {% if lock.ctf_category_id == c3_cat.id %}
+                            <tr>
+                                <td class="d-block border-right text-center" data-checkbox>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" value="{{ lock.ctf_category_id }}"
+                                            name="c3_category">&nbsp;
+                                    </div>
+                                </td>
+                                <td class="text-center">{{lock.ctf_category_id }}</td>
+                                <td><a href="#">{{
+                                        c3_cat.category }}</a></td>
+                                <td>{{lock.lockout_percentage}}</td>
+                            </tr>
+                            {% endif%}
+                            {% endfor %}
+                            {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </form>
+</div>
+
+<!-- update Modal -->
+<div class="modal c3_lockoutupdate fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Category Lockout</h5> <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"> <span aria-hidden="true">×</span> </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url_for('c3.c3_update_api',c3_id=0)}}" method="post"  enctype=multipart/form-data>
+                    <div id="lockout-update" class="pt-3">
+                        <div class="form-group">
+                            <label for="lockout-name">
+                                Cyber Exercise Category Lockout Percentage
+                                <small class="form-text text-muted">The Cyber eX challenge difficulty percentage lockout setting.</small>
+                            </label>
+                           
+                        <div class="form-group">
+                            <select class="form-control custom-select w-100" id="counter-points"
+                                name="lockout-percent" required="">
+                                <option value="0">Select Unlock Percentage</option>
+                                <option value="10">10%</option>
+                                <option value="20">20%</option>
+                                <option value="30">30%</option>
+                                <option value="40">40%</option>
+                                <option value="50">50%</option>
+                                <option value="60">60%</option>
+                                <option value="70">70%</option>
+                                <option value="80">80%</option>
+                                <option value="90">90%</option>
+                                <option value="100">100%</option>
+                            </select>
+                        </div>
+                        <input type="hidden" value="true" name="lockout">
+                        </div>
+                        <button type="submit" class="btn btn-md btn-primary float-right">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

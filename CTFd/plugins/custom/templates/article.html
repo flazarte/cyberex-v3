@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block stylesheets %}
+<link href="{{script_root}}/plugins/custom/assets/pages/css/blog.css" rel="stylesheet" type="text/css" />
+<link href="{{script_root}}/plugins/custom/assets/pages/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link
+rel="stylesheet"
+href="{{url_for('c3.static', filename='ckeditor/content-styles.css', d='09101992')}}"
+type="text/css">
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+<script defer src="{{url_for('c3.static', filename='js/custom.js', d='09101992')}}"></script>
+
+<style>
+	.bd-placeholder-img {
+		font-size: 1.125rem !important;
+		text-anchor: middle !important;
+		-webkit-user-select: none !important;
+		-moz-user-select: none !important;
+		user-select: none !important;
+	}
+
+	@media (min-width: 768px) {
+		.bd-placeholder-img-lg {
+			font-size: 3.5rem !important;
+		}
+	}
+
+	.article-content img{
+		 width: 100%;
+	}
+
+	.image-style-align-left{
+		float: left;
+		margin: 0 15px;
+		width: 50%;
+	}
+
+	.image-style-align-left figcaption, 
+	.image-style-align-right figcaption {
+		background: #fff;
+		margin: 10px 0;
+		padding: 10px;
+		text-align: center;
+	}
+
+	.image-style-align-right{
+		float: right;
+		margin: 0 15px;
+		width: 50%
+	}
+
+	.article-content p {
+		text-transform: none !important;
+	}
+</style>
+
+{% endblock %}
+{% block content %}
+<section class="py-5 text-center custom-banner-image reg-text"
+	style="background-image: url('{{url_for('c3.static', filename='images/banner/page-banner.png')}}');">
+	<div class="banner-overlay">
+		<div class="row py-lg-5">
+			<div class="col-lg-6 col-md-8 mx-auto">
+				<h1 id="c3_cat_name" class="fw-light banner-text reg-text">{{blog.name}}</h1>
+				<p class="lead text-muted reg-text">
+					{{blog.description}}
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+  <main class="container reg-text">
+	<div class="row g-5">
+	  <div class="col-md-8" style="background-color: #1b1b1ba1;padding-top: 15px;">
+		<div class="pb-4 mb-4 fst-italic border-bottom">
+			<h2 class="blog-post-title">{{blog.name}}</h2>
+			<p class="blog-post-meta reg-text">{{date}} published by <a href="#">{{author.name}}</a></p>	 
+		</div>
+	
+		<article class="blog-post">
+		 	<div class="article-content reg-text">{{blog.content|safe}}</div>
+		</article>
+	  </div>
+	  <div class="col-md-4">
+		<div class="position-sticky" style="top: 2rem;">
+  
+		  <div class="p-4">
+			<h4 class="fst-italic">Articles</h4>
+			<ol class="list-unstyled mb-0">
+			{% if articles %}
+			{% for article in articles %}
+			  <li><a href="{{script_root}}/article/{{article.slug}}">{{article.name}}</a></li>
+			{% endfor %}
+			{% endif %}
+			</ol>
+		  </div>
+  
+		  <div class="p-4">
+			<h4 class="fst-italic">Featured Articles</h4>
+			<ol class="list-unstyled">
+			{% if articles %}
+			{% for article in articles %}
+			{% if article.featured == 1%}
+			  <li><a href="{{script_root}}/article/{{article.slug}}">{{article.name}}</a></li>
+			{% endif %}
+			{% endfor %}
+			{% endif %}
+			</ol>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  
+  </main>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+	<script type="text/javascript" src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+	<script type="text/javascript" src="{{url_for('c3.static', filename='js/custom.js', d='09101992')}}"></script>
+	<script src="{{url_for('c3.static', filename='js/echarts/dist/echarts.js')}}"></script>
+	<script src="{{url_for('c3.static', filename='js/ctk-overall.js')}}"></script>
+	<script>
+		leatherboard_all();
+	</script>
+	<script defer src="{{url_for('c3.static', filename='pages/js/bootstrap.bundle.min.js', d='09101992')}}"></script>
+
+	<script>
+		// wrapt youtube URL to Ifram element
+		$( document ).ready(function() {
+			
+			const figEl = $('oembed');
+
+			figEl.each(function(el){
+
+				const utubeURL = $(this).attr('url').replace('https://youtu.be/', '');
+
+				// Add iframe under oembed element for displaying attach Youtube URL
+				const iframe = `<iframe style="width:100%; min-height:500px;" 
+								src="${ utubeURL }" 
+								title="YouTube video player" 
+								frameborder="0" 
+								allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+								allowfullscreen>
+								</iframe>`;
+
+
+					// Insert Ifram next  to oembed
+					$(this).parent().after(iframe);
+
+					// Remove figure element
+					$(this).parent().remove();
+			});
+
+		});
+
+
+	</script>
+{% endblock %}
+

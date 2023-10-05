@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block content %}
+<section class="py-5 text-center custom-banner-image" style="background-image: url('{{url_for('c3.static', filename='images/banner/page-banner.png')}}');">
+	<div class="banner-overlay">
+		<div class="row py-lg-5">
+			<div class="col-lg-6 col-md-8 mx-auto">
+				<h1 id="c3_cat_name" class="fw-light banner-text " >Cyber <small>e</small>X Settings</h1>
+				<p class="lead text-muted">
+					<!-- Description here -->
+				</p>
+			</div>
+	</div>
+</div>
+</section>
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 offset-md-1">
+                <div class="nav flex-column nav-pills" role="tablist">
+                    <a class="nav-link active" id="settings-profile-tab" data-toggle="pill" href="#profile" role="tab">My Credentials</a>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                        {% include "components/errors.html" %}
+    
+                        {% with form = Forms.self.SettingsForm(country=country) %}
+                        {% from "macros/forms.html" import render_extra_fields %}
+                        <form id="user-profile-form" method="post" accept-charset="utf-8" autocomplete="off" role="form"
+                            class="form-horizontal">
+                            <div class="form-group">
+                                <b>{{ form.name.label }}</b>
+                                {{ form.name(class="form-control", value=name) }}
+                            </div>
+                             <!-- extra field Full Name -->
+                            {% if extra %}
+                            {% for field in extra %}
+                            {% if field.name == 'Full Name'%}
+                            <div class="form-group">
+                                <b><label for="fields[{{field.id}}]">{{field.name}}</label></b>
+                                {% for user_form in user.field_entries %}
+                                {% if user_form.field_id == field.id %}
+                                <input class="form-control" id="fields[{{field.id}}]" name="fields[{{field.id}}]" required="" type="text" value="{{user_form.value}}">
+                                {%endif%}
+                                {%endfor%}
+                                <small class="form-text text-muted">
+                                    {{field.description}}
+                                </small>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                            <div class="form-group">
+                                <b>{{ form.email.label }}</b>
+                                {{ form.email(class="form-control", value=email) }}
+                            </div>
+                            <div class="form-group">
+                                <b>Cyber eX Player Mode</b>
+                                <select class="form-control custom-select w-100" id="user_mode" style="margin-top: .5rem;"
+                                name="user-mode" disabled>
+                                <!-- Users MOde -->
+                                {% if user_config.mode == 'users'%}
+                                <option value="{{user_config.mode}}">Individual</option>
+                                {% endif %}
+                                <!-- Teams Mode -->
+                                {% if user_config.mode == 'teams'%}
+                                <option value="{{user_config.mode}}">Multiplayer</option>
+                                {% endif %}
+                                 <!-- Cyber eX Directorate Mode -->
+                                 {% if user_config.mode == 'directorate'%}
+                                 <option value="{{user_config.mode}}">Directorate</option>
+                                 {% endif %}
+                            </select>
+                                <small class="form-text text-muted">
+                                    Select your Player Category. <small style="color: red;">(Setting could not be change.)</small>
+                                </small>
+                            </div>
+                            
+                            <hr>
+                            <div class="form-group">
+                                <b>Branch of Service</b>
+                                <select class="form-control custom-select w-100" id="branch-service" style="margin-top: .5rem;"
+                                name="branch-service" required>
+                                <option value="">Select Branch</option>
+                                {% if branchs %}
+                                {% for branch in branchs%}
+                                <option value="{{branch.key}}">{{branch.name}}</option>
+                                {% endfor %}
+                                {% endif %}
+                            </select>	
+                            <small class="form-text text-muted">
+                                <em style="color: red;">Reselect <b>"Branch of Service"</b> to change <b>Unit</b>.</em>
+                            </small>
+                            </div>
+                            <div class="form-group" id='unit' style="display: none;">
+                                <b>Major Unit</b>
+                                <select class="form-control custom-select w-100" id="unit-service"  style="margin-top: .5rem;"
+                                name="unit-service">
+                                <option value="">Select Unit</option>
+                            </select>	
+                            </div>
+                            <div class="form-group" id='sub-unit' style="display: none;">
+                                <b>Battalion/Office</b>
+                                <select class="form-control custom-select w-100" id="sub-unit-service" style="margin-top: .5rem;"
+                                name="sub-unit-service">
+                                <option value="">Select Unit</option>
+                            </select>	
+                            </div>
+    
+                             <!-- extra field Unit -->
+                                {% if extra %}
+                                {% for field in extra %}
+                                {% if field.name == 'Unit'%}
+                                <div class="form-group">
+                                    <b><label for="fields[{{field.id}}]">{{field.name}}</label></b>
+                                    {% for user_form in user.field_entries %}
+                                    {% if user_form.field_id == field.id %}
+                                    <input class="form-control" id="unit-field" name="fields[{{field.id}}]" required="" type="text" value="{{user_form.value}}" readonly>
+                                    {%endif%}
+                                    {%endfor%}
+                                    <small class="form-text text-muted">
+                                        {{field.description}}
+                                    </small>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+    
+                            <div id="results" class="form-group">
+                            </div>
+    
+                            <hr>
+    
+                            <div class="form-group">
+                                <b>{{ form.confirm.label }}</b>
+                                {{ form.confirm(class="form-control") }}
+                            </div>
+                            <div class="form-group">
+                                <b>{{ form.password.label }}</b>
+                                {{ form.password(class="form-control") }}
+                            </div>
+    
+                            <hr>
+    
+                            <div class="form-group">
+                                <b>{{ form.affiliation.label }}</b>
+                                {{ form.affiliation(class="form-control", value=affiliation or "") }}
+                            </div>
+                            <div class="form-group">
+                                <b>{{ form.website.label }}</b>
+                                {{ form.website(class="form-control", value=website or "") }}
+                            </div>
+                            <div class="form-group">
+                                <b>{{ form.country.label }}</b>
+                                {{ form.country(class="form-control custom-select", value=country) }}
+                            </div>
+    
+                            <div class="form-group">
+                                {{ form.submit(class="btn btn-md btn-primary btn-outlined float-right") }}
+                            </div>
+                        </form>
+                        {% endwith %}
+                    </div>                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/custom.js', d='09101992')}}"></script>
+{% endblock %}
+
+{% block entrypoint %}
+	<script defer src="{{ url_for('views.themes', path='js/pages/settings.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,234 @@
+ <!-- START THE LEADERBOARD -->
+ <hr class="featurette-divider">
+
+ <div class="container">
+   <div class="px-4 py-5 text-center">
+     <i class="fas fa-crown fa-5x d-block mx-auto mb-4" width="100" height="auto" style="color: white;"></i>
+     <h1 class="display-5 fw-bold text-white">Cyber <small>e</small>X Scoreboard</h1>
+     <div class="col-lg-12 mx-auto">
+       <p class="lead mb-4">The Cyber <small>e</small>X Scoreboard shows the result in all game category the Apprentice,
+         Warrior and Conqueror.</p>
+     </div>
+   </div>
+ </div>
+
+ <!-- /END THE LEADERBOARD -->
+
+ </div><!-- /.container -->
+
+ <div class="album py-5 bg-light">
+
+   <div class="container" id="ctk-tab">
+    <ul class="nav nav-tabs nav-pills nav-justified" id="myTab" role="tablist">
+
+      <li class="nav-item">
+        <a class="nav-link active" id="overall-tab" data-toggle="tab" href="#overall" role="tab" aria-controls="overall" aria-selected="true">Multiplayers</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-link" id="users-tab" data-toggle="tab" href="#users" role="tab" aria-controls="users" aria-selected="false">Individuals</a>
+      </li>
+     
+    </ul>
+    <div class="tab-content" id="myTabContent" style="margin-top: 2rem;">
+      <!-- Teams -->
+      <div class="tab-pane fade show active" id="overall" role="tabpanel" aria-labelledby="overall-tab">
+     <table class="table ">
+       <thead class="thead-dark">
+         <tr>
+           <th class="text-center">Rank</th>
+           <th>Team</th>
+           <th class="text-center">Battalion Unit/Office</th>
+           <th class="text-center">Points</th>
+           <th class="text-center">Country</th>
+         </tr>
+         <!-- overall graph -->
+         {% if multiplayer %}
+         <div id="ctk-overall-board" class="d-flex align-items-center" style="height: 325px; width: 100%;">
+          <div class="col-md-12 text-center">
+            <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+          </div>
+        </div>
+        {% if document_chart %}
+         <!-- Docs Documentations -->
+         <div class="clearfix"></div>
+         <div class="row">
+          <div class="col-md" style="background-color: #00000005;">
+            <div id="ctk-knowledge-well-graph" class="d-flex align-items-center" style="height: 325px; width: 100%;">
+              <div class="col-md-12 text-center">
+                <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md" style="background-color: #0000000a;">
+              <div id="ctk-chronicles-graph"  class="d-flex align-items-center" style="height: 325px; width: 100%;">
+                <div class="text-center w-100">
+                  <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                </div>
+              </div>
+          </div>
+          <div class="col-md" style="background-color: #00000005;">
+              <div  id="ctk-countermeasures-graph" class="d-flex align-items-center"  style="height: 325px; width: 100%;">
+                <div class="text-center w-100">
+                  <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                </div>
+              </div>
+          </div>
+        </div>
+         <!-- End of docs -->
+         {%endif%}
+         {% endif %}
+       </thead>
+       <tbody>
+         {% if multiplayer %}
+         {% for team in teams.overall %}
+         <tr>
+           <td class="text-center align-middle"><span style="color: black;">{% if loop.index == 1 %}<i
+                 class="fas fa-crown d-block mx-auto mb-4"
+                 style="color: black;"></i></span>{% else %}{{ loop.index }}{% endif %}</td>
+           <td style="text-transform: none;">
+             <img src="{{script_root}}/plugins/custom/assets/images/man.png" class="rounded" alt="..."
+               style="margin-right: 20px;width: 50px;height: 50px;" />
+             <a href="/teams/{{team.account_id}}">{{ team.name | truncate(50) }}</a></td>
+           <td class="text-center align-middle">
+             {% if fields %}
+             {% for field in fields %}
+             {%if team.account_id == field.team_id%}
+             {{field.value}}
+             {% endif %}
+             {% endfor %}
+             {% endif %}
+           </td>
+           <td class="text-center align-middle">{{ team.score }}</td>
+           <td class="text-center align-middle">
+              {% if team.country %}
+              <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/{{team.country}}.svg" alt="{{team.country}}" width="15px" height="15px">
+              {% endif %}
+           </td>
+         </tr>
+         {% endfor %}
+         {%else%}
+         <div class="row d-flex align-items-center">
+           <div class="col-md-12 text-center">
+             <tr>
+               <td colspan="5" align="center">
+                 No Solves Yet..
+               </td>
+             </tr>
+           </div>
+         </div>
+         {% endif %}
+       </tbody>
+     </table>
+      </div>
+      <!-- Users -->
+      <div class="tab-pane fade show" id="users" role="tabpanel" aria-labelledby="users-tab">
+        <table class="table ">
+          <thead class="thead-dark">
+            <tr>
+              <th class="text-center">Rank</th>
+              <th>User</th>
+              <th class="text-center">Full Name</th>
+              <th class="text-center">Battalion Unit/Office</th>
+              <th class="text-center">Points</th>
+              <th class="text-center">Country</th>
+            </tr>
+            <!-- individual graph graph -->
+            {% if individual %}
+            <div id="ctk-scoreboard" class="d-flex align-items-center" style="height: 325px; width: 100%;">
+              <div class="col-md-12 text-center">
+                <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+              </div>
+            </div>
+            <div id="ctk-spinner" class="d-flex align-items-center">
+              <div   class="col-md-12 text-center">
+                <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+              </div>
+            </div>
+            {% if document_chart %}
+              <!-- Docs Documentations -->
+            <div class="clearfix"></div>
+            <div class="row">
+             <div class="col-md" style="background-color: #00000005;">
+               <div id="ctk-knowledge-well-users-graph" class="d-flex align-items-center" style="height: 325px; width: 100%;">
+                 <div class="col-md-12 text-center">
+                   <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                 </div>
+               </div>
+             </div>
+             <div class="col-md" style="background-color: #0000000a;">
+                 <div id="ctk-chronicles-graph-users"  class="d-flex align-items-center" style="height: 325px; width: 100%;">
+                   <div class="text-center w-100">
+                     <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                   </div>
+                 </div>
+             </div>
+             <div class="col-md"  style="background-color: #00000005;">
+                 <div  id="ctk-countermeasures-graph-users" class="d-flex align-items-center"  style="height: 325px; width: 100%;">
+                   <div class="text-center w-100">
+                     <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                   </div>
+                 </div>
+             </div>
+           </div>
+            <!-- End of docs -->
+            {%endif%}
+            {% endif %}
+          </thead>
+          <tbody>
+            {% if individual %}
+            {% for user in users.users %}
+            <tr>
+              <td class="text-center align-middle"><span style="color: black;">{% if loop.index == 1 %}<i
+                    class="fas fa-crown d-block mx-auto mb-4"
+                    style="color: black;"></i></span>{% else %}{{ loop.index }}{% endif %}</td>
+              <td style="text-transform: none;">
+                <img src="{{script_root}}/plugins/custom/assets/images/man.png" class="rounded" alt="..."
+                  style="margin-right: 20px;width: 50px;height: 50px;" />
+                <a href="/users/{{user.account_id}}">{{ user.name | truncate(50) }}</a></td>
+                <td class="text-center align-middle">
+                  {% if user_fields %}
+                  {% for user_field in user_fields %}
+                  {%if user.account_id == user_field.user_id%}
+                  {% if user_field.field_name == 'Full Name'%}
+                        {{user_field.value}}
+                        {% endif %}
+                  {% endif %}
+                  {% endfor %}
+                  {% endif %}
+                </td>
+              <td class="text-center align-middle">
+                {% if user_fields %}
+                {% for user_field in user_fields %}
+                {%if user.account_id == user_field.user_id%}
+                {% if user_field.field_name == 'Unit'%}
+                      {{user_field.value}}
+                      {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+              </td>
+              <td class="text-center align-middle">{{ user.score }}</td>
+              <td class="text-center align-middle">
+                {% if user.country %}
+                <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/{{user.country}}.svg" alt="{{user.country}}" width="15px" height="15px">
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+            {%else%}
+            <div class="row d-flex align-items-center">
+              <div class="col-md-12 text-center">
+                <tr>
+                  <td colspan="5" align="center">
+                    No Solves Yet..
+                  </td>
+                </tr>
+              </div>
+            </div>
+            {% endif %}
+          </tbody>
+        </table>
+         </div>
+    </div>
+   </div>

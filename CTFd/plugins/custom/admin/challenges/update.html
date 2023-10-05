@@ -1,0 +1,81 @@
+{% extends "admin/challenges/update.html" %}
+
+{% block name %}
+	<div class="form-group">
+		<label for="game_category">Game Category</label>
+		<select class="form-control" id= "c3_Category" name="c3_category" value="{{ challenge.c3_category }}" required>
+			{% if challenge.c3_category == 1 %}
+				<option selected value="1">Beginner</option>
+			{% else %}
+				<option value="1">Beginner</option>
+			{% endif %}
+
+			{% if challenge.c3_category == 2 %}
+				<option selected value="2">Intermediate</option>
+			{% else %}
+				<option value="2">Intermediate</option>
+			{% endif %}
+
+			{% if challenge.c3_category == 3 %}
+				<option selected value="3">Advanced</option>
+			{% else %}
+				<option value="3">Advanced</option>
+			{% endif %}
+		</select>
+		<small class="form-text text-muted">
+			Control users Cyber eX Category level
+		</small>
+		
+		<br>
+		<label>
+			Name
+			<small class="form-text text-muted">The name of your challenge</small>
+		</label>
+		<input type="text" class="form-control chal-name" name="name" value="{{ challenge.name }}">
+		
+
+	</div>
+{% endblock %}
+
+{% block category %}
+	<div class="form-group">
+		<label>
+			Category<br>
+			<small class="form-text text-muted">Challenge Category</small>
+		</label>
+		<!-- <input type="text" class="form-control chal-category" name="category" value="{{ challenge.category }}"> -->
+		<select id="category" class="form-control" name="category" value="" required>
+		</select>
+	</div>
+{% endblock %}
+
+{% block message %}
+	<div class="form-group">
+		<label>
+			Message<br>
+			<small class="form-text text-muted">
+				Use this to give a brief introduction to your challenge.
+			</small>
+		</label>
+		<textarea id="ctk-editor" class="form-control chal-desc-editor markdown" name="description" rows="10">{{ challenge.description }}</textarea>
+	</div>
+	<!-- write ups field -->
+	<div class="form-group">
+		<label>
+			Chronicles link<br>
+			<small class="form-text text-muted">The Challenge writeups link</small>
+		</label>
+		<input type="text" class="form-control" name="writeups" value="{{ challenge.writeups }}">
+	</div>
+{% endblock %}
+
+{% block value %}
+<div class="form-group">
+	<label for="value">Value<br>
+		<small class="form-text text-muted">
+			This is how many points the challenge can be worth.
+		</small>
+	</label>
+	<input type="number" class="form-control chal-value" name="value" value="{{ challenge.value }}">
+</div>
+{% endblock %}

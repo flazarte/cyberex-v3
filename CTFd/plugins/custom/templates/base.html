@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<title>Cyber Exercise for Excellence | Capture The King</title>
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="{{ Configs.ctf_small_icon }}" type="image/x-icon">
+	<link rel="stylesheet" href="{{url_for('c3.static', filename='pages/css/bootstrap.min.css', d='09101992')}}"/>
+	<link rel="stylesheet" href="{{ url_for('views.themes', path='css/fonts.css') }}">
+	<link rel="stylesheet" href="{{ url_for('views.themes', path='css/main.css') }}">
+	<link rel="stylesheet" href="{{ url_for('views.themes', path='css/core.css') }}">
+	<link rel="stylesheet" href="{{url_for('c3.static', filename='pages/css/custom.css', d='09101992')}}"/>
+	<link rel="stylesheet" href="{{url_for('c3.static', filename='pages/css/web/hack.css')}}">
+	<link href="{{script_root}}/plugins/custom/assets/pages/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<style>
+		html, body, p, strong{
+		font:inherit!important;
+  		font-family: Hack, monospace!important;
+		text-transform: uppercase!important;
+		}
+
+	</style>
+
+	{% block stylesheets %}
+	{% endblock %}
+
+	{{ Plugins.styles }}
+	<script type="text/javascript">
+		var init = {
+			'urlRoot': "{{ request.script_root }}",
+			'csrfNonce': "{{ Session.nonce }}",
+			'userMode': "{{ Configs.user_mode }}",
+			'userId': {{ Session.id }},
+			'start': {{ Configs.start | tojson }},
+			'end': {{ Configs.end | tojson }},
+			'theme_settings': {{ Configs.theme_settings | tojson }}
+		}
+	</script>
+	{{ Configs.theme_header }}
+</head>
+<body>
+	{% include "components/navbar.html" %}
+
+	<main role="main">
+		{% block content %}
+		{% endblock %}
+	</main>
+	{% set url = request.endpoint %}
+	{%if url != 'views.setup'%}
+	<footer id="footer" class="text-muted">
+
+		<div class="footer-top">
+		  <div class="container">
+			<div class="row">
+			  
+			  <div class="col-lg-3 col-md-6 footer-contact">
+				<h3>Cyber Battalion</h3>
+				<p>
+				 Army Signal Regiment, Headquarters Philippine Army<br><br>
+				  <strong>Phone:</strong><a style="text-transform: none;" href="tel:09776417896">09776417896</a><br>
+				  <strong>Email:</strong><a style="text-transform: none;" href="mailto:cybnasrpa@gmail.com">cybnasrpa@gmail.com</a><br>
+				</p>
+			  </div>
+	  
+			  <div class="col-lg-2 col-md-6 footer-links">
+				<h4>Useful Links</h4>
+				<ul>
+				  <li><i class="fas fa-chevron-right"></i> <a href="{{ url_for('views.static_html', route='/') }}">Home</a></li>
+				  <li><i class="fas fa-chevron-right"></i><a href="{{ url_for('users.listing') }}">Individuals</a></li>
+				  <li><i class="fas fa-chevron-right"></i> <a href="{{ url_for('teams.listing') }}">Multiplayers</a></li>
+				  <li><i class="fas fa-chevron-right"></i><a href="{{ url_for('challenges.listing') }}">Challenges</a></li>
+				  <li><i class="fas fa-chevron-right"></i><a href="{{ url_for('c3.view_challenge_category') }}">CTK Category</a></li>
+				</ul>
+			  </div>
+	  
+			  <div class="col-lg-3 col-md-6 footer-links">
+				<h4>Our Services</h4>
+				<ul>
+				  <li><i class="fas fa-chevron-right"></i> <a href="{{script_root}}/article/capture-the-king">Capture The King</a></li>
+				  <li><i class="fas fa-chevron-right"></i> <a href="{{script_root}}/article/cyber-battlefield">Cyber Battlefield</a></li>
+				  <li><i class="fas fa-chevron-right"></i> <a href="{{script_root}}/article/cyber-smorgasbord">Cyber Smorgasbord</a></li>
+				  <!-- <li><i class="fas fa-chevron-right"></i><a href="#">Terms & Privacy</a></li> -->
+				  <li><i class="fas fa-chevron-right"></i> <a href="{{script_root}}/article/ctk-guidelines-and-policy">CTK Policy</a></li>
+				</ul>
+			  </div>
+	  
+			  <div class="col-lg-4 col-md-6 footer-newsletter">
+				<h4>Follow us on social media.</h4>
+			    <div class="social-links text-md-left pt-3 pt-md-0">
+					<!-- <a href="#" class="twitter"><i class="fab fa-twitter"></i></a> -->
+					<a href="https://www.facebook.com/cybn.asr" class="facebook"><i class="fab fa-facebook"></i></a>
+					<a href="https://www.youtube.com/channel/UCxvFo31gouJOAskdpk-9s4g" class="youtube" style="background: red;"><i class="fab fa-youtube"></i></a>
+					<!-- <a href="#" class="google-plus"><i class="fab fa-skype"></i></a>
+					<a href="#" class="linkedin"><i class="fab fa-linkedin"></i></a> -->
+				  </div>
+			  </div>
+	  
+			</div>
+		  </div>
+		</div>
+	  
+		<div class="container d-md-flex py-4">
+	  
+		  <div class="me-md-auto text-center text-md-start">
+			<div class="copyright" style="text-transform: none;font-size: 8px;">
+			  © Copyright <strong><span>Cyber Battalion</span></strong>. All Rights Reserved
+			</div>
+		  </div>
+		  <div class="text-center text-md-start">
+		  <div class="copyright" style="text-transform: none;font-size: 8px;">
+			Powered by<strong><span>&nbsp;CTFd version {{ get_config('ctf_version') }}</span></strong>
+		  </div>
+		  </div>
+		</div>
+	  </footer>
+	  <a id="backtop" href="#" class="back-to-top d-flex align-items-center justify-content-center active"><i class="fas fa-arrow-up" style="color: white;"></i></a>
+	{%endif%}
+	<script defer src="{{ url_for('views.themes', path='js/vendor.bundle.js') }}"></script>
+	<script defer src="{{ url_for('views.themes', path='js/core.js') }}"></script>
+	<script defer src="{{ url_for('views.themes', path='js/helpers.js') }}"></script>
+	<script src="{{url_for('c3.static', filename='js/chat.js')}}"></script>
+	<script id="intergram" type="text/javascript" src="https://www.intergram.xyz/js/widget.js"></script>
+
+	<!-- override chat button design -->
+	<script type="text/javascript" src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+	<script type="text/javascript" src="{{url_for('c3.static', filename='js/telegram.js', d='09101992')}}"></script>
+	<script src="{{url_for('c3.static', filename='js/timer.js')}}"></script>
+	{% if authed() %}
+	<script src="{{url_for('c3.static', filename='js/whois.js')}}"></script>
+	{% endif %}
+	{% block entrypoint %}
+	<script defer src="{{ url_for('views.themes', path='js/pages/main.js') }}"></script>
+	{% endblock %}
+
+	{% block scripts %}
+	{% endblock %}
+
+	{{ Plugins.scripts }}
+
+	{{ Configs.theme_footer }}
+</body>
+</html>

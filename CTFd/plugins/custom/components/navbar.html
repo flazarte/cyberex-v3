@@ -1,0 +1,166 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a href="{{ url_for('views.static_html', route='/') }}" class="navbar-brand">
+            {% if Configs.ctf_logo %}
+                <img class="img-responsive ctf_logo" src="{{ url_for('views.files', path=Configs.ctf_logo) }}" height="25" alt="{{ Configs.ctf_name }}">
+            {% else %}
+                {{ Configs.ctf_name }}
+            {% endif %}
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#base-navbars"
+                aria-controls="base-navbars" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="base-navbars">
+            <ul class="navbar-nav mr-auto">
+                {% for page in Plugins.user_menu_pages %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ page.route }}">{{ page.title }}</a>
+                    </li>
+                {% endfor %}
+
+                {% if Configs.account_visibility != 'admins' %}
+                <li  class="dropdown nav-item">
+                    <a href="#0" class="dropbtn nav-link">Players</a>
+                    <ul class="dropdown-content">
+                      <a href="{{ url_for('users.listing') }}"><i class="fas fa-user"></i> Individuals</a>
+                      <a href="{{ url_for('teams.listing') }}"><i class="fas fa-users"></i> Multiplayers</a>
+                    </ul>
+                  </li>
+
+                {% endif %}
+                {% if authed() %}
+                    {% if Configs.score_visibility != 'admins' %}
+                        <li class="nav-item" id="ctk_is_scoreboard">
+                            <a class="nav-link" href="{{ url_for('scoreboard.listing') }}">Scoreboard</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('challenges.listing') }}">Challenges</a>
+                </li>
+                <li class="nav-item"> 
+                    <a class="nav-link" href="/plugins/custom/playbook/cyberex_playbook.pdf">Playbook</a>
+                </li>
+            </ul>
+            <ul>
+                <div>
+                    <!-- <h3 id="countdown-phase-users" style="text-align: center;color:black;font-weight:bold;">Ending in...</h3> -->
+                    <div class="flex-w flex-c cd100"  id="countdown">
+                        <div class="flex-col-c-m size2 how-countdown">
+                        <span class="l1-txt3 p-b-9 hours hour">00</span>
+                        <span class="s1-txt1">Hours</span>
+                        </div>
+                        <div class="flex-col-c-m size2 how-countdown">
+                        <span class="l1-txt3 p-b-9 minutes minute">00</span>
+                        <span class="s1-txt1">Minutes</span>
+                        </div>
+                        <div class="flex-col-c-m size2 how-countdown">
+                        <span class="l1-txt3 p-b-9 seconds second">00</span>
+                        <span class="s1-txt1">Seconds</span>
+                        </div>
+                        </div>
+                </div>
+            </ul>
+            <hr class="d-sm-flex d-md-flex d-lg-none">
+
+            <ul class="navbar-nav ml-md-auto d-block d-sm-flex d-md-flex">
+                {% if authed() %}
+                    {% if is_admin() %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('admin.view') }}">
+                                <span class="d-block" data-toggle="tooltip" data-placement="bottom" title="Admin Panel">
+                                    <i class="fas fa-wrench d-none d-md-block d-lg-none"></i>
+                                </span>
+                                <span class="d-sm-block d-md-none d-lg-block">
+                                    <i class="fas fa-wrench pr-1"></i>Admin Panel
+                                </span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('views.notifications') }}">
+                            <span class="d-block" data-toggle="tooltip" data-placement="bottom" title="Notifications">
+                                <i class="fas fa-bell d-none d-md-block d-lg-none"></i>
+                            </span>
+                            <span class="d-sm-block d-md-none d-lg-block">
+                                <i class="fas fa-bell pr-1"></i>
+                                <span class="badge badge-pill badge-danger badge-notification"></span>
+                                Notifications
+                            </span>
+                        </a>
+                    </li>
+                  
+                    <li  class="dropdown nav-item">
+                                <a href="#0" class="dropbtn nav-link"><i class="fas fa-cogs"></i> My Settings</a>   
+                        <ul class="dropdown-content">
+                            <a href="{{ url_for('teams.private') }}" id="ctk_is_team">
+                                <span class="d-block" data-toggle="tooltip" data-placement="bottom" title="Team">
+                                    <i class="fas fa-users d-none d-md-block d-lg-none"></i>
+                                </span>
+                                <span class="d-sm-block d-md-none d-lg-block">
+                                    <i class="fas fa-users pr-1"></i> My Team
+                                </span>
+                            </a>
+                            <a href="{{ url_for('users.private') }}">
+                                <span class="d-block" data-toggle="tooltip" data-placement="bottom" title="Profile">
+                                    <i class="fas fa-user-circle d-none d-md-block d-lg-none"></i>
+                                </span>
+                                <span class="d-sm-block d-md-none d-lg-block">
+                                    <i class="fas fa-user-circle pr-1"></i>Statistics
+                                </span>
+                            </a>
+                            <a href="{{ url_for('c3.view_challenge_category') }}">
+                                <span class="d-block" data-toggle="tooltip" data-placement="bottom" title="C3 Category">
+                                    <i class="fas fa-list-alt d-none d-md-block d-lg-none"></i>
+                                </span>
+                                <span class="d-sm-block d-md-none d-lg-block">
+                                    <i class="fas fa-list-alt pr-1"></i>CTK Category
+                                </span>
+                            </a>
+                          <a  href="{{ url_for('views.settings') }}">
+                            <span class="d-sm-block d-md-none d-lg-block">
+                                <i class="fas fa-users-cog"></i> Credentials
+                            </span>
+                        </a>
+                        </ul>
+                      </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">
+                            <span class="d-block" data-toggle="tooltip" data-placement="bottom" title="Logout">
+                                <i class="fas fa-sign-out-alt d-none d-md-block d-lg-none"></i>
+                            </span>
+                            <span class="d-sm-block d-md-none d-lg-block">
+                                <i class="fas fa-sign-out-alt pr-1"></i><span class="d-lg-none">Logout</span>
+                            </span>
+                        </a>
+                    </li>
+                {% else %}
+                    {% if registration_visible() %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('auth.register') }}">
+                                <span class="d-block" data-toggle="tooltip" data-placement="bottom" title="Register">
+                                    <i class="fas fa-user-plus d-none d-md-block d-lg-none"></i>
+                                </span>
+                                <span class="d-sm-block d-md-none d-lg-block">
+                                    <i class="fas fa-user-plus pr-1"></i>Register
+                                </span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">
+                            <span class="d-block" data-toggle="tooltip" data-placement="bottom" title="Login">
+                                <i class="fas fa-sign-in-alt d-none d-md-block d-lg-none"></i>
+                            </span>
+                            <span class="d-sm-block d-md-none d-lg-block">
+                                <i class="fas fa-sign-in-alt pr-1"></i>Login
+                            </span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

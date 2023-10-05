@@ -1,0 +1,52 @@
+{% extends "challenge.html" %}
+
+{% block description %}
+{{ challenge.html }}
+{% endblock %}
+
+{% block solves %}
+<a class="nav-link solves-participants" id="v-pills-add-todo-list-tab" data-toggle="pill" href="#solves" role="tab"
+    aria-controls="v-pills-add-todo-list" aria-selected="false">
+    <div class="d-flex">
+        <i class="fa fa-check fa-2x btn-icon" style="
+                  margin-right: 15px;
+                  width: 70px;
+                  height: 55px;
+                  line-height: 55px;
+                "></i>
+        <div style="display: inline-block">
+            <b>Conquered</b>
+            <p class="challenge-tab-p" id="ctk-solves">
+                {% if solves != None %} {{ solves }} {% if solves > 1
+                  %}Conquered{% else %}Conquered{% endif %} {% endif %}
+            </p>
+        </div>
+    </div>
+</a>
+{% endblock %}
+
+{% block input %}
+<input id="challenge-id" class="challenge-id" type="hidden" value="{{ challenge.id }}">
+
+<input id="challenge-input" class="form-control form-control-lg text-flag challenge-input" type="text" name="answer"
+    placeholder="Seize The Throne?" style="width: 70%;font-size:1rem;" />
+{% endblock %}
+
+{% block submit %}
+<button id="challenge-submit" type="button" class="btn btn-lg btn-block text-white submit-flag challenge-submit"
+    style="float: unset !important;">CHECKMATE
+</button>
+{% endblock %}
+
+{% block knowledge %}
+  <div id="knowledge-section"></div>
+{% endblock %}
+
+{% block writeups %}
+  <div id="upload-section"></div>
+{% endblock %}
+
+{% block countermeasure %}
+    <div id="upload-counter">
+    </div>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block stylesheets %}
+<style>
+  .ctk-red{
+    color: red!important;
+  }
+  .ctk-yellow{
+    color: orange!important;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<div class="ctk-margin-carousel" style="overflow: hidden;">
+  <div id="myCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" style="background-color:#fff0;" aria-current="true"
+        aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" style="background-color:#fff0;" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" style="background-color:#fff0;" aria-label="Slide 3"></button>
+     
+    </div>
+    <div class="carousel-inner" style="margin: auto;">
+      <div class="carousel-item active">
+        <img src="{{url_for('c3.static', filename='images/banner/cyber-ex.png')}}" alt="Cyber Exercise for Excellence"
+          style="width:100%;height: auto;">
+      </div>
+      <!-- <div class="carousel-item">
+        <img src="{{script_root}}/plugins/custom/assets/images/cyber_ninjas.jpg" alt="Cyber Exercise for Excellence"
+          style="width:100%;height: auto;">
+      </div> -->
+      <div class="carousel-item">
+        <img src="{{script_root}}/plugins/custom/assets/images/bgc-2.jpg" alt="Cyber Exercise for Excellence"
+          style="width:100%;height: auto;">
+      </div>
+      <div class="carousel-item">
+        <img src="{{url_for('c3.static', filename='images/banner/banner3.1.png')}}" alt="Cyber Exercise for Excellence"
+          style="width:100%;height: auto;">
+      </div>
+      <!-- <div class="carousel-item">
+        <img src="{{script_root}}/plugins/custom/assets/images/social_media.jpg" alt="Cyber Exercise for Excellence"
+          style="width:100%;height: auto;">
+      </div> -->
+    </div>
+  </div>
+</div>
+<div style="position: relative;">
+   <!-- Arrow Down -->
+   <div class="arrow" style="z-index: 2 !important;">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<div class="px-4 py-5 my-5 text-center mx-auto" >
+  <img class="d-block mx-auto mb-4 ctk-img-responsive-logo" src="{{url_for('c3.static', filename='images/cyberlogo.png')}}"
+    alt="Cyber Battalion" width="100" height="auto">
+  <img class="d-block mx-auto mb-4 ctk-img-responsive" src="{{url_for('c3.static', filename='images/potentia-d.png')}}"
+    alt="Cyber Exercise for Excellence">
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">In the beginning, the idea of Cyber <small>e</small>X was fascinating and a little bit fantastic. Though, as
+      Cyber <small>e</small>X (Cyber Exercise for Excellence) came true, we can all agree, it has the potential to become the next “big
+      thing” in Philippine Army.
+      Initially, Cyber <small>e</small>X (Cyber Exercise for Excellence) were made for entertainment and education purposes, with focus
+      on Cybersecurity, hacking and many more about technologies.
+    </p>
+  </div>
+</div>
+
+<div class="container marketing">
+
+  <!-- Three columns of text below the carousel -->
+  <div class="row">
+    {%if blogs %}
+    {%for blog in blogs %}
+    <div class="col-lg-4">
+      {%if blog.name == 'Capture The King'%}
+      <img class="bd-placeholder-img rounded-circle" width="140" height="140" role="img"
+        preserveAspectRatio="xMidYMid slice" focusable="false" src="{{url_for('c3.static', filename='images/CTK.png')}}"
+        alt="Capture The King">
+      {%endif%}
+      {%if blog.name == 'Cyber Smorgasbord'%}
+      <img class="bd-placeholder-img rounded-circle" width="140" height="140" role="img"
+      preserveAspectRatio="xMidYMid slice" focusable="false" src="{{url_for('c3.static', filename='images/CS.png')}}"
+      alt="Cyber Smorgasbord">
+      {%endif%}
+      {%if blog.name == 'Cyber Battlefield'%}
+      <img class="bd-placeholder-img rounded-circle" width="140" height="140" role="img"
+      preserveAspectRatio="xMidYMid slice" focusable="false" src="{{url_for('c3.static', filename='images/CB.png')}}"
+      alt="Cyber Smorgasbord">
+      {%endif%}
+      <h2 class="text-white">{{blog.name}}</h2>
+      <p class="txt-p-12">{{blog.description}}</p>
+      <p><a class="btn btn-primary" href="{{script_root}}/article/{{blog.slug}}">View details &raquo;</a></p>
+    </div><!-- /.col-lg-4 -->
+    {%endfor%}
+    {%endif%}
+  </div><!-- /.row -->
+    {% include "plugins/custom/templates/leathearboard.html" %}
+</div>
+
+
+<section id="cta" class="cta" style="background: linear-gradient(rgba(2, 2, 2, 0.5), rgba(0, 0, 0, 0.5)), url({{script_root}}/plugins/custom/assets/images/banner-sample.jpg) fixed center center;background-size: contain;background-repeat: no-repeat;padding: 120px 0;">
+  <div class="container aos-init aos-animate" data-aos="zoom-in">
+
+    <div class="text-center">
+      <h3 class="fw-bold text-white">Explore</h3>
+      <p class="lead mb-4">This Cyber <small>e</small>X (Cyber Exercise for Excellence) provides a complete cybersecurity education. Through Cyber <small>e</small>X challenge category, you go from learning the fundamentals to mastering advanced techniques in cybersecurity. The cybersecurity experts used an exciting and well-paid role, which is open to anyone with the right skills. This Cyber <small>e</small>X challenge category makes us wanted to explore something new about technologies especially in cybersecurity. We live in the digital landscape where technology has surrounded us. The internet and mobile computing devices surround our professional and personal lives.</p>
+      {% if authed() %}
+      <p><a class="btn btn-primary" href="{{ url_for('challenges.listing') }}">Participate Now &raquo;</a></p>
+      {%else%}
+      <p><a class="btn btn-primary" href="{{ url_for('auth.register') }}">Join Now &raquo;</a></p>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/custom.js', d='09101992')}}"></script>
+<script src="{{url_for('c3.static', filename='js/echarts/dist/echarts.js')}}"></script>
+<script src="{{url_for('c3.static', filename='js/ctk-overall.js')}}"></script>
+<script src="{{url_for('c3.static', filename='js/users-graph.js')}}"></script>
+{% if document_chart %}
+<script src="{{url_for('c3.static', filename='js/chronicles.js')}}"></script>
+<script src="{{url_for('c3.static', filename='js/countermeasure.js')}}"></script>
+<script src="{{url_for('c3.static', filename='js/knowledge-well.js')}}"></script>
+{% endif %}
+<script src="{{url_for('c3.static', filename='js/over-all-charts.js')}}"></script>
+{% if document_chart %}
+<script src="{{url_for('c3.static', filename='js/home-charts.js')}}"></script>
+{% endif %}
+<script defer src="{{url_for('c3.static', filename='pages/js/bootstrap.bundle.min.js', d='09101992')}}"></script>
+{% endblock %}
+

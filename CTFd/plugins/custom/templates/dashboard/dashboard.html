@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% block stylesheets %}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="{{script_root}}/plugins/custom/assets/pages/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="{{url_for('c3.static', filename='pages/css/dashboard.css', d='09101992')}}" />
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+<script defer src="{{url_for('c3.static', filename='js/custom.js', d='09101992')}}"></script>
+
+<style>
+    .bd-placeholder-img {
+        font-size: 1.125rem !important;
+        text-anchor: middle !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        user-select: none !important;
+    }
+
+    @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+            font-size: 3.5rem !important;
+        }
+    }
+
+    .article-content img {
+        width: 100%;
+    }
+
+    .image-style-align-left {
+        float: left;
+        margin: 0 15px;
+        width: 50%;
+    }
+
+    .image-style-align-left figcaption,
+    .image-style-align-right figcaption {
+        background: #fff;
+        margin: 10px 0;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .image-style-align-right {
+        float: right;
+        margin: 0 15px;
+        width: 50%
+    }
+
+    .article-content p {
+        text-transform: none !important;
+    }
+
+    .nav-pills .nav-link.active {
+        background-color: #151a264f !important;
+    }
+
+    .bd-example-modal-lg .modal-dialog {
+        display: table;
+        position: relative;
+        margin: 0 auto;
+        top: calc(50% - 24px);
+    }
+
+    .bd-example-modal-lg .modal-dialog .modal-content {
+        background-color: transparent;
+        border: none;
+    }
+
+</style>
+
+{% endblock %}
+{% block content %}
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="az-content az-content-dashboard">
+            <div class="container">
+                <div class="az-content-body">
+                    <div class="az-dashboard-one-title">
+                        <div>
+                            <h2 class="az-dashboard-title">Hi, {{fields.name}} !</h2>
+                            <p class="az-dashboard-text">Welcome to Cyber <small>E</small>X Directorate Dashboard</p>
+                        </div>
+                        <div class="az-content-header-right" id="ctk-time">
+                            <div class="media">
+                                <div class="media-body">
+                                    <label>Start Date</label>
+                                    <h6 class="start">00:00:00</h6>
+                                </div><!-- media-body -->
+                            </div><!-- media -->
+                            <div class="media">
+                                <div class="media-body">
+                                    <label>End Date</label>
+                                    <h6 class="end">00:00:00</h6>
+                                </div><!-- media-body -->
+                            </div><!-- media -->
+                            <a href="{{script_root}}" class="btn btn-purple">Refresh</a>
+                        </div>
+                    </div><!-- az-dashboard-one-title -->
+
+                    <div class="az-dashboard-nav">
+                        <nav class="nav nav-tabs nav-pills nav-justified" id="myTab" role="tablist">
+
+                            <!-- <li class="nav-item"> -->
+                            <a class=" nav-item nav-link active" id="ctk-multiplayer" data-toggle="tab" href="#overall"
+                                role="tab" aria-controls="overall" aria-selected="true"
+                                style="padding-left: 6px;">Multiplayers</a>
+                            <!-- </li> -->
+
+                            <!-- <li class="nav-item"> -->
+                            <a class=" nav-item nav-link" id="ctk-individual" data-toggle="tab" href="#users" role="tab"
+                                aria-controls="users" aria-selected="false">Individuals</a>
+                            <!-- </li> -->
+
+                            <!-- </ul> -->
+                        </nav>
+
+
+                        <nav class="nav">
+                            <!-- <a class="nav-link" href="#"><i class="far fa-save"></i> Save Report</a>
+                            <a class="nav-link" href="#"><i class="far fa-file-pdf"></i> Export to PDF</a>
+                            <a class="nav-link" href="#"><i class="far fa-envelope"></i>Send to Email</a> -->
+                            <a class="nav-link" href="#"><i class="fas fa-ellipsis-h"></i></a>
+                        </nav>
+                    </div>
+
+                    <div class="tab-content" id="myTabContent" style="margin-top: 2rem;">
+                        <!-- Teams -->
+                        <div class="tab-pane fade show active" id="overall" role="tabpanel"
+                            aria-labelledby="ctk-multiplayer">
+                                <!-- All time scoreboard -->
+                                {% include "plugins/custom/templates/dashboard/multiplayer/scoreboard.html" %}
+                                <!-- Documentation breakdown -->
+                                {% include "plugins/custom/templates/dashboard/multiplayer/documentation.html" %}
+                                <!-- footer content -->
+                        </div>
+                        <!-- Users -->
+                        <div class="tab-pane fade show" id="users" role="tabpanel" aria-labelledby="ctk-individual">
+                                <!-- All time scoreboard -->
+                                {% include "plugins/custom/templates/dashboard/individual/scoreboard.html" %}
+                                <!-- Documentation breakdown -->
+                                {% include "plugins/custom/templates/dashboard/individual/documentation.html" %}
+                                <!-- footer content -->
+                        </div>
+                    </div>
+
+                    <!-- endfooter -->
+                </div><!-- az-content-body -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User statistics -->
+<div class="modal individualCountermeasure-directorate fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-action text-center w-100">Multiplayer Statistics</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body clearfix" style="background-color: white;">
+                <!-- content -->
+                {% include "plugins/custom/templates/dashboard/modal/multiplayer/statistics.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User statistics | Individuals-->
+<div class="modal individualCountermeasure-directorate-users fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-action text-center w-100">Individual Statistics</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body clearfix" style="background-color: white;">
+                <!-- content -->
+                {% include "plugins/custom/templates/dashboard/modal/individual/statistics.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- spiner -->
+<div class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    style="background-color: #111620;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="text-center w-100">
+                <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                <br>
+                <p style="margin-top: 10px">Switching Dashboard...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+<script defer src="{{url_for('c3.static', filename='pages/js/bootstrap.bundle.min.js', d='09101992')}}"></script>
+{% if authed() %}
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/custom.js', d='09101992')}}"></script>
+<script src="{{url_for('c3.static', filename='js/echarts/dist/echarts.js')}}"></script>
+<script src="{{url_for('c3.static', filename='js/ctk-overall.js')}}"></script>
+<script src="{{url_for('c3.static', filename='js/users-graph.js')}}"></script>
+<script src="{{url_for('c3.static', filename='js/chronicles.js')}}"></script>
+<script src="{{url_for('c3.static', filename='js/countermeasure.js')}}"></script>
+<script src="{{url_for('c3.static', filename='js/statistics.js')}}"></script>
+<script src="{{url_for('c3.static', filename='js/directorate_stats.js')}}"></script>
+<script src="{{url_for('c3.static', filename='js/directorate_knowledge.js')}}"></script>
+<script src="{{url_for('c3.static', filename='js/ctk-charts.js')}}"></script>
+{% endif %}
+{% endblock %}

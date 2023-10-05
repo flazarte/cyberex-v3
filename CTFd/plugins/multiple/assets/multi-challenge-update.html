@@ -1,0 +1,131 @@
+{% extends "admin/challenges/update.html" %}
+
+{% block name %}
+	<div class="form-group">
+		<label for="game_category">Game Category</label>
+		<select class="form-control" id= "c3_Category" name="c3_category" value="{{ challenge.c3_category }}" required>
+			{% if challenge.c3_category == 1 %}
+				<option selected value="1">Beginner</option>
+			{% else %}
+				<option value="1">Beginner</option>
+			{% endif %}
+
+			{% if challenge.c3_category == 2 %}
+				<option selected value="2">Intermediate</option>
+			{% else %}
+				<option value="2">Intermediate</option>
+			{% endif %}
+
+			{% if challenge.c3_category == 3 %}
+				<option selected value="3">Advanced</option>
+			{% else %}
+				<option value="3">Advanced</option>
+			{% endif %}
+		</select>
+		<small class="form-text text-muted">
+			Control users Cyber eX Category level
+		</small>
+		
+		<br>
+		<label>
+			Name
+			<small class="form-text text-muted">The name of your challenge</small>
+		</label>
+		<input type="text" class="form-control chal-name" name="name" value="{{ challenge.name }}">
+		
+
+	</div>
+{% endblock %}
+
+{% block category %}
+	<div class="form-group">
+		<label>
+			Category<br>
+			<small class="form-text text-muted">Challenge Category</small>
+		</label>
+		<!-- <input type="text" class="form-control chal-category" name="category" value="{{ challenge.category }}"> -->
+		<select id="category" class="form-control multiplechoice" name="category" value="" required>
+		</select>
+	</div>
+{% endblock %}
+
+{% block message %}
+	<div class="form-group">
+		<label>
+			Message<br>
+			<small class="form-text text-muted">
+				Use this to give a brief introduction to your challenge.
+			</small>
+		</label>
+		<textarea id="ctk-editor" class="form-control chal-desc-editor markdown" name="description" rows="10">{{ challenge.description }}</textarea>
+	</div>
+	<!-- Multiple Choice Section -->
+	<div class="form-group">
+		<label>
+			Multiple Choice List<br>
+			<small class="form-text text-muted">
+				Use this as challenger choice section
+			</small>
+		</label>
+		<!-- Question-->
+		<div class="input-group mb-2">
+			<div class="input-group-prepend">
+			  <div class="input-group-text">Q.</div>
+			</div>
+			<input type="text" class="form-control" name="question" placeholder="Challenge Question" value="{{ challenge.question }}" required>
+		</div>
+		<div class="row">
+			<div class="col">
+				<!-- a -->
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+					  <div class="input-group-text">a.</div>
+					</div>
+					<input type="text" class="form-control" name="choice_a" placeholder="Answer List" value="{{ challenge.choice_a }}" required>
+				</div>
+				<!-- b -->
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+					  <div class="input-group-text">b.</div>
+					</div>
+					<input type="text" class="form-control" name="choice_b" placeholder="Answer List" value="{{ challenge.choice_b }}" required>
+				</div>
+			</div>
+			<div class="col">
+				<!-- c -->
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+					  <div class="input-group-text">c.</div>
+					</div>
+					<input type="text" class="form-control" name="choice_c" placeholder="Answer List" value="{{ challenge.choice_c }}" required>
+				</div>
+				<!-- d -->
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+					  <div class="input-group-text">d.</div>
+					</div>
+					<input type="text" class="form-control" name="choice_d" placeholder="Answer List" value="{{ challenge.choice_d }}" required>
+				</div>
+			</div>
+		  </div>
+	</div>
+	<!-- write ups field -->
+	<div class="form-group">
+		<label>
+			Chronicles link<br>
+			<small class="form-text text-muted">The Challenge writeups link</small>
+		</label>
+		<input type="text" class="form-control" name="writeups" value="{{ challenge.writeups }}">
+	</div>
+{% endblock %}
+
+{% block value %}
+<div class="form-group">
+	<label for="value">Value<br>
+		<small class="form-text text-muted">
+			This is how many points the challenge can be worth.
+		</small>
+	</label>
+	<input type="number" class="form-control chal-value" name="value" value="{{ challenge.value }}">
+</div>
+{% endblock %}

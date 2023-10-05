@@ -1,0 +1,502 @@
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content" style="position: absolute;">
+
+    <!-- Upload file loading cover -->
+    <div class="upload-cover loading-status">
+      <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+      <h2>Uploading File Please wait ...</h2>
+    </div>
+
+
+    <div class="upload-cover upload-knowledge">
+      <p id="msg"></p>
+      <form id="knowledge-docs" class="knowledge-well" action="" method="POST">
+        <input class="file-input"  type="file" id="knowledge-files" name="files" accept=".pdf" required/>
+        <p>Drag your files here or click in this area.</p>
+        <input id="knowledge-submit" class="btn-upload" type="submit" value="Upload" disabled>
+      </form>      
+    </div>
+
+    <!-- Chronicles -->
+    <div class="upload-cover upload-modal">
+      <p id="msg"></p>
+      <form id="challenge-writeup" action="/uploader" method="POST">
+        <input class="file-input"  type="file" id="multiFiles" name="files" accept=".pdf" required/>
+        <p>Drag your files here or click in this area.</p>
+        <input id="writeup-submit" class="btn-upload" type="submit" value="Upload" disabled>
+      </form>      
+    </div>
+
+    <!-- Counter Measure -->
+    <div class="upload-cover upload-countermeasure">
+      <p id="countermsg"></p>
+      <form id="challenge-counterMeasure" class="counter-measure" action="/api/v2/countermeasure/" method="POST">
+        <!-- <p id="countermsg"></p> -->
+        <input class="file-input" type="file" id="counterfiles" name="counterfiles" accept=".pdf"/>
+        <p>Drag your files here or click in this area.</p>
+        <input id="counter-submit" class="btn-upload" type="submit" value="Upload" disabled>
+      </form>      
+    </div>
+
+
+
+
+    <div class="row">
+      <div class="col-sm-3" style="padding: 0">
+        <div
+          class="nav flex-column nav-pills"
+          id="v-pills-tab"
+          role="tablist"
+          aria-orientation="vertical"
+        >
+          <a
+            class="nav-link"
+            id="v-pills-downloadfiles-tab"
+            data-toggle="pill"
+            href="#v-pills-downloadfiles"
+            role="tab"
+            aria-controls="v-pills-downloadfiles"
+            aria-selected="false"
+          >
+            <div class="d-flex">
+              <i
+                class="fa fa-download fa-2x btn-icon"
+                style="
+                  margin-right: 15px;
+                  height: 55px;
+                  width: 85px;
+                  line-height: 2;
+                "
+              ></i>
+              <div style="display: inline-block">
+                <b>Download Files</b>
+                <p class="challenge-tab-p">
+                  Necessary files to play the challenge
+                </p>
+              </div>
+            </div>
+          </a>
+          <a
+            class="nav-link active"
+            id="v-pills-submit-flag-tab"
+            data-toggle="pill"
+            href="#v-pills-submit-flag"
+            role="tab"
+            aria-controls="v-pills-submit-flag"
+            aria-selected="true"
+          >
+            <div class="d-flex">
+              <i
+                class="fas fa-crown fa-2x btn-icon"
+                style="
+                  margin-right: 15px;
+                  width: 72px;
+                  height: 55px;
+                  line-height: 2.2em;
+                "
+              ></i>
+              <div style="display: inline-block">
+                <b>Seize The Throne</b>
+                <p class="challenge-tab-p">Submit answer for this challenge</p>
+              </div>
+            </div>
+          </a>
+          {% block solves %}
+          <a
+            class="nav-link challenge-solves"
+            id="v-pills-add-todo-list-tab"
+            data-toggle="pill"
+            href="#solves"
+            role="tab"
+            aria-controls="v-pills-add-todo-list"
+            aria-selected="false"
+          >
+            <div class="d-flex">
+              <i
+                class="fa fa-heart fa-2x btn-icon"
+                style="
+                  margin-right: 15px;
+                  width: 70px;
+                  height: 55px;
+                  line-height: 55px;
+                "
+              ></i>
+              <div style="display: inline-block">
+                <b>Conquered</b>
+                <p class="challenge-tab-p" id="ctk-solves">
+                  {% if solves != None %} {{ solves }} {% if solves > 1
+                    %}Conquered{% else %}Conquered{% endif %} {% endif %}
+                </p>
+              </div>
+            </div>
+          </a>
+          {% endblock %}
+          <!-- Knowledge Well -->
+          <a
+            class="nav-link"
+            id="knowledge-well"
+            data-toggle="pill"
+            href="#knowledge"
+            role="tab"
+            aria-controls="knowledge-list"
+            aria-selected="false"
+          >
+            <div class="d-flex">
+              <i
+                class="fa fa-lightbulb fa-2x btn-icon"
+                style="
+                  margin-right: 15px;
+                  width: 61px;
+                  height: 55px;
+                  line-height: 2.3em;
+                "
+              ></i>
+              <div style="display: inline-block">
+                <b>Knowledge Well</b>
+                <p class="challenge-tab-p">Knowing your Target</p>
+              </div>
+            </div>
+          </a>
+
+          <!-- Chronicles -->
+          <a
+            class="nav-link"
+            id="v-pills-forum-thread-tab"
+            data-toggle="pill"
+            href="#v-pills-forum-thread"
+            role="tab"
+            aria-controls="v-pills-forum-thread"
+            aria-selected="false"
+          >
+            <div class="d-flex">
+              <i
+                class="fa fa-newspaper fa-2x btn-icon"
+                style="
+                  margin-right: 15px;
+                  width: 61px;
+                  height: 55px;
+                  line-height: 2.3em;
+                "
+              ></i>
+              <div style="display: inline-block">
+                <b>Chronicles</b>
+                <p class="challenge-tab-p">Challenge Documentation</p>
+              </div>
+            </div>
+          </a>
+          <!-- countermeasure -->
+          <a
+          class="nav-link challenge-measure"
+          id="measure-tab"
+          data-toggle="pill"
+          href="#measure"
+          role="tab"
+          aria-controls="measure-list"
+          aria-selected="false"
+        >
+          <div class="d-flex">
+            <i
+              class="fas fa-weight fa-2x btn-icon"
+              style="
+                margin-right: 15px;
+                width: 70px;
+                height: 55px;
+                line-height: 55px;
+              "
+            ></i>
+            <div style="display: inline-block">
+              <b>Counter Measure</b>
+              <p class="challenge-tab-p">
+                Knowledge Gained Experience
+              </p>
+            </div>
+          </div>
+        </a>
+        </div>
+      </div>
+      <div
+        class="col-sm-9"
+        style="background-color: #151a26; padding-top: 10px; color: #fff"
+      >
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          style="margin-top: -25px"
+        >
+          <span aria-hidden="true" style="color: #fff">&times;</span>
+        </button>
+        <div class="tab-content" id="v-pills-tabContent">
+          <div
+            class="tab-pane fade"
+            id="v-pills-downloadfiles"
+            role="tabpanel"
+            aria-labelledby="v-pills-downloadfiles-tab"
+          >
+            <table class="table table-striped text-center">
+              <thead style="color: white">
+                <tr>
+                  <td><b>Download</b></td>
+                  <td><b>File Name</b></td>
+                </tr>
+              </thead>
+              <tbody>
+                <div class="row challenge-files text-center pb-3">
+                  {% for file in files %}
+                  <tr style="color: white">
+                    <div
+                      class="
+                        col-md-4 col-sm-4 col-xs-12
+                        file-button-wrapper
+                        d-block
+                      "
+                    >
+                      <td>
+                        <a
+                          class="
+                            btn btn-info btn-file
+                            mb-1
+                            d-inline-block
+                            px-2
+                            w-100
+                            text-truncate
+                          "
+                          href="{{ file }}"
+                        >
+                          <i class="fas fa-download"></i>
+                        </a>
+                      </td>
+                      <td>
+                        <small>
+                          {% set segments = file.split('/') %} {% set file =
+                          segments | last %} {% set token = file.split('?') |
+                          last %} {% if token %} {{ file | replace("?" + token,
+                          "") }} {% else %} {{ file }} {% endif %}
+                        </small>
+                      </td>
+                    </div>
+                  </tr>
+                  {% endfor %}
+                </div>
+              </tbody>
+            </table>
+          </div>
+          <div
+            class="tab-pane fade show active"
+            id="v-pills-submit-flag"
+            role="tabpanel"
+            aria-labelledby="v-pills-submit-flag-tab"
+          >
+            <div
+              class="d-flex"
+              style="
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 50px;
+              "
+            >
+              <div style="position: absolute">
+                <i
+                  class="fa fa-exchange-alt fa-2x"
+                  style="
+                    margin-right: 15px;
+                    transform: rotate(-45deg);
+                    position: relative;
+                    left: -5.5em;
+                    font-size: 2.5em;
+                  "
+                ></i>
+              </div>
+              <div style="display: inline-block">
+                <h2><b>{{ challenge.name }}</b></h2>
+                <p id="c3_modal_cat" class="challenge-tab-p">Basic</p>
+              </div>
+            </div>
+
+            <div
+              class="d-flex"
+              style="
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <i class="fas fa-crown fa-4x" style="font-size: 2.5em"></i>
+              <p style="margin-top: 1rem"><b>Seize The Throne</b></p>
+
+              <small style="font-weight: bold; color: #595858"
+                >Input Hash</small
+              >
+              <div class="challenge-tags text-center">
+                {% block tags %} {% for tag in tags %}
+                <span class="badge badge-info challenge-tag">{{ tag }}</span>
+                {% endfor %} {% endblock %}
+              </div>
+              <br />
+              <div class="challenge-hints hint-row row">
+                {% for hint in hints %}
+                <div class="col-md-12 hint-button-wrapper text-center mb-3">
+                  <a id="ctk-hints" 
+                    class="btn btn-info btn-hint btn-block load-hint"
+                    href="javascript:;"
+                    data-hint-id="{{ hint.id }}"
+                  >
+                    {% if hint.content %}
+                    <small> View Hint </small>
+                    {% else %} {% if hint.cost %}
+                    <small> Unlock Hint for {{ hint.cost }} points </small>
+                    {% else %}
+                    <small> View Hint </small>
+                    {% endif %} {% endif %}
+                  </a>
+                </div>
+                {% endfor %}
+              </div>
+              <div id="ctk-hints"></div>
+
+              {% if max_attempts > 0 %}
+              <div class="row text-center">
+                <div class="col-md-12" id="cyber-ex-attempt">
+                  <p>
+                    {{ attempts }}/{{ max_attempts }} attempt{{
+                    max_attempts|pluralize }}
+                  </p>
+                </div>
+              </div>
+              {% endif %} {% block input %}
+              <input
+                id="challenge-id"
+                class="challenge-id"
+                type="hidden"
+                value="{{ challenge.id }}"
+              />
+              <input
+                id="challenge-input"
+                class="form-control form-control-lg text-flag challenge-input"
+                type="text"
+                name="answer"
+                placeholder="Input Answer"
+              />
+              {% endblock %}
+            </div>
+
+            <div style="text-align: center">
+              {% block submit %}
+              <button
+                id="challenge-submit"
+                type="button"
+                class="
+                  btn btn-primary btn-lg btn-block
+                  submit-flag
+                  challenge-submit
+                "
+              >
+                Submit
+              </button>
+              {% endblock %}
+              <button
+                type="button"
+                data-dismiss="modal"
+                aria-label="Close"
+                class="btn btn-secondary btn-lg btn-block cancel-flag"
+              >
+                RETREAT
+              </button>
+
+              <div class="row notification-row">
+                <div class="col-md-12">
+                  <div
+                    id="result-notification"
+                    class="alert alert-dismissable text-center w-100"
+                    role="alert"
+                    style="display: none"
+                  >
+                    <strong id="result-message"></strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Solves -->
+          <div
+            role="tabpanel"
+            class="tab-pane fade"
+            id="solves"
+            aria-labelledby="v-pills-add-todo-list-tab"
+          >
+            <div class="row">
+              <div class="col-md-12">
+                <table
+                  class="table table-striped text-center"
+                  style="color: white"
+                >
+                  <thead>
+                    <tr>
+                      <td><b>Name</b></td>
+                      <td><b>Date</b></td>
+                    </tr>
+                  </thead>
+                  <tbody style="text-transform: none;" id="challenge-solves-names"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- Knowledge Well -->
+          <div
+            class="tab-pane fade"
+            id="knowledge"
+            role="tabpanel"
+            aria-labelledby="knowledge-list"
+          >
+          <!--  Knowledge Well Upload -->
+          {% block knowledge %}
+          {% endblock %}
+          </div>
+          <!-- Write-ups/Documentation -->
+          <div
+            class="tab-pane fade"
+            id="v-pills-forum-thread"
+            role="tabpanel"
+            aria-labelledby="v-pills-forum-thread-tab"
+          >
+          <!-- Write-Ups Upload -->
+          {% block writeups %}
+          {% endblock %}
+          </div>
+          <!-- counter measure -->
+          <div
+          class="tab-pane fade"
+          id="measure"
+          role="tabpanel"
+          aria-labelledby="measure-tab"
+        >
+        <!-- counter Upload -->
+        {% block countermeasure %}
+        {% endblock %}
+        </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- notifications -->
+<div class="modal upload fade" tabindex="-1" role="dialog" aria-modal="true" style="background-color: #4169e13b;">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Cyber eX Notifications!</h5> <button type="button" class="close" data-dismiss="modal"
+                  aria-label="Close"> <span aria-hidden="true">×</span> </button>
+          </div>
+          <div class="modal-body">
+              <p>Successfully Uploaded.</p>
+          </div>
+          <div class="modal-footer"> 
+              <button  type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>

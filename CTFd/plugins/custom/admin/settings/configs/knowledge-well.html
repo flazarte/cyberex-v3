@@ -1,0 +1,350 @@
+<div role="tabpanel" class="tab-pane config-section" id="knowledge-well">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {% if q and field %}
+                <h5 class="text-muted text-center">
+                    Searching for challenges with <strong>{{ field }}</strong> matching <strong>{{ q }}</strong>
+                </h5>
+                <h6 class="text-muted text-center pb-3">
+                    {{ total }} results
+                </h6>
+                {% endif %}
+
+                {% with form = Forms.challenges.ChallengeSearchForm(field=field, q=q) %}
+                <form method="GET" class="form-inline">
+                    <div class="form-group col-md-2">
+                        {{ form.field(class="form-control custom-select w-100") }}
+                    </div>
+                    <div class="form-group col-md-8">
+                        {{ form.q(class="form-control w-100", placeholder="Search for matching challenge") }}
+                    </div>
+                    <div class="form-group col-md-2">
+                        <button type="submit" class="btn btn-primary w-100" name="knowledge" value="Knowledge Well">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </form>
+                {% endwith %}
+            </div>
+        </div>
+        <!-- Add classification -->
+        <ul class="nav nav-tabs mt-3" role="tablist">
+            <li class="nav-item active">
+                <a class="nav-link active" href="#knowledge-multiplayers" role="tab" data-toggle="tab">
+                    Multiplayers
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#knowledge-individuals" role="tab" data-toggle="tab">
+                    Individuals
+                </a>
+            </li>
+        </ul>
+        <!-- end to add  -->
+
+        <div class="tab-content">
+            <!-- Multiplayers -->
+            <div role="tabpanel" class="tab-pane active" id="knowledge-multiplayers">
+                <div class="col-md-12 py-3">
+                    <h2>Multiplayers Knowledge Well.</h2>
+                </div>
+                <div class="float-right pb-3">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-danger" data-toggle="tooltip"
+                            title="Delete Knowledge Well" id="knowledge-delete-button">
+                            <i class="btn-fa fas fa-trash-alt"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-success" data-toggle="tooltip"
+                            title="Calculate Knowledge Well" id="knowledge-calculate-button">
+                            <i class="fas fa-calculator"></i>
+                        </button>
+                    </div>
+                </div>
+                <form action="" method="POST" autocomplete="off" class="w-100">
+                    <div id="knowledge-list" class="pt-3">
+                        <table id="knowledge-list" class="table table-striped border">
+                            <thead>
+                                <tr>
+                                    <td class="d-block border-right border-bottom text-center" data-checkbox>
+                                        <div class="form-check">
+                                        </div>
+                                    </td>
+                                    <th class="sort-col text-center"><b>Team/User</b></th>
+                                    <th class="sort-col text-center"><b>Challenge Name</b></th>
+                                    <th class="sort-col text-center"><b>Cyber eX Category</b></th>
+                                    <th class="sort-col text-center"><b>Challenge Category</b></th>
+                                    <th class="sort-col text-center"><b>Knowledge Well Link</b></th>
+                                    <th><b>Knowledge Well</b></th>
+                                    <th class="sort-col text-center"><b>Average Score</b></th>
+                                    <th class="sort-col text-center"><b>More info. <i class="fas fa-info-circle"></i></b></th>
+                                </tr>
+                            </thead>
+                            <tbody id="knowledge-list">
+                                {% for knowledge in knowledgewell %}
+                                <tr>
+                                    <td class="d-block border-right text-center" data-checkbox>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input"
+                                                value="{{knowledge.knowledge_id}}" name="knowledge-id">&nbsp;
+                                        </div>
+                                    </td>
+                                    <td class="text-center">{{knowledge.team_name}}</td>
+                                    <td class="text-center"><a
+                                            href="{{ url_for('challenges.listing') }}#{{knowledge.challenge_name}}-{{knowledge.challenge_id}}">{{knowledge.challenge_name}}</a>
+                                    </td>
+                                    {% for c3_cat in cat %}
+                                    {% if c3_cat.id == knowledge.c3_category %}
+                                    <td class="text-center">{{c3_cat.category}}</td>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <td class="text-center">{{knowledge.challenge_cat}}</td>
+                                    <td class="text-center"><a href="{{knowledge.writeup_link}}" target="_blank"><i
+                                                class="fas fa-book"></i></a></td>
+                                    <td>
+                                        <a href="{{knowledge.location}}" target="_blank">VIEW</a>
+                                    </td>
+                                    <td class="text-center">{{knowledge.points}}</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-outline-secondary individualKnowledge-directorate-edit-button" 
+                                        data-toggle="tooltip" data-id="{{knowledge.knowledge_id}}"
+                                        title="" data-original-title="View Ratings">
+                                            <i class="btn-fa fas fa-pencil-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <!-- Individuals -->
+            <div role="tabpanel" class="tab-pane" id="knowledge-individuals">
+                <div class="col-md-12 py-3">
+                    <h2>Individual Knowledge Well.</h2>
+                </div>
+                <div class="float-right pb-3">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-secondary" data-toggle="tooltip"
+                            title="Update Knowledge Well" id="know-individual-edit-button">
+                            <i class="btn-fa fas fa-pencil-alt"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" data-toggle="tooltip"
+                            title="Delete Knowledge Well" id="know-individual-delete-button">
+                            <i class="btn-fa fas fa-trash-alt"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" data-toggle="tooltip"
+                            title="Calculate Knowledge Well" id="know-individual-calculate-button">
+                            <i class="btn-fa fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <form action="" method="POST" autocomplete="off" class="w-100">
+                    <div id="know-individual-list" class="pt-3">
+                        <table id="know-individual-list" class="table table-striped border">
+                            <thead>
+                                <tr>
+                                    <td class="d-block border-right border-bottom text-center" data-checkbox>
+                                        <div class="form-check">
+                                        </div>
+                                    </td>
+                                    <th class="sort-col text-center"><b>Team/User</b></th>
+                                    <th class="sort-col text-center"><b>Challenge Name</b></th>
+                                    <th class="sort-col text-center"><b>Cyber eX Category</b></th>
+                                    <th class="sort-col text-center"><b>Challenge Category</b></th>
+                                    <th class="sort-col text-center"><b>Knowledge Well Link</b></th>
+                                    <th><b>Knowledge Well</b></th>
+                                    <!-- <th class="sort-col text-center"><b>Graded Points</b></th> -->
+                                    <th class="sort-col text-center"><b>More info. <i class="fas fa-info-circle"></i></b></th>
+                                </tr>
+                            </thead>
+                            <tbody id="know-individual-list">
+                                {% for knowledge_indi in knowledge_individual %}
+                                <tr>
+                                    <td class="d-block border-right text-center" data-checkbox>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input"
+                                                value="{{knowledge_indi.knowledge_id}}" name="individual-know-id">&nbsp;
+                                        </div>
+                                    </td>
+                                    <td class="text-center">{{knowledge_indi.team_name}}</td>
+                                    <td class="text-center"><a
+                                            href="{{ url_for('challenges.listing') }}#{{knowledge_indi.challenge_name}}-{{knowledge_indi.challenge_id}}">{{knowledge_indi.challenge_name}}</a>
+                                    </td>
+                                    {% for c3_cat in cat %}
+                                    {% if c3_cat.id == knowledge_indi.c3_category %}
+                                    <td class="text-center">{{c3_cat.category}}</td>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <td class="text-center">{{knowledge_indi.challenge_cat}}</td>
+                                    <td class="text-center"><a href="{{knowledge_indi.writeup_link}}" target="_blank"><i
+                                                class="fas fa-book"></i></a></td>
+                                    <td>
+                                        <a href="{{knowledge_indi.location}}" target="_blank">VIEW</a>
+                                    </td>
+                                    <!-- <td class="text-center">{{knowledge_indi.points}}</td> -->
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-outline-secondary individualKnowledge-directorate-edit-button" 
+                                        data-toggle="tooltip" data-id="{{knowledge_indi.knowledge_id}}"
+                                        title="" data-original-title="View Ratings">
+                                            <i class="btn-fa fas fa-pencil-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- update Modal multiplayers-->
+<div class="modal knowledge fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Grade Points</h5> <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"> <span aria-hidden="true">×</span> </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    <div id="knowledge-edit-button" class="pt-3">
+
+                        <div class="form-group">
+                            <select class="form-control custom-select w-100" id="knowledge-points" name="knowledge-points"
+                                required="">
+                                <option value="0">Select Points</option>
+                                <option value="10">10 points</option>
+                                <option value="20">20 points</option>
+                                <option value="30">30 points</option>
+                                <option value="40">40 points</option>
+                                <option value="50">50 points</option>
+                                <option value="60">60 points</option>
+                                <option value="70">70 points</option>
+                                <option value="80">80 points</option>
+                                <option value="90">90 points</option>
+                                <option value="100">100 points</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-md btn-primary float-right">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- update Modal Individuals -->
+<div class="modal individuals-knowledge fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Grade Points</h5> <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"> <span aria-hidden="true">×</span> </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    <div id="individuals-knowledge-edit-button" class="pt-3">
+
+                        <div class="form-group">
+                            <select class="form-control custom-select w-100" id="individuals-knowledge-points"
+                                name="knowledge-points" required="">
+                                <option value="0">Select Points</option>
+                                <option value="10">10 points</option>
+                                <option value="20">20 points</option>
+                                <option value="30">30 points</option>
+                                <option value="40">40 points</option>
+                                <option value="50">50 points</option>
+                                <option value="60">60 points</option>
+                                <option value="70">70 points</option>
+                                <option value="80">80 points</option>
+                                <option value="90">90 points</option>
+                                <option value="100">100 points</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-md btn-primary float-right">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal Multiplayer-->
+<div class="modal knowledge_delete fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Knowledge?</h5> <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"> <span aria-hidden="true">×</span> </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                <button id="know_del" type="button" class="btn btn-primary" data-dismiss="modal">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Knowledge Well -->
+<div class="modal individualKnowledge-directorate fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Knowledge-Well Graded Points Breakdown</h5> <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"> <span aria-hidden="true">×</span> </button>
+            </div>
+            <div class="modal-body"  style="background-color:azure">
+                <form action="" method="post">
+                    <div id="knowledge-edit-button" class="pt-3">
+						<div class="form-group">
+							<h4 style="color: black;text-align:center"><i class="fas fa-crown fa-3x d-block mx-auto mb-4" width="10" height="auto" style="color: gold;"></i>CTK Judge <small>E</small>X</h4>
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Username</th>
+										<th>Points</th>
+										<th>Date</th>
+									</tr>
+								</thead>
+								<tbody id="knowledge-rater-points" style="text-transform: none;">
+									<tr></tr>
+								</tbody>
+							</table>
+						</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Calculate Multi PLayer-->
+<div class="modal knowledge_calculate_multi fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="background-color: #0f0f0eeb;">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: white;">Notifications</h5> <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"> <span aria-hidden="true">×</span> </button>
+            </div>
+            <div class="modal-body">
+                <!-- Upload file loading cover -->
+                <div class="upload-cover loading-status">
+                    <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    <h2 style="color: white; text-align: center;">Calculating Knowledge Well Average Score. Please wait ...</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

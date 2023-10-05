@@ -1,0 +1,183 @@
+<div role="tabpanel" class="tab-pane config-section active" id="challenge-c3-category">
+    <form action="{{url_for('c3.c3_update_api',c3_id=0)}}" method="POST" autocomplete="off" class="w-100"
+        enctype=multipart/form-data>
+        <h5>Cyber Exercise Category</h5>
+
+        <small class="form-text text-muted">
+            Add Cyber ex category for participants.
+        </small>
+
+        <ul class="nav nav-tabs mt-3" role="tablist">
+            <li class="nav-item active">
+                <a class="nav-link active" href="#challenge-c3-category-list" role="tab" data-toggle="tab">
+                    List
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#challenge-c3-category-create" role="tab" data-toggle="tab">
+                    Create Cyber eX Category
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="challenge-c3-category-list">
+                <div class="col-md-12 py-3">
+                    <small>Cyber Exercise Category List.</small>
+                </div>
+                <div class="float-right pb-3">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-secondary" data-toggle="tooltip"
+                            title="Edit Category" id="c3-edit-button">
+                            <i class="btn-fa fas fa-pencil-alt"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" data-toggle="tooltip"
+                            title="Delete Category" id="c3-delete-button">
+                            <i class="btn-fa fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="challenge-c3-category-list" class="pt-3">
+                    <table id="challenge-c3-category-list" class="table table-striped border">
+                        <thead>
+                            <tr>
+                                <td class="d-block border-right border-bottom text-center" data-checkbox>
+                                    <div class="form-check">
+                                        <!-- <input type="checkbox" class="form-check-input" data-checkbox-all>&nbsp; -->
+                                    </div>
+                                </td>
+                                <th class="sort-col text-center"><b>ID</b></th>
+                                <th class="sort-col"><b>Name</b></th>
+                                <th class="sort-col"><b>Image</b></th>
+                                <th class="d-none d-md-table-cell d-lg-table-cell sort-col"><b>Description</b></th>
+                            </tr>
+                        </thead>
+                        <tbody id="challenge-c3-category-list">
+                            {% for c3_cat in cat %}
+                            <tr>
+                                <td class="d-block border-right text-center" data-checkbox>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" value="{{ c3_cat.id }}"
+                                            name="c3_category">&nbsp;
+                                    </div>
+                                </td>
+                                <td class="text-center">{{ c3_cat.id }}</td>
+                                <td><a href="#">{{
+                                        c3_cat.category }}</a></td>
+                                <td><img style="width: 100px;height: auto;" src="{{script_root}}{{ c3_cat.location }}" alt="{{ c3_cat.image_name }}" srcset="{{script_root}}{{ c3_cat.location }}"></td>
+                                <td class="d-none d-md-table-cell d-lg-table-cell">{{ c3_cat.description }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="challenge-c3-category-create">
+                <div class="col-md-12 py-3">
+                    <small>Create Cyber eX Category.</small>
+                </div>
+
+                <div id="challenge-c3-category-create" class="pt-3">
+                    <div class="form-group">
+                        <label for="challenge-c3-category-name">
+                            Cyber Exercise Category
+                            <small class="form-text text-muted">The Cyber eX challenge difficulty.</small>
+                        </label>
+                        <input class="form-control" id='challenge-c3-category-name' name='challenge-c3-category-name'
+                            type='text' placeholder="Beginner,Intermediate...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            Category Description<br>
+                            <small class="form-text text-muted">
+                                Description for the challenge Category
+                            </small>
+                        </label>
+                        <textarea class="form-control" type="text" id="challenge-c3-category-description"
+                            name="challenge-c3-category-description" rows="5"
+                            placeholder="This is category description.."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="c3_image">
+                            Cyber eX Image
+                            <small class="form-text text-muted">Cyber eX Selector Image</small>
+                        </label>
+                        <br>
+                        <input  type="file" id="c3_image" name="c3_image" accept=".png,.jpg,.jpeg,.svg">
+                    </div>
+                    <button type="submit" class="btn btn-md btn-primary float-right">Create</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- update Modal -->
+<div class="modal c3_update fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Challenges</h5> <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"> <span aria-hidden="true">×</span> </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url_for('c3.c3_update_api',c3_id=0)}}" method="post"  enctype=multipart/form-data>
+                    <div id="challenge-c3-category-create" class="pt-3">
+                        <div class="form-group">
+                            <label for="challenge-c3-category-name">
+                                Cyber Exercise Category
+                                <small class="form-text text-muted">The Cyber eX challenge difficulty.</small>
+                            </label>
+                            <input class="form-control" id='challenge-c3-category-name'
+                                name='challenge-c3-category-name' type='text' placeholder="Beginner,Intermediate...">
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                Category Description<br>
+                                <small class="form-text text-muted">
+                                    Description for the challenge Category
+                                </small>
+                            </label>
+                            <textarea class="form-control" type="text" id="challenge-c3-category-description"
+                                name="challenge-c3-category-description" rows="5"
+                                placeholder="This is category description.."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="c3_image">
+                                Cyber eX Image
+                                <small class="form-text text-muted">Cyber eX Selector Image</small>
+                                <small class="form-text text-muted">Insert new Image to replace!</small>
+                            </label>
+                            <br>
+                            <input  type="file" id="c3_image" name="c3_image" accept=".png,.jpg,.jpeg,.svg">
+                        </div>
+                        <input type="hidden" value="false" name="lockout">
+                        <button type="submit" class="btn btn-md btn-primary float-right">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete Modal -->
+<div class="modal c3_delete fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Cyber eX Category</h5> <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"> <span aria-hidden="true">×</span> </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete Cyber eX Category?</p>
+            </div>
+            <div class="modal-footer"> 
+                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                <button id="c3_delete" type="button" class="btn btn-primary" data-dismiss="modal">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>

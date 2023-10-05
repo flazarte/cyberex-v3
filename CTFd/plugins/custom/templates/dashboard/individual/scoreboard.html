@@ -1,0 +1,76 @@
+<div class="row row-sm mg-b-20">
+    <div class="col-lg-7 ht-lg-100p">
+        <div class="card card-dashboard-one">
+        <div class="card-header">
+            <div>
+            <h6 class="card-title">CTK Challenges Metrics</h6>
+            <p class="card-text">Overall challenges scoreboard analytics of Cyber <small>E</small>X Categories from Apprentice, Warrior and Conqueror.</p>
+            </div>
+        </div><!-- card-header -->
+        <div class="card-body">
+            {% if top_users %}
+            <div id="ctk-scoreboard" style="height: 300px; width: 100%;">
+                <div class="col-md-12 text-center">
+                  <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                </div>
+              </div>
+              {%else%}
+              <div style="height: 300px; width: 100%;">
+                  <div class="col-md-12 text-center">
+                      <h3>No data...</h3>
+                  </div>
+                </div>
+              {%endif%}
+        </div><!-- card-body -->
+        </div><!-- card -->
+    </div><!-- col -->
+    <div class="col-lg-5 mg-t-20 mg-lg-t-0">
+        <div class="row row-sm">
+            <div class="col-sm-6" style="padding-top: .4rem;">
+                <div class="card card-dashboard-two">
+                    <div class="card-header">
+                        <h6>{{statistics.user.knowledgeWell.count}} <small>Knowledge Well</small></h6>
+                        <p style="color: blue;">Individuals</p>
+                    </div><!-- card-header -->
+                    <div class="card-body">
+                        <div id="ctk-knowledge-directorate-user" class="d-flex align-items-center" style="height: 150px; width: 100%;">
+                            <div class="text-center w-100">
+                                <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                            </div>
+                        </div><!-- chart-wrapper -->
+                    </div><!-- card-body -->
+                </div><!-- card -->
+            </div><!-- col -->
+            <div class="col-sm-6"  style="padding-top: .4rem;">
+                <div class="card card-dashboard-two">
+                    <div class="card-header">
+                        <h6>{{statistics.user.chronicles.count}} <small>Chronicles</small></h6>
+                        <p style="color: blue;">Individuals</p>
+                    </div><!-- card-header -->
+                    <div class="card-body">
+                        <div id="ctk-chronicles-directorate-user" class="d-flex align-items-center" style="height: 150px; width: 100%;">
+                            <div class="text-center w-100">
+                                <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                            </div>
+                        </div><!-- chart-wrapper -->
+                    </div><!-- card-body -->
+                </div><!-- card -->
+            </div><!-- col -->
+            <div class="col-sm-12 mg-t-20">
+                <div class="card card-dashboard-two">
+                    <div class="card-header">
+                        <h6>{{statistics.user.countermeasures.count}} <small>Countermeasures</small></h6>
+                        <p style="color: blue;">Individuals</p>
+                    </div><!-- card-header -->
+                    <div class="card-body">
+                        <div id="ctk-countermeasures-directorate-user" class="d-flex align-items-center" style="height: 118px; width: 100%;">
+                            <div class="text-center w-100">
+                                <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                            </div>
+                        </div>
+                    </div><!-- card-body -->
+                  </div>
+            </div>
+        </div><!-- row -->
+    </div><!--col -->
+    </div><!-- row -->

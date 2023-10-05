@@ -1,0 +1,718 @@
+ /* GLOBAL STYLES
+-------------------------------------------------- */
+ /* Padding below the footer and lighter body text */
+
+ body {
+   color: #9d9d9d !important;
+   background-color: #121416 !important;
+ }
+
+
+ /* CUSTOMIZE THE CAROUSEL
+-------------------------------------------------- */
+
+ /* Carousel base class */
+ .carousel {
+   /* margin-bottom: 4rem; */
+ }
+
+ /* Since positioning the image, we need to help out the caption */
+ .carousel-caption {
+   bottom: 3rem;
+   /* z-index: 10; */
+ }
+
+ /* Declare heights because of positioning of img element */
+ .carousel-item {
+   height: 32rem;
+   overflow-x: hidden;
+ }
+
+ .carousel-item>img {
+   position: absolute;
+   top: 0;
+   left: 0;
+   min-width: 100%;
+   height: auto;
+ }
+
+ .nav-pills .nav-link.active,
+ .nav-pills .show>.nav-link {
+   /* color: #343a40;
+    background-color: #fff; */
+   color: #f8f9fa;
+   background-color: #151a26 !important;
+ }
+
+ .nav-tabs {
+   border-bottom: 1px solid #dee2e6;
+   border: 1px solid #e3e3e3;
+   border-radius: 10px 10px 0 0;
+   box-shadow: none;
+ }
+
+ .nav-link {
+   color: #343a40;
+ }
+
+ section {
+   padding: 60px 0;
+   overflow: hidden;
+ }
+
+ #footer {
+   color: rgba(255, 255, 255, .55);
+   font-size: 14px;
+   background: #000000;
+ }
+
+ footer {
+   display: block;
+ }
+
+ #footer .footer-top {
+   background: #24282b85;
+ }
+
+ #footer .footer-top .footer-links ul i {
+   padding-right: 2px;
+   color: #1c84e3;
+   font-size: 18px;
+   line-height: 1;
+ }
+
+ #footer .footer-top .footer-links {
+   margin-bottom: 30px;
+ }
+
+ #footer .footer-top .footer-links ul {
+   list-style: none;
+   padding: 0;
+   margin: 0;
+ }
+
+ #footer .footer-top .footer-links ul li:first-child {
+   padding-top: 0;
+ }
+
+ #footer .footer-top .footer-links ul li {
+   padding: 10px 0;
+   display: flex;
+   align-items: center;
+ }
+
+ #footer .footer-top .footer-links ul a {
+   color: #777777;
+   transition: 0.3s;
+   display: inline-block;
+   line-height: 1;
+   text-decoration: none;
+ }
+
+ #footer .footer-top .footer-contact p {
+   font-size: 14px;
+   line-height: 24px;
+   margin-bottom: 0;
+   font-family: "Raleway", sans-serif;
+   color: #777777;
+ }
+
+ #footer .social-links a {
+   font-size: 18px;
+   display: inline-block;
+   background: #1977cc;
+   color: #fff;
+   line-height: 1;
+   padding: 8px 0;
+   margin-right: 4px;
+   margin-top: 4px;
+   margin-bottom: 30px;
+   border-radius: 50%;
+   text-align: center;
+   width: 36px;
+   height: 36px;
+   transition: 0.3s;
+ }
+
+
+ /* MARKETING CONTENT
+-------------------------------------------------- */
+
+ /* Center align the text within the three columns below the carousel */
+ .marketing .col-lg-4 {
+   margin-bottom: 1.5rem;
+   text-align: center;
+ }
+
+ .marketing h2 {
+   font-weight: 600;
+   font-size: 1.5rem;
+    margin: 15px 0;
+ }
+
+ /* rtl:begin:ignore */
+ .marketing .col-lg-4 p {
+   margin-right: .75rem;
+   margin-left: .75rem;
+ }
+
+ /* rtl:end:ignore */
+
+ .txt-p-12{
+   font-size:  12px !important;
+ }
+
+ /* Featurettes
+------------------------- */
+
+ .featurette-divider {
+   margin: 5rem 0;
+   /* Space out the Bootstrap <hr> more */
+ }
+
+ /* Thin out the marketing headings */
+ .featurette-heading {
+   font-weight: 300;
+   line-height: 1;
+   /* rtl:remove */
+   letter-spacing: -.05rem;
+ }
+
+ .back-to-top.active {
+   visibility: visible;
+   opacity: 1;
+ }
+
+ .back-to-top {
+   position: fixed;
+   visibility: hidden;
+   opacity: 0;
+   right: 15px;
+   bottom: 15px;
+   z-index: 996;
+   background: #1977cc;
+   width: 40px;
+   height: 40px;
+   border-radius: 4px;
+   transition: all 0.4s;
+ }
+
+
+ /* RESPONSIVE CSS
+-------------------------------------------------- */
+
+ @media (min-width: 40em) {
+
+   /* Bump up size of carousel content */
+   .carousel-caption p {
+     margin-bottom: 1.25rem;
+     font-size: 1.25rem;
+     line-height: 1.4;
+   }
+
+   .featurette-heading {
+     font-size: 50px;
+   }
+ }
+
+ @media (min-width: 62em) {
+   .featurette-heading {
+     margin-top: 7rem;
+   }
+ }
+
+ .accordion-item {
+   margin-bottom: 20px;
+ }
+
+ .challenge-child {
+   flex: 1 !important;
+ }
+
+ /* OVERRIDE MODAL */
+ @media (min-width: 992px) {
+
+   .modal-lg,
+   .modal-xl {
+     max-width: 1000px !important;
+   }
+ }
+
+ .modal-content {
+   background-color: #151a26;
+   color: #fff;
+ }
+
+ 
+ .challenge-tab-p {
+   color:#fff !important;
+   font-size: 13px;
+ }
+
+ .btn-icon {
+   margin-right: 15px;
+   background: #151a26;
+   border-radius: 50%;
+   /* height: 52px;
+    width: 75px; */
+   text-align: center;
+   /* border: 1px solid; */
+ }
+
+ .fa-2x {
+   font-size: 1.5em;
+ }
+
+ .text-flag {
+   margin: 20px 0px;
+   width: 70%;
+   background: #0e141d;
+   color: #efef;
+   border: none;
+ }
+
+ .submit-flag {
+   width: 70%;
+   background: #19202b;
+   border: none;
+   font-weight: bold;
+   font-size: 16px;
+   color: #585757;
+ }
+
+ .cancel-flag {
+   width: 70%;
+   background: #151a26;
+   border: none;
+   font-size: 16px;
+   color: #585757;
+ }
+
+ #challenge-solves-names tr {
+   color: white !important;
+ }
+
+ .modal-content {
+   background-color: #111620 !important;
+ }
+
+ .bd-placeholder-img {
+   font-size: 1.125rem;
+   text-anchor: middle;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   user-select: none;
+ }
+
+ @media (min-width: 768px) {
+   .bd-placeholder-img-lg {
+     font-size: 3.5rem;
+   }
+ }
+
+ .accordion-item {
+   margin-bottom: 20px;
+ }
+
+ .challenge-child {
+   flex: 1 !important;
+ }
+
+ /* OVERRIDE MODAL */
+ @media (min-width: 992px) {
+
+   .modal-lg,
+   .modal-xl {
+     max-width: 1000px !important;
+   }
+ }
+
+ .modal-content {
+   background-color: #151a26;
+   color: #fff;
+ }
+
+
+ .challenge-tab-p {
+   color: #6c6c6d;
+   font-size: 13px;
+ }
+
+ .btn-icon {
+   margin-right: 15px;
+   background: #151a26;
+   border-radius: 50%;
+   /* height: 52px;
+  width: 75px; */
+   text-align: center;
+   /* border: 1px solid; */
+ }
+
+ .fa-2x {
+   font-size: 1.5em;
+ }
+
+ .text-flag {
+   margin: 20px 0px;
+   width: 70%;
+   background: #0e141d;
+   color: #efef;
+   border: none;
+ }
+
+ .submit-flag {
+   width: 70%;
+   background: #19202b;
+   border: none;
+   font-weight: bold;
+   font-size: 16px;
+   color: #585757;
+ }
+
+ .cancel-flag {
+   width: 70%;
+   background: #151a26;
+   border: none;
+   font-size: 16px;
+   color: #585757;
+ }
+
+ #challenge-solves-names tr {
+   color: white !important;
+ }
+
+ .custom-banner-image {
+
+   background-repeat: no-repeat;
+
+   background-size: cover;
+
+   background-position: 50% 50%;
+
+   position: relative;
+
+   width: 100%;
+
+   height: auto;
+
+   display: block;
+
+
+ }
+
+ .custom-banner-image .banner-overlay {
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .custom-banner-image .banner-text {
+
+    padding: 50px 0;
+    
+    color: #eee;
+    
+    text-align: center;
+    
+    position: relative;
+    
+    z-index: 1;
+    
+    width: 100%;
+    
+    font-family: sans-serif;
+    
+    }
+ 
+
+    @media (max-width: 767px){
+
+        .header-container.container-fluid .row-fluid .page-center {
+        
+        padding: 0;
+        
+        }
+        
+        .custom-banner-image .banner-text {
+        
+        padding: 50px 15px;
+        
+        }
+        
+  }
+
+      .text-muted {
+        color: #bcc4ca !important;
+    }
+
+    a.lockout  {
+      font-size: 18px;
+      display: inline-block;
+      background: #84878a2e;
+      color: #006400;
+      line-height: 1;
+      padding: 8px 0;
+      margin-right: 4px;
+      border-radius: 50%;
+      text-align: center;
+      width: 36px;
+      height: 36px;
+      transition: 0.3s;
+  }
+
+
+  /* Custom, iPhone Retina */ 
+  @media only screen and (min-width : 320px) {
+    #chals-desc{
+      width: 300px!important;
+    }
+        
+  }
+
+  /* Extra Small Devices, Phones */ 
+  @media only screen and (min-width : 480px) {
+    #chals-desc{
+      width: 300px!important;
+    }
+
+  }
+
+  /* Small Devices, Tablets */
+  @media only screen and (min-width : 768px) {
+    #chals-desc{
+      width: 300px!important;
+    }
+
+  }
+
+  /* Medium Devices, Desktops */
+  @media only screen and (min-width : 992px) {
+    #chals-desc{
+      width: 450px!important;
+    }
+
+  }
+
+  /* Large Devices, Wide Screens */
+  @media only screen and (min-width : 1200px) {
+    #chals-desc{
+      width: 450px!important;
+    }
+  }
+
+  .arrow{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+  }
+  .arrow span{
+      display: block;
+      width: 30px;
+      height: 30px;
+      border-bottom: 5px solid #06A8FF;
+      border-right: 5px solid #06A8FF;
+      transform: rotate(45deg);
+      margin: -10px;
+      animation: animate 2s infinite;
+  }
+  .arrow span:nth-child(2){
+      animation-delay: -0.2s;
+  }
+  .arrow span:nth-child(3){
+      animation-delay: -0.4s;
+  }
+  @keyframes animate {
+      0%{
+          opacity: 0;
+          transform: rotate(45deg) translate(-20px,-20px);
+      }
+      50%{
+          opacity: 1;
+      }
+      100%{
+          opacity: 0;
+          transform: rotate(45deg) translate(20px,20px);
+      }
+  }
+ 
+
+  /* CTK editor Styling custom*/
+  .ck-content h1 strong,
+  .ck-content h2 strong,
+  .ck-content h3 strong, 
+  .ck-content h4 strong, 
+  .ck-content p, 
+  .ck-content p strong , 
+  .ck-content li strong, 
+  .ck-content ol li strong, 
+  .ck-content ul li strong,
+  .modal-content .modal-body p,
+  .modal-content .modal-body p strong {
+    text-transform: none!important;
+}
+
+.reg-text{
+  text-transform: none!important;
+}
+
+/* navbar */
+.dropbtn {
+  color: white;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  padding-left: 0px;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+
+
+    /* Timer */
+    /*
+         #countdown > *:not(.second)::after {
+            content: ":";
+        }*/
+
+        #countdown,
+        #countdown-users {
+           /* font-size: 2em; */
+        }
+    
+        #countdown-phase,
+        #countdown-phase-users {
+            margin-top: 1.5rem;
+        }
+    
+        .flex-c {
+            justify-content: center;
+        }
+    
+        .flex-w {
+            -webkit-flex-wrap: wrap;
+            -moz-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+            -o-flex-wrap: wrap;
+            flex-wrap: wrap;
+            display: flex;
+        }
+    
+        .how-countdown {
+            background-color: #fff;
+            border-radius: 18px;
+            margin: 0px 0px 0px 11px;
+        }
+    
+        .size2 {
+            width: 44px;
+            height: 19px;
+        }
+    
+        .flex-col-c-m {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .l1-txt3 {
+            font-family: Montserrat-Bold;
+            font-size: 20px;
+            color: #555555;
+            line-height: 1;
+        }
+    
+        .p-b-9 {
+            padding-bottom: 9px;
+            margin-left: inherit;
+        }
+    
+        .s1-txt1 {
+            font-family: Montserrat-Regular;
+            font-size: 10px;
+            color: #7d8da6;
+            line-height: 1;
+            text-transform: uppercase;
+          /*  margin-left: inherit; */
+        }
+
+
+.ctk-img-responsive{
+  width: 1000px;
+}
+
+
+/* # Mobile
+only screen and (min-width: 480px)
+
+# Tablet
+only screen and (min-width: 768px) 
+
+# Desktop
+only screen and (min-width: 992px)
+
+# Huge
+only screen and (min-width: 1280px)
+
+# Phone
+only screen and (max-width:320px)
+
+# Tablet
+only screen and (min-width:321px) and (max-width:768px)
+
+# Desktop
+only screen and (min-width:769px)
+
+*/
+
+@media only screen and (max-width:480px){
+  .ctk-margin-carousel{
+    margin-bottom: -255px;
+  }
+  .ctk-img-responsive{
+    width: 260px;
+  }
+
+  .ctk-img-responsive-logo{
+    width: 50px;
+  }
+  .thead-dark{
+    display: none;
+  }
+}
+
+
+@media only screen and (max-width:768px){
+  .ctk-margin-carousel{
+    margin-bottom: -160px;
+  }
+  .ctk-img-responsive{
+    width: 260px;
+  }
+
+  .ctk-img-responsive-logo{
+    width: 100px;
+  }
+}
+

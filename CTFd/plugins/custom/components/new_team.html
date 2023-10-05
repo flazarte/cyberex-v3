@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block content %}
+<section class="py-5 text-center custom-banner-image" style="background-image: url('{{url_for('c3.static', filename='images/banner/page-banner.png')}}');">
+	<div class="banner-overlay">
+		<div class="row py-lg-5">
+			<div class="col-lg-6 col-md-8 mx-auto">
+				<h1 id="c3_cat_name" class="fw-light banner-text " >CREATE Cyber eX TEAM</h1>
+				<p class="lead text-muted" style="margin-top: -46px;">
+					<!-- Description here -->
+                    Create Team to Seize the Throne with unit members.
+				</p>
+			</div>
+	</div>
+</div>
+</section>
+<div class="album py-5 bg-light">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 offset-md-3">
+				{% include "components/errors.html" %}
+
+				{% with form = Forms.teams.TeamRegisterForm() %}
+				{% from "macros/forms.html" import render_extra_fields %}
+				<form method="POST">
+					<div class="form-group">
+						<b>{{ form.name.label }}</b>
+						{{ form.name(class="form-control") }}
+					</div>
+					<div class="form-group">
+						<b>{{ form.password.label }}</b>
+						{{ form.password(class="form-control") }}
+					</div>
+
+					 <!-- extra field Unit -->
+                     {% if extra %}
+                     {% for field in extra %}
+                     {% if field.name == 'Unit'%}
+                     <div class="form-group">
+                         <b><label for="fields[{{field.id}}]">{{field.name}}</label></b>
+                         {% for user_form in user_login.field_entries %}
+                         {% if user_form.name == 'Unit'%}
+                         <input class="form-control" id="fields[{{field.id}}]" name="fields[{{field.id}}]" required="" type="text" value="{{user_form.value}}" readonly>
+                         {%endif%}
+                         {%endfor%}
+                         <small class="form-text text-muted">
+                             {{field.description}}
+                         </small>
+                     </div>
+                     {% endif %}
+                     {% endfor %}
+                     {% endif %}
+
+
+					<div class="row pt-3">
+						<div class="col-md-12">
+							<p>After creating your team, share the team name and password with your teammates so they can join your team.</p>
+							{{ form.submit(class="btn btn-success float-right") }}
+						</div>
+					</div>
+					{{ form.nonce() }}
+				</form>
+				{% endwith %}
+			</div>
+		</div>
+	</div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

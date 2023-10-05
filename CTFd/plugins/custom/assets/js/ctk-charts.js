@@ -1,0 +1,14 @@
+CTK_multiplayers_graph();
+CTK_users_graph();
+chroniclesDirectorate();
+countermeasuresDirectorate();
+chronicles_statistics();
+countermeasures_statistics();
+user_chronicles_statistics();
+knowledgeWell_statistics();
+user_knowledge_statistics();
+usercountermeasures_statistics();
+UserschroniclesDirectorate();
+UserscountermeasuresDirectorate();
+knowledgeWellDirectorate();
+knowledgeWellDirectorateUsers();

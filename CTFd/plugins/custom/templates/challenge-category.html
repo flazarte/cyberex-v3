@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block stylesheets %}
+<link href="{{script_root}}/plugins/custom/assets/pages/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+<script defer src="{{url_for('c3.static', filename='js/custom.js', d='09101992')}}"></script>
+
+<style>
+	.bd-placeholder-img {
+		font-size: 1.125rem !important;
+		text-anchor: middle !important;
+		-webkit-user-select: none !important;
+		-moz-user-select: none !important;
+		user-select: none !important;
+	}
+
+	@media (min-width: 768px) {
+		.bd-placeholder-img-lg {
+			font-size: 3.5rem !important;
+		}
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="py-5 text-center custom-banner-image"
+	style="background-image: url('{{url_for('c3.static', filename='images/banner/page-banner.png')}}');">
+	<div class="banner-overlay">
+		<div class="row py-lg-5">
+			<div class="col-lg-6 col-md-8 mx-auto">
+				<h1 id="c3_cat_name" class="fw-light banner-text">Capture The King <small>(CTK)</small> Category</h1>
+				<p class="lead text-muted">
+					The three Cyber eX Challenge Category is a type of exercise given to cybersecurity professionals and
+					students within a fixed period of time in which they have to apply their skills and knowledge over
+					technologies.
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="album py-5 bg-light">
+	<div class="container">
+		<form method="GET">
+			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+				{% for category in cat %}
+				<div id="{{category.category.lower()}}" class="col d-flex align-items-stretch">
+					<div class="card shadow-sm">
+						<img src="{{script_root}}{{category.location}}" alt="{{ category.image_name }}">
+						<div class="card-body">
+							<h3><strong style="color: blue;">{{ category.category }}</strong></h3>
+							<p class="card-text">{{ category.description }}</p>
+							<div id="unlock" data-value="{{ category.id }}" class="d-flex justify-content-between align-items-center">
+								{%for status in progress%}
+								{%for ctk_status in status[category.category.lower()]%}
+								{% if is_admin() %}
+								<button class="btn btn-sm btn-outline-secondary" name="c3_category"
+									value="{{ category.id }}">
+									Capture
+									{%if category.category.lower() == 'apprentice'%}
+									<i class="fas fa-chess-knight"></i>
+									{% endif %}
+									{%if category.category.lower() == 'warrior'%}
+									<i class="fas fa-chess-rook"></i>
+									{% endif %}
+									{%if category.category.lower() == 'conqueror'%}
+									<i class="fas fa-crown"></i>
+									{% endif %}
+									{%if category.category.lower() == 'cirt 2023'%}
+									<i class="fas fa-crown"></i>
+									{% endif %}
+								</button>
+								{% else %}
+								{% if ctk_status.lock %}
+								<a href="#" class="lock lockout"><i class="fas fa-lock"></i></a>
+								{% else %}
+								<span>
+									<button class="btn btn-sm btn-outline-secondary" name="c3_category"
+										value="{{ category.id }}">
+										Capture
+										{%if category.category.lower() == 'apprentice'%}
+										<i class="fas fa-chess-knight"></i>
+										{% endif %}
+										{%if category.category.lower() == 'warrior'%}
+										<i class="fas fa-chess-rook"></i>
+										{% endif %}
+										{%if category.category.lower() == 'conqueror'%}
+										<i class="fas fa-crown"></i>
+										{% endif %}
+										{%if category.category.lower() == 'cirt 2023'%}
+										<i class="fas fa-crown"></i>
+										{% endif %}
+									</button>
+								</span>
+								{% endif %}
+								{% endif %}
+								{% endfor %}
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</form>
+	</div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+
+{% endblock %}

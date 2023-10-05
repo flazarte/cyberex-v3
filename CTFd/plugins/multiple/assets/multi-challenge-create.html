@@ -1,0 +1,129 @@
+{% extends "admin/challenges/create.html" %}
+
+{% block header %}
+{% endblock %}
+{% block name %}
+	<div class="form-group">
+		<label>
+			Cyber eX Category:<br>
+			<small class="form-text text-muted">
+				The Cyber Exercise Category level instances
+			</small>
+		</label>
+		<select id="multiplechoice_category" class="form-control" name="multiplechoice" value="" required>
+		</select>
+		<small class="form-text text-muted">
+			Control users Cyber eX Category level
+		</small>
+	</div>
+
+	<div class="form-group">
+		<label>
+			Name:<br>
+			<small class="form-text text-muted">
+				The name of your challenge
+			</small>
+		</label>
+		<input type="text" class="form-control" name="name" placeholder="Enter challenge name">
+	</div>
+{% endblock %}
+
+{% block category %}
+	<div class="form-group">
+		<label>
+			Category:<br>
+			<small class="form-text text-muted">
+				The category of your challenge
+			</small>
+		</label>
+		<!-- <input type="text" class="form-control" name="category" placeholder="Enter challenge category"> -->
+		<select id="category" class="form-control" name="category" value="" required>
+		</select>
+	</div>
+{% endblock %}
+
+{% block message %}
+	<div class="form-group" style="display: none;">
+		<label>
+			Message:<br>
+			<small class="form-text text-muted">
+				Use this to give a brief introduction to your challenge.
+			</small>
+		</label>
+		<textarea id="new-desc-editor" class="form-control markdown" name="description" rows="10"></textarea>
+	</div>
+     <!-- Multiple Choice Section -->
+	<div class="form-group">
+		<label>
+			Multiple Choice List<br>
+			<small class="form-text text-muted">
+				Use this as challenger choice section
+			</small>
+		</label>
+		<!-- Question-->
+		<div class="input-group mb-2">
+			<div class="input-group-prepend">
+			  <div class="input-group-text">Q.</div>
+			</div>
+			<input type="text" class="form-control" name="question" placeholder="Challenge Question" required>
+		</div>
+		<div class="row">
+			<div class="col">
+				<!-- a -->
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+					  <div class="input-group-text">a.</div>
+					</div>
+					<input type="text" class="form-control" name="choice_a" placeholder="Answer List" required>
+				</div>
+				<!-- b -->
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+					  <div class="input-group-text">b.</div>
+					</div>
+					<input type="text" class="form-control" name="choice_b" placeholder="Answer List" required>
+				</div>
+			</div>
+			<div class="col">
+				<!-- c -->
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+					  <div class="input-group-text">c.</div>
+					</div>
+					<input type="text" class="form-control" name="choice_c" placeholder="Answer List" required>
+				</div>
+				<!-- d -->
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+					  <div class="input-group-text">d.</div>
+					</div>
+					<input type="text" class="form-control" name="choice_d" placeholder="Answer List" required>
+				</div>
+			</div>
+		  </div>
+	</div>
+	<!-- write ups field -->
+	<div class="form-group">
+		<label>
+			Chronicles link<br>
+			<small class="form-text text-muted">The Challenge writeups link</small>
+		</label>
+		<input type="text" class="form-control" name="writeups" value="">
+	</div>
+{% endblock %}
+
+
+{% block value %}
+<div class="form-group">
+	<label for="value">Value<br>
+		<small class="form-text text-muted">
+			This is how many points are rewarded for solving this challenge.
+		</small>
+	</label>
+	<input type="number" class="form-control" name="value" placeholder="Enter value" required>
+</div>
+{% endblock %}
+
+{% block type %}
+<input type="hidden" value="multiplechoice" name="type" id="chaltype">
+{% endblock %}

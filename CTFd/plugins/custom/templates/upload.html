@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+{% endblock %}
+
+
+{% block content %}
+<h2>Python Flask File(s) Upload - Select file(s) to upload</h2>
+<form action="{{url_for('c3.uploader')}}" method="POST" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    {{ form.file }}
+    <button type="submit">upload</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

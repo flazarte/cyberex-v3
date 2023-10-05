@@ -1,0 +1,94 @@
+{% extends "admin/base.html" %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('views.themes', theme='admin', path='css/codemirror.css') }}">
+	<link href="{{script_root}}/plugins/custom/assets/pages/css/loading-spinner.css" rel="stylesheet" type="text/css" />
+	<style>
+		.upload-cover{
+            z-index: 3;
+            top: 26px;
+            background-color: #28a745;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+	</style>
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+	<div class="container">
+		<h1>Cyber Exercise for Excellence Configuration</h1>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<ul class="nav nav-pills flex-column">
+				<li class="nav-item">
+					<a class="nav-link rounded-0 active" href="#challenge-c3-category" role="tab" data-toggle="tab">Cyber eX Category</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link rounded-0" href="#challenge-main-category" role="tab" data-toggle="tab">Category Challenge</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link rounded-0" href="#lockout" role="tab" data-toggle="tab">Cyber eX Category Lockout</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link rounded-0" href="#blog" role="tab" data-toggle="tab">Blog/Article</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link rounded-0" href="#publish" role="tab" data-toggle="tab">Publish Documentation</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link rounded-0" href="#conqueror" role="tab" data-toggle="tab">Red Teaming Settings</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link rounded-0" href="#knowledge-well" role="tab" data-toggle="tab">Knowledge Well</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link rounded-0" href="#writeups" role="tab" data-toggle="tab">Chronicles</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link rounded-0" href="#countermeasure" role="tab" data-toggle="tab">Counter Measure</a>
+				</li>
+			</ul>
+		</div>
+		<div class="col-md-9">
+			{% for error in errors %}
+				<div class="alert alert-danger alert-dismissable" role="alert">
+					<span class="sr-only">Error:</span>
+					{{ error }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+			{% endfor %}
+
+			<div class="tab-content">
+				<!-- setting content -->
+				{% include "plugins/custom/admin/settings/configs/c3-category.html" %}
+                {% include "plugins/custom/admin/settings/configs/challenge-category.html" %}
+				{% include "plugins/custom/admin/settings/configs/cyberex_lockout.html" %}
+				{% include "plugins/custom/admin/settings/configs/blog.html" %}
+				{% include "plugins/custom/admin/settings/configs/publish.html" %}
+				{% include "plugins/custom/admin/settings/configs/knowledge-well.html" %}
+				{% include "plugins/custom/admin/settings/configs/writeups.html" %}
+				{% include "plugins/custom/admin/settings/configs/coutermeasure.html" %}
+				{% include "plugins/custom/admin/settings/configs/conqueror.html" %}
+                <!-- end content -->
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/custom.js', d='09101992')}}"></script>
+{% endblock %}
+
+{% block entrypoint %}
+	<script defer src="{{ url_for('views.themes', theme='admin', path='js/pages/configs.js') }}"></script>
+{% endblock %}

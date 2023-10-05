@@ -1,0 +1,79 @@
+{% extends "admin/challenges/create.html" %}
+
+{% block header %}
+{% endblock %}
+{% block name %}
+	<div class="form-group">
+		<label>
+			Cyber eX Category:<br>
+			<small class="form-text text-muted">
+				The Cyber Exercise Category level instances
+			</small>
+		</label>
+		<select id="c3_category" class="form-control" name="c3_category" value="" required>
+		</select>
+		<small class="form-text text-muted">
+			Control users Cyber eX Category level
+		</small>
+	</div>
+
+	<div class="form-group">
+		<label>
+			Name:<br>
+			<small class="form-text text-muted">
+				The name of your challenge
+			</small>
+		</label>
+		<input type="text" class="form-control" name="name" placeholder="Enter challenge name">
+	</div>
+{% endblock %}
+
+{% block category %}
+	<div class="form-group">
+		<label>
+			Category:<br>
+			<small class="form-text text-muted">
+				The category of your challenge
+			</small>
+		</label>
+		<!-- <input type="text" class="form-control" name="category" placeholder="Enter challenge category"> -->
+		<select id="category" class="form-control" name="category" value="" required>
+		</select>
+	</div>
+{% endblock %}
+
+{% block message %}
+	<div class="form-group" style="display: none;">
+		<label>
+			Message:<br>
+			<small class="form-text text-muted">
+				Use this to give a brief introduction to your challenge.
+			</small>
+		</label>
+		<textarea id="new-desc-editor" class="form-control markdown" name="description" rows="10"></textarea>
+	</div>
+	<!-- write ups field -->
+	<div class="form-group">
+		<label>
+			Chronicles link<br>
+			<small class="form-text text-muted">The Challenge writeups link</small>
+		</label>
+		<input type="text" class="form-control" name="writeups" value="">
+	</div>
+{% endblock %}
+
+
+{% block value %}
+<div class="form-group">
+	<label for="value">Value<br>
+		<small class="form-text text-muted">
+			This is how many points are rewarded for solving this challenge.
+		</small>
+	</label>
+	<input type="number" class="form-control" name="value" placeholder="Enter value" required>
+</div>
+{% endblock %}
+
+{% block type %}
+<input type="hidden" value="c3_category" name="type" id="chaltype">
+{% endblock %}

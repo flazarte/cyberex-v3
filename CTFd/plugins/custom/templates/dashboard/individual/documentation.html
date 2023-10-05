@@ -1,0 +1,79 @@
+ <div class="row row-sm mg-b-20">
+        <div class="col-lg">
+            <div class="card card-dashboard-four">
+                <div class="card-header">
+                    <h6 class="card-title">Documentation Breakdown</h6>
+                    <p class="card-text">Overall average points garnered from Judge <small>E</small>X. </p>
+                </div>
+                <div class="row">
+                    {% if top_users %}
+                    <div class="col-md">
+                        <div id="ctk-knowledge-well-graph-directorate-users" class="d-flex align-items-center"
+                            style="height: 325px;width: 250px;">
+                            <div class="col-md-12 text-center">
+                                <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div id="ctk-chronicles-graph-users" class="d-flex align-items-center" style="height: 325px;width:250px;">
+                            <div class="text-center w-100">
+                                <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div id="ctk-countermeasures-graph-users" class="d-flex align-items-center"
+                            style="height: 325px; width:250px;">
+                            <div class="text-center w-100">
+                                <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+                            </div>
+                        </div>
+                    </div>
+                    {%else%}
+                    <div  style="height: 325px; width:250px;">
+                        <div class="col-md-12 text-center">
+                            <h3>No data...</h3>
+                        </div>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row row-sm mg-b-20">
+        <div class="col-lg">
+            <div class="card card-dashboard-pageviews">
+                <div class="card-header">
+                    <h6 class="card-title">TOP 10 (Individual) </h6>
+                    <p class="card-text">The initial overall top rankings.</p>
+                </div>
+                <div class="card-body">
+                    {% if top_users %}
+                    {% for top_user in  top_users%}
+                    <div class="az-list-item">
+                    <div>
+                        <a href="/users/{{top_user.account_id}}"><h6 style="color:blue;">{% if loop.index == 1 %}<i
+                            class="fas fa-crown d-block"
+                            style="color: black;"></i></span>{% else %}<em style="color: black;">{{ loop.index }}</em>{% endif %}&nbsp;{{top_user.name}}</h6></a>
+                    </div>
+                    <div>
+                        <span>{{top_user.score}}</span>
+                        <a class="statistics-user text-dark individual">
+                            <i class="btn-fa fas fa-chart-pie fa-2x px-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="User Statistics" data-user_id="{{top_user.account_id}}"></i>
+                        </a>
+                    </div>
+                    </div>
+                    {%endfor%}
+                    {%else%}
+                    <div>
+                        <div class="col-md-12 text-center">
+                            <h3>No data...</h3>
+                        </div>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,459 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+    <link
+        rel="stylesheet"
+        href="{{ url_for('views.themes', path='css/challenge-board.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{url_for('c3.static', filename='pages/css/mk_charts.css', d='09101992')}}"/>
+    <link
+        rel="stylesheet"
+        href="{{url_for('c3.static', filename='ckeditor/content-styles.css', d='09101992')}}"
+        type="text/css">
+    <link href="{{script_root}}/plugins/custom/assets/pages/css/loading-spinner.css" rel="stylesheet" type="text/css" />
+    <link href="{{script_root}}/plugins/custom/assets/ckeditor/content-styles.css" rel="stylesheet" type="text/css" />
+    <style>
+        .ctk-task {
+            width: 13px;
+            height: auto;
+        }
+
+        .upload-cover{
+            position: absolute;
+            height: 92%;
+            width: 97%;
+            z-index: 3;
+            top: 26px;
+            background-color: rgb(77 78 81 / 95%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            visibility: hidden;
+        }
+        .ck-content h2,
+        .ck-content p{
+            font-family: Helvetica, Arial, Tahoma, Verdana, Sans-Serif !important;
+        }
+    </style>
+    <script
+        async="async"
+        charset="utf-8"
+        src="//cdn.embedly.com/widgets/platform.js"></script>
+{% endblock %}
+
+{% block content %}
+    {% if c3_cat %}
+        {% for c3_category in c3_cat %}
+            <section
+                class="py-5 text-center custom-banner-image"
+                style="background-image: url('{{c3_category.location}}');">
+                <div class="banner-overlay" style="padding-top: 100px;padding-bottom: 100px;">
+                    <div class="row py-lg-5">
+                        <div class="col-lg-6 col-md-8 mx-auto">
+                            <h1 id="c3_cat_name" class="fw-light banner-text" style="display: none;">{{c3_category.category}}</h1>
+                            <p class="lead text-muted" style="display: none;">
+                                {{c3_category.description}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% endfor %}
+    {% endif %}
+
+    <div class="modal fade" id="challenge-window" tabindex="-1" role="dialog"></div>
+    <div class="album py-5 bg-light">
+        <main class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    {% include "components/errors.html" %}
+                </div>
+            </div>
+            <div class="row g-5">
+                <!-- Challenges -->
+                <div class="col-md-9">
+                    <div class="accordion" id="accordionExample">
+
+                        {% if results %}
+                            {% for result in results %}
+                                {% if result.categories %}
+                                    {% for category in result.categories %}
+
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="heading_{{loop.index}}">
+                                                <button
+                                                    class="accordion-button collapsed"
+                                                    type="button"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#id-{{loop.index}}"
+                                                    aria-expanded="false"
+                                                    aria-controls="id-{{loop.index}}">
+                                                    <div class="d-flex text-muted pt-3">
+                                                        {% if category.loc %}
+                                                            <img
+                                                                src="{{category.loc}}"
+                                                                alt="{{category.image_name}}"
+                                                                class="bd-placeholder-img flex-shrink-0 me-2 rounded"
+                                                                style="width: 50px;height: 50px;">
+                                                        {% else %}
+                                                            <svg
+                                                                class="bd-placeholder-img flex-shrink-0 me-2 rounded"
+                                                                width="32"
+                                                                height="32"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                role="img"
+                                                                aria-label="Placeholder: 32x32"
+                                                                preserveaspectratio="xMidYMid slice"
+                                                                focusable="false">
+                                                                <title>Placeholder</title>
+                                                                <rect width="100%" height="100%" fill="#007bff"/>
+                                                                <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                                                            </svg>
+                                                        {% endif %}
+                                                        <p class="pb-3 mb-0 small lh-sm border-bottom">
+                                                            <strong class="d-block text-gray-dark">
+                                                                <b style="color: black;">{{category.name}}</b>
+                                                            </strong>
+                                                            {% if category.desc %}
+                                                                {{category.desc}}
+                                                            {% endif %}
+                                                        </p>
+                                                    </div>
+                                                </button>
+                                            </h2>
+                                            <div
+                                                id="id-{{loop.index}}"
+                                                class="accordion-collapse collapse"
+                                                aria-labelledby="heading_{{loop.index}}"
+                                                data-bs-parent="#accordionExample">
+                                                <div class="accordion-body accordion" id="accordionChild">
+                                                    {% if result.challenges %}
+                                                        {% for challenge in result.challenges %}
+                                                            {% if challenge.category == category.name %}
+                                                                <div class="d-flex text-muted pt-3">
+                                                                    <div style="flex: 1;">
+                                                                        <a
+                                                                            class="accordion-button collapsed"
+                                                                            type="button"
+                                                                            data-bs-toggle="collapse"
+                                                                            style="padding-top: 0px !important;background-color: #0c343d;"
+                                                                            data-bs-target="#id-{{loop.index}}-{{challenge.id}}"
+                                                                            aria-expanded="false"
+                                                                            aria-controls="id-{{loop.index}}-{{challenge.id}}">
+                                                                            <div class="d-flex text-muted pt-3">
+                                                                                <div id="chals-desc" class="d-flex responsive">
+                                                                                    <i
+                                                                                        class="fas fa-tasks bd-placeholder-img flex-shrink-0 me-2 rounded ctk-task"
+                                                                                        style="color:green"></i>
+                                                                                    <p class="pb-3 mb-0 small lh-sm border-bottom challenge-child">
+                                                                                        <strong class="d-block text-gray-dark">
+                                                                                            <b style="color:#00c3b1;">{{challenge.name}}</b>
+                                                                                        </strong>
+                                                                                        <strong class="d-block text-gray-dark text-muted">Points:
+                                                                                            {{challenge.value}}
+                                                                                        </strong>
+                                                                                    {% if challenge.requirements %}
+                                                                                    {%for requirement in challenge.requirements %}
+                                                                                    {%for req in prereq.data %}
+                                                                                        {% if req.id == requirement.id %}
+                                                                                        <strong class="d-block" style="color: red;">Pre-requisite:
+                                                                                            {{req.name}}</strong>
+                                                                                        {%endif%}
+                                                                                    {%endfor%}
+                                                                                    {%endfor%}
+                                                                                    {% endif %}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                        <div
+                                                                            id="id-{{loop.index}}-{{challenge.id}}"
+                                                                            class="accordion-collapse collapse"
+                                                                            aria-labelledby="heading_{{loop.index}}-{{challenge.id}}"
+                                                                            data-bs-parent="#accordionChild"
+                                                                            style="padding: 10px 20px;border: 1px solid;font-size: 12px; text-align: justify;text-transform: none;">
+                                                                            <span class="ck-content">{{challenge.description|safe}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    {% if challenge.requirements %}
+                                                                        {%for requirement in challenge.requirements %}
+                                                                        {%for req in prereq.data %}
+                                                                            {% if req.id == requirement.id %}
+                                                                                {% if req.solved_by_me == True%}
+                                                                                <button
+                                                                                    class="btn-sm btn-dark challenge-button"
+                                                                                    value="{{challenge.id}}"
+                                                                                    style="height: 55px !important;margin-left: 10px; margin-right: 10px;">
+                                                                                    Take Challenge 
+                                                                                </button>
+                                                                                {% else %}
+                                                                                <a
+                                                                                    class="btn-sm btn-dark"
+                                                                                    onclick=""
+                                                                                    style="height: 55px !important;margin-left: 10px; width: 110px; margin-right: 10px;cursor: not-allowed; text-align: center;" disabled>
+                                                                                    <i class="fas fa-lock" style="font-size: 35px;"></i>
+                                                                                </a>
+                                                                                
+                                                                                {% endif %}
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                        {% endfor %}
+                                                                    {% else %}
+                                                                        <button
+                                                                            class="btn-sm btn-dark challenge-button"
+                                                                            value="{{challenge.id}}"
+                                                                            style="height: 55px !important;margin-left: 10px; margin-right: 10px;">
+                                                                            Take Challenge 
+                                                                        </button>
+                                                                    {% endif %}
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="row min-vh-25">
+                                        <h3
+                                            class="opacity-50 text-center w-100 justify-content-center align-self-center">
+                                            No Challenge yet
+                                        </h3>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- end of challenges -->
+                {% if c3_cat %}
+                    {% for c3_category in c3_cat %}
+                        {%for status in progress%}
+                            {%for ctk_status in status[c3_category.category.lower()]%}
+                                <!-- progress sidebar -->
+                                <div class="col-md-3">
+                                    <div class="position-sticky">
+                                        <!-- Progress Bar -->
+                                        <div
+                                            id="ctk-progress"
+                                            class="p-4 mb-3 rounded justify-content-center"
+                                            style="margin-bottom: 30px;padding-top: 30px;background-color:#198754;color: #ffffff;display: flex;
+                                            flex-direction: column;
+                                            justify-content: center;
+                                            align-items: center;">
+
+                                            <!-- CHART HERE -->
+                                            <div  id="status-progress" class="mkCharts" data-percent="{{ctk_status.progress}}" data-size="200" data-stroke="3"></div>
+                                            <!-- END CHART -->
+                                            <p style="text-align: center;">Progress Chart</p>
+                                        </div>
+                                        <!-- Rank Status -->
+                                        <div class="p-4" style="background-color: #0c343d;color: white;">
+                                            <div
+                                                style="text-align: center; padding: 10px; border: 1px solid #ffffff61; margin-bottom: 20px;">
+                                                <h4
+                                                    id="total_player"
+                                                    style="margin-bottom: 0px !important;">
+                                                    {{ctk_status.total_player}}</h4>
+                                                {%if team == True%}
+                                                    <p style="margin-bottom: 0px !important;">
+                                                        <i class="fa fa-users" aria-hidden="true"></i>Teams</p>
+                                                    {%else%}
+                                                    <p style="margin-bottom: 0px !important;">
+                                                        <i class="fa fa-users" aria-hidden="true"></i>Users</p>
+                                                    {%endif%}
+                                                </div>
+
+                                                <div style="text-align: center; padding: 10px; border: 1px solid #ffffff61;">
+                                                    <h4
+                                                        id="rank"
+                                                        style="margin-bottom: 0px !important;">
+                                                        {{ctk_status.rank}}</h4>
+                                                    <p style="margin-bottom: 0px !important;">
+                                                        <i class="fa fa-trophy" aria-hidden="true"></i>
+                                                        Overall Rank</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- endof sidebar -->
+                                {% endfor %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </main>
+        </div>
+
+
+        <!-- Hints notifications -->
+        <div class="modal hints fade" tabindex="-1" role="dialog" aria-modal="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hint</h5> <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                    </div>
+                    <div class="modal-body">
+                        <p></p>
+                    </div>
+                    <div class="modal-footer"> 
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Got it!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {%if published %}
+        <!-- Update Chronicles -->
+        <div class="modal individualChronicles-directorate fade" tabindex="-1" role="dialog" aria-modal="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Chronicles Graded Points Breakdown</h5> <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                    </div>
+                    <div class="modal-body"  style="background-color:azure">
+                        <form action="" method="post">
+                            <div id="counter-edit-button" class="pt-3">
+                                <div class="form-group">
+                                    <h4 style="color: black;text-align:center"><i class="fas fa-crown fa-3x d-block mx-auto mb-4" width="10" height="auto" style="color: gold;"></i>CTK Judge <small>E</small>X</h4>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Username</th>
+                                                <th>Points</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="chronicle-rater-points" style="text-transform: none;">
+                                            <tr></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Countermeasures -->
+        <div class="modal individualCountermeasure-directorate fade" tabindex="-1" role="dialog" aria-modal="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Countermeasures Graded Points Breakdown</h5> <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                    </div>
+                    <div class="modal-body"  style="background-color:azure">
+                        <form action="" method="post">
+                            <div id="counter-edit-button" class="pt-3">
+                                <div class="form-group">
+                                    <h4 style="color: black;text-align:center"><i class="fas fa-crown fa-3x d-block mx-auto mb-4" width="10" height="auto" style="color: gold;"></i>CTK Judge <small>E</small>X</h4>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Username</th>
+                                                <th>Points</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="chronicle-rater-points" style="text-transform: none;">
+                                            <tr></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    
+        <!-- Update Knowledge Well -->
+        <div class="modal individualKnowledge-directorate fade" tabindex="-1" role="dialog" aria-modal="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Knowledge-Well Graded Points Breakdown</h5> <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                    </div>
+                    <div class="modal-body"  style="background-color:azure">
+                        <form action="" method="post">
+                            <div id="knowledge-edit-button" class="pt-3">
+                                <div class="form-group">
+                                    <h4 style="color: black;text-align:center"><i class="fas fa-crown fa-3x d-block mx-auto mb-4" width="10" height="auto" style="color: gold;"></i>CTK Judge <small>E</small>X</h4>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Username</th>
+                                                <th>Points</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="knowledge-rater-points" style="text-transform: none;">
+                                            <tr></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%endif%}
+
+    {% endblock %}
+
+    {% block scripts %}
+        <script
+            defer="defer"
+            src="{{url_for('c3.static', filename='pages/js/bootstrap.bundle.min.js', d='09101992')}}"></script>
+        <script
+            type="text/javascript"
+            src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+
+        <script
+            defer="defer"   
+            type="text/javascript"
+            src="{{url_for('c3.static', filename='pages/js/mk_charts.js', d='09101993')}}"></script>
+        <script>
+            //scroll
+            $(document).scroll(function () {
+                if ($(window).scrollTop() === 0) {
+                    $('#backtop').removeClass("active");
+                } else {
+                    $('#backtop').addClass("active");
+                }     
+            });
+        </script>
+        {%if team == True%}
+        <script>
+            $.getJSON("/api/v2/mysolves", function (data) {
+                if(data){
+                    $.each(data, function (index, item) {
+                        $('.btn-sm.btn-dark.challenge-button').each(function () {
+                            if(item.challenge_id == this.value){
+                                $(this).removeClass().addClass("btn-sm btn-dark challenge-button solved-challenge");
+                            }
+                        });
+                    });
+                }
+            });
+        </script>
+        {% endif %}
+    {% endblock %}
+
+    
+    {% block entrypoint %}
+        <script
+            defer="defer"
+            src="{{ url_for('views.themes', path='js/pages/challenges.js') }}"></script>
+    {% endblock %}

@@ -1,0 +1,80 @@
+{% extends "admin/base.html" %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" type="text/css" href="{{ url_for('views.themes', theme='admin', path='css/codemirror.css') }}">
+    <style>
+        .ck-editor__editable_inline {
+            min-height: 400px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+	<div class="container">
+		<h1>Add Blog | Article</h1>
+	</div>
+</div>
+<div class="container">
+	<!-- Add Blog -->
+    <form action="" method="POST" autocomplete="off" class="w-100"
+        enctype=multipart/form-data>
+        <div id="blog-create" class="pt-3">
+            <div class="form-group">
+                <label for="blog-name">
+                    Title
+                    <small class="form-text text-muted">The Blog/Article name</small>
+                </label>
+                <input class="form-control" id='blog-name' name='blog-name'
+                    type='text' placeholder="Title" required>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Description<br>
+                    <small class="form-text text-muted">
+                        The blog/article Description.
+                    </small>
+                </label>
+                <textarea class="form-control" type="text" id="blog-description"
+                    name="blog-description" rows="3"
+                    placeholder="This is category description.." required></textarea>
+            </div>
+            <div class="form-group">
+                <label>
+                    Featured<br>
+                    <small class="form-text text-muted">
+                        Set Article as Featured Article.
+                    </small>
+                </label>
+                <select id="blog_featured" class="form-control" name="blog_featured"  required="">
+                    <option value="False">False</option>
+                    <option value="True">True</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>
+                    Blog | Article Content<br>
+                    <small class="form-text text-muted">
+                        The blog/article Content.
+                    </small>
+                </label>
+                <textarea class="form-control" type="text" id="ctk-editor"
+                    name="blog-content" rows="10"
+                    placeholder="This is category body content.."></textarea>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-md btn-primary float-right">Create</button>
+    </form>
+    <!-- End Blog -->  
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/custom.js', d='09101992')}}"></script>
+{% endblock %}
+
+{% block entrypoint %}
+	<script defer src="{{ url_for('views.themes', theme='admin', path='js/pages/configs.js') }}"></script>
+{% endblock %}

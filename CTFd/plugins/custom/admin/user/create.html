@@ -1,0 +1,129 @@
+{% with form = Forms.users.UserCreateForm() %}
+{% from "admin/macros/forms.html" import render_extra_fields %}
+<form  action="/admin/users/new" method="POST">
+	<div class="form-group">
+		{{ form.name.label }}
+		{{ form.name(class="form-control") }}
+	</div>
+     <!-- extra field Full Name -->
+     {% if extra %}
+     {% for field in extra %}
+     {% if field.name == 'Full Name'%}
+     <div class="form-group">
+         <label for="fields[{{field.id}}]">{{field.name}}</label>
+         <input class="form-control" id="fields[{{field.id}}]" name="fields[{{field.id}}]" required="" type="text" value="">
+         <small class="form-text text-muted">
+             {{field.description}}
+         </small>
+     </div>
+     {% endif %}
+     {% endfor %}
+     {% endif %}
+	<div class="form-group">
+		{{ form.email.label }}
+		{{ form.email(class="form-control") }}
+	</div>
+	<div class="form-group">
+		{{ form.password.label }}
+		{{ form.password(class="form-control") }}
+	</div>
+    <div class="form-group">
+        Cyber eX Player Mode
+        <select class="form-control custom-select w-100" id="user_mode" style="margin-top: .5rem;" name="user-mode" required="">
+        <option value="">Select Mode</option>
+        <option value="users">Individual</option>
+        <option value="teams">Multiplayer</option>
+        <option value="directorate">Directorate</option>
+    </select>
+        <small class="form-text text-muted">
+            Select your Player Category. <small style="color: red;">(Setting could not be change.)</small>
+        </small>
+    </div>
+	<div class="form-group">
+        Branch of Service
+        <select class="form-control custom-select w-100" id="branch-service" style="margin-top: .5rem;"
+        name="branch-service" required>
+        <option value="">Select Branch</option>
+        {% if branchs %}
+        {% for branch in branchs%}
+        <option value="{{branch.key}}">{{branch.name}}</option>
+        {% endfor %}
+        {% endif %}
+    </select>	
+    </div>
+    <div class="form-group" id='unit' style="display: none;">
+        Major Unit
+        <select class="form-control custom-select w-100" id="unit-service"  style="margin-top: .5rem;"
+        name="unit-service">
+        <option value="">Select Unit</option>
+    </select>	
+    </div>
+    <div class="form-group" id='sub-unit' style="display: none;">
+        Battalion/Office
+        <select class="form-control custom-select w-100" id="sub-unit-service" style="margin-top: .5rem;"
+        name="sub-unit-service">
+        <option value="">Select Unit</option>
+    </select>	
+    </div>
+
+	<div class="form-group">
+		{{ form.country.label }}
+		<small class="float-right text-muted align-text-bottom">Optional</small>
+		{{ form.country(class="form-control custom-select") }}
+	</div>
+
+	<!-- {{ render_extra_fields(form.extra) }} -->
+     <!-- extra field Unit -->
+     {% if extra %}
+     {% for field in extra %}
+     {% if field.name == 'Unit'%}
+     <div class="form-group">
+         <label for="fields[{{field.id}}]">{{field.name}}</label>
+         <input class="form-control" id="unit-field" name="fields[{{field.id}}]" required="" type="text" value="" readonly>
+         <small class="form-text text-muted">
+             {{field.description}}
+         </small>
+     </div>
+     {% endif %}
+     {% endfor %}
+     {% endif %}
+
+	<div class="form-group">
+		<div class="form-check form-check-inline">
+			{{ form.type(class="form-control form-inline custom-select", id="type-select") }}
+		</div>
+		<div class="form-check form-check-inline">
+			{{ form.verified(class="form-check-input") }}
+			{{ form.verified.label(class="form-check-label") }}
+		</div>
+		<div class="form-check form-check-inline">
+			{{ form.hidden(class="form-check-input") }}
+			{{ form.hidden.label(class="form-check-label") }}
+		</div>
+		<div class="form-check form-check-inline">
+			{{ form.banned(class="form-check-input") }}
+			{{ form.banned.label(class="form-check-label") }}
+		</div>
+	</div>
+  
+
+	{% if can_send_mail() %}
+	<div class="form-group">
+		<div class="form-check form-check-inline">
+			{{ form.notify(class="form-check-input", id="notify-checkbox") }}
+			{{ form.notify.label(class="form-check-label") }}
+		</div>
+	</div>
+	{% endif %}
+
+	<div id="results">
+	</div>
+
+	{{ form.submit( class="btn btn-primary btn-outlined float-right") }}
+</form>
+{% endwith %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/jquery.min.js', d='09101992')}}"></script>
+<script type="text/javascript" src="{{url_for('c3.static', filename='js/custom.js', d='09101992')}}"></script>
+{% endblock %}
