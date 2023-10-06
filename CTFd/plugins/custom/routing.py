@@ -97,7 +97,8 @@ from sqlalchemy.sql import not_, column
 from CTFd.plugins.custom.CTK_Challenge import CTKpost
 import decimal
 #import multiple choice modul plugin | Required Module
-from CTFd.api.v1.challenges import ChallengeList
+#from CTFd.api.v1.challenges import ChallengeList
+from CTFd.plugins.custom.api.v2.challenges import ChallengeList
 from CTFd.models import Hints, HintUnlocks
 from CTFd.schemas.hints import HintSchema
 from collections import defaultdict
