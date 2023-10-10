@@ -3302,9 +3302,12 @@ def ctk_admin_register():
         country = request.form.get("country")
 
         name_len = len(name) == 0
-        names = Users.query.add_columns("name", "id").filter_by(name=name).first()
+        name_column = column('name')
+        id_column = column('id')
+        email_column = column('email')
+        names = Users.query.add_columns(name_column, id_column).filter_by(name=name).first()
         emails = (
-            Users.query.add_columns("email", "id")
+            Users.query.add_columns(email_column, id_column)
             .filter_by(email=email_address)
             .first()
         )
