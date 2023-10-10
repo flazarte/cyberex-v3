@@ -126,6 +126,9 @@ class ChallengeList(Resource):
         if get_current_user_attrs():
             if is_admin():
                 pass
+            #
+            # This must be edited on the core to use the Individual Category | @ by PFC Lazarte
+            #
             # else:
             #     if config.is_teams_mode() and get_current_team_attrs() is None:
             #         abort(403)
@@ -359,9 +362,13 @@ class Challenge(Resource):
             # TODO: Convert this into a re-useable decorator
             if is_admin():
                 pass
-            else:
-                if config.is_teams_mode() and team is None:
-                    abort(403)
+            #
+            #
+            # This must be edited on the core to use the Individual Category | @ by PFC Lazarte
+            #
+            # else:
+            #     if config.is_teams_mode() and team is None:
+            #         abort(403)
 
             unlocked_hints = {
                 u.target

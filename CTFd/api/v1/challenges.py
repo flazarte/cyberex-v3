@@ -126,9 +126,9 @@ class ChallengeList(Resource):
         if get_current_user_attrs():
             if is_admin():
                 pass
-            else:
-                if config.is_teams_mode() and get_current_team_attrs() is None:
-                    abort(403)
+            # else:
+            #     if config.is_teams_mode() and get_current_team_attrs() is None:
+            #         abort(403)
 
         # Build filtering queries
         q = query_args.pop("q", None)
@@ -359,9 +359,9 @@ class Challenge(Resource):
             # TODO: Convert this into a re-useable decorator
             if is_admin():
                 pass
-            else:
-                if config.is_teams_mode() and team is None:
-                    abort(403)
+            # else:
+            #     if config.is_teams_mode() and team is None:
+            #         abort(403)
 
             unlocked_hints = {
                 u.target
