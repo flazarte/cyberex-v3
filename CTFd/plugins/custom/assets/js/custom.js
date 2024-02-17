@@ -1003,6 +1003,33 @@ $(document).ready(function () {
           });
         });
   });
+//Delete knowledge Well under admin page | Individual
+$("#team-info-edit-modal").click(function () {
+  // $('input[name="individual-know-id"]:checked').each(function () {
+  //   if (this.value) {
+  //     $(".modal.knowledge_delete").modal("show");
+  //   }
+  // });
+});
 
+ //update team logo
+  //challenge category update to select only one
+  $('input[name="team_logo_checkbox"]').on('change', function () {
+    $('input[name="team_logo_checkbox"]').not(this).prop('checked', false);
+  });
+ $("#team-logo-edit-button").click(function () {
+  $('input[name="team_logo_checkbox"]:checked').each(function () {
+    $(".modal.team_logo_update .modal-body form").attr('action', '/api/v2/logo/' + this.value);
+    $(".modal.team_logo_update").modal("show");
+    if (this.value) {
+      // var chal = $.getJSON("/api/v2/category-challenge/" + this.value, function (data) {
+      //   $.each(data, function (index, item) {
+      //     $(".modal.team_logo_update .modal-body form").attr('action', '/api/v2/logo/' + item.id);
+      //     $(".modal.team_logo_update").modal("show");
+      //   });
+      // });
+    }
+  });
+});
 
 });

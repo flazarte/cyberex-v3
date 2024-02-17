@@ -70,15 +70,35 @@ from CTFd.plugins.custom.routing import (
     admin_countermeasure_grade,
     ctk_directorate_average_chroniclesv2,
     cyberex_reset,
-    red_teaming_api
+    red_teaming_api,
+    player_logo
 ) 
 from CTFd.plugins.custom.models import CategoryGameClass
 from werkzeug.routing import Rule
+from pprint import pprint
+from openai import OpenAI
 
 
 def load(app):
     app.db.create_all()  
     #set-up csrf protection
+    
+   # client = OpenAI(
+    # defaults to os.environ.get("OPENAI_API_KEY")
+    #api_key="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",
+   # )
+
+    #chat_completion = client.chat.completions.create(
+   # messages=[
+       # {
+          #  "role": "user",
+          #  "content": "Say this is a test",
+       # }
+   # ],
+   # model="gpt-3.5-turbo",
+    #)   
+   # pprint(chat_completion)
+
     CHALLENGE_CLASSES["c3_category"] = CategoryGameClass
     #override scoreboard
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -136,7 +156,9 @@ def load(app):
     override_template('admin/challenges/challenge.html', open(admin_new_challenge).read())
     admin_user = os.path.join(dir_path, 'admin/user/user.html')
     override_template('admin/users/user.html', open(admin_user).read())
-    # admin_team = os.path.join(dir_path, 'admin/teams/team.html') //disabl for update bugs
+    admin_team_edit = os.path.join(dir_path, 'admin/teams/modal/edit.html')
+    override_template('admin/modals/teams/edit.html', open(admin_team_edit).read())
+    # admin_team = os.path.join(dir_path, 'admin/teams/team.html') #disabl for update bugs
     # override_template('admin/teams/team.html', open(admin_team).read())
     #reset 
     admin_reset = os.path.join(dir_path, 'admin/reset.html')
@@ -165,6 +187,7 @@ def load(app):
     app.add_url_rule('/api/v2/category-challenge/<int:cat_id>', 'c3.category_chals_id_api',category_chals_id_api)
     app.add_url_rule('/api/v2/chronicles/<int:id>', 'c3.chronicles_api', chronicles_api)
     app.add_url_rule('/admin/directorate', 'c3.dashboard_drectorate_url', dashboard_drectorate)
+    app.add_url_rule('/api/v2/logo/<int:id>', 'c3.player_logo', player_logo)
     #view functions front-end
     app.view_functions['challenges.listing'] = get_available_challenges
     app.view_functions['c3.view_challenge_category'] = view_challenge_category

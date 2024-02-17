@@ -78,7 +78,8 @@ from CTFd.plugins.custom.models import (
     CountermeasureDirectorate,
     KnowledgeWellDocs,
     docs_publish,
-    red_teaming
+    red_teaming,
+    logo
 )
 from CTFd.utils.crypto import verify_password
 from CTFd.cache import clear_team_session, clear_user_session, make_cache_key, cache, clear_config, clear_pages, clear_standings
@@ -363,7 +364,7 @@ def view_challenge_list():
         challenges = query.all()
         total = query.count()
     else:
-        query = Challenges.query.filter(*filters).filter(Challenges.c3_category==game_category).order_by(Challenges.id.asc())
+        query = C3CategoryChallenge.query.filter(*filters).filter(C3CategoryChallenge.c3_category==game_category).order_by(C3CategoryChallenge.id.asc())
         challenges = query.all()
         results = []
         for x in challenges:
@@ -606,7 +607,10 @@ def c3_setting():
     q = request.args.get("q")
     field = request.args.get("field")
     filters = []
-
+    logo_teams = []
+    #added for Player Logo
+    player_teams = Teams.query.filter_by(banned=False, hidden=False).all()
+    team_logo = logo.query.all()
     if q:
         # The field exists as an exposed column
         if C3CategoryChallenge.__mapper__.has_property(field):
@@ -765,7 +769,9 @@ def c3_setting():
         knowledge_individual=sorted(knowledge_individual, key=lambda x: x['team_name'], reverse=False),
         individuals=sorted(individuals , key=lambda x: x['team_name'], reverse=False),
         counter_individuals=sorted(counter_individuals, key=lambda x: x['team_name'], reverse=False),
-        publish=publish
+        publish=publish,
+        team_logos=player_teams,
+        logo=team_logo
         )
 
 #set custom API for challenges Category
@@ -846,6 +852,38 @@ def category_chals_id_api(cat_id):
             })
             return jsonify(results)        
         return jsonify(results)
+
+#set upload logo
+@c3.route('/api/v2/logo/<int:id>', methods=['GET','POST','DELETE'])
+@bypass_csrf_protection
+@authed_only
+def player_logo(id):
+    if request.method == 'POST':
+        if request.files['team_logo']:
+            cat_image = request.files['team_logo']
+            filename = secure_filename(cat_image.filename)
+            directory = os.path.isdir(app.config['UPLOAD_PATH']+"admin/assets/img")
+            #create the upload directory if not exist
+            if directory is False:
+                os.makedirs(app.config['UPLOAD_PATH']+"admin/assets/img")
+            cat_image.save(os.path.join(app.config['UPLOAD_PATH']+"admin/assets/img", filename))
+            loc = CATEGORY_FILE_LOCATON+filename
+            doc_exist = db.session.query(logo).filter_by(id = id).first()
+            if doc_exist is None:
+                db.session.merge(logo(id = id, location = loc, name = filename))
+            else:
+                db.session.query(logo).filter_by(id = id).update(dict(location = loc,  name = filename))
+            success = True
+        # else:
+        #     doc_exist = db.session.query(team_logo).filter_by(team_id = id).first()
+        #     if doc_exist is None:
+        #         db.session.merge(team_logo(team_id = id, location = loc))
+        #     else:
+        #         db.session.query(team_logo).filter_by(team_id = id).update(dict(location = loc))
+        #     success = True
+        db.session.commit()
+        return redirect(request.referrer)
+
 
 #set custom API for C3 Category
 @c3.route('/api/v2/challenge-category', methods=['GET'])
@@ -1068,6 +1106,8 @@ def new_static_html(route):
        
         #blog featured
         blog = CTK_Blog.query.first()
+        #players Logo
+        team_logo = logo.query.all()
         if blog != None:
             # blog = CTK_Blog.query.filter_by(featured=1).limit(5).all() | MYSQL
             blog = CTK_Blog.query.filter_by(featured=True).limit(5).all()
@@ -1082,7 +1122,8 @@ def new_static_html(route):
             multiplayer=multiplayer,
             individual=individual,
             blogs=blog,
-            document_chart=document_chart)   
+            document_chart=document_chart,
+            logo=team_logo)   
 
 #set custom API for chronicles
 @c3.route('/api/v2/chronicles/<int:id>', methods=['GET','POST', 'DELETE'])

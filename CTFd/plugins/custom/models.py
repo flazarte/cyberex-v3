@@ -352,3 +352,40 @@ class red_teaming(db.Model):
 
     def __init__(self, *args, **kwargs):
         super(red_teaming, self).__init__(**kwargs)
+
+#Set Up Logo
+class logo(db.Model):
+    __tablename__ = "logo"
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(80), default="logo")
+    location = db.Column(db.Text)
+    name = db.Column(db.Text)
+    # user_id = db.Column(
+    #     db.Integer, db.ForeignKey("users.id", ondelete="CASCADE")
+    # )
+    # team_id = db.Column(
+    #     db.Integer, db.ForeignKey("teams.id", ondelete="CASCADE")
+    # )
+
+    __mapper_args__ = {"polymorphic_identity": "logo", "polymorphic_on": type}
+
+    def __init__(self, *args, **kwargs):
+        super(logo, self).__init__(**kwargs)
+
+    def __repr__(self):
+        return "<File type={type} location={location}>".format(
+            type=self.type, location=self.location
+        )
+
+# class team_logo(db.Model):
+#     __tablename__ = "team_logo"
+#     __mapper_args__ = {"polymorphic_identity": "team_logo"}
+#     id = db.Column(db.Integer, primary_key=True)
+#     team_id = db.Column(
+#         db.Integer, db.ForeignKey("teams.id", ondelete="CASCADE")
+#     )
+#     location = db.Column(db.Text)
+
+#     def __init__(self, *args, **kwargs):
+#         super(team_logo, self).__init__(**kwargs)
+       
