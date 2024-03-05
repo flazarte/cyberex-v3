@@ -1,0 +1,166 @@
+<div role="tabpanel" class="tab-pane config-section" id="player_logo">
+    <form action="{{url_for('c3.category_chals_id_api',cat_id=0)}}" method="POST" autocomplete="off" class="w-100"
+        enctype=multipart/form-data>
+        <h5>Set Up Players Logo</h5>
+
+        <small class="form-text text-muted">
+            The logo of cyberex challenger.
+        </small>
+
+        <ul class="nav nav-tabs mt-3" role="tablist">
+            <li class="nav-item active">
+                <a class="nav-link active" href="#player_logo-list" role="tab" data-toggle="tab">
+                    Multiplayer
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#player_logo-create" role="tab" data-toggle="tab">
+                    Individual
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="player_logo-list">
+                <div class="col-md-12 py-3">
+                    <small>Category Challenge List.</small>
+                </div>
+                <div class="float-right pb-3">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-outline-secondary" data-toggle="tooltip"
+                            title="Edit Category" id="team-logo-edit-button">
+                            <i class="btn-fa fas fa-pencil-alt"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" data-toggle="tooltip"
+                            title="Delete Category" id="category-challenge-delete-button">
+                            <i class="btn-fa fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="player_logo-list" class="pt-3">
+                    <table id="player_logo-list" class="table table-striped border">
+                        <thead>
+                            <tr>
+                                <td class="d-block border-right border-bottom text-center" data-checkbox>
+                                    <div class="form-check">
+                                        <!-- <input type="checkbox" class="form-check-input" data-checkbox-all>&nbsp; -->
+                                    </div>
+                                </td>
+                                <th class="sort-col text-center"><b>ID</b></th>
+								<th class="sort-col"><b>Logo</b></th>
+                                <th class="sort-col"><b>Team Name</b></th>
+                                <th class="d-none d-md-table-cell d-lg-table-cell sort-col"><b>Email</b></th>
+                            </tr>
+                        </thead>
+                        <tbody id="player_logo-list">
+                            {% for team_logo in team_logos %}
+                            <tr>
+                                <td class="d-block border-right text-center" data-checkbox>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" value="{{ team_logo.id }}"
+                                            name="team_logo_checkbox">&nbsp;
+                                    </div>
+                                </td>
+                                <td class="text-center">{{ team_logo.id }}</td>
+                                {% for avatar in logo %}
+                                    {% if avatar.id == team_logo.id%}
+                                        <td class="text-center"><img src="{{script_root}}{{avatar.location}}" alt="{{cat.category_name}}" style="width: 50px;height: 50px;"></td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td><a href="/admin/teams/{{team_logo.id}}">{{
+                                        team_logo.name }}</a></td>
+                                <td class="d-none d-md-table-cell d-lg-table-cell">{{ team_logo.email }}</td>
+								
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="player_logo-create">
+                <div class="col-md-12 py-3">
+                    <small>Challenge Category.</small>
+                </div>
+                <div id="player_logo-create" class="pt-3">
+					<div class="form-group">
+						<label for="c3_category_name">
+							Category
+							<small class="form-text text-muted">The category Challenge</small>
+						</label>
+						<input class="form-control" id='c3_category_name' name='c3_category_name' type='text' placeholder="Category">
+					</div>
+			
+					<div class="form-group">
+						<label>
+							Category Description<br>
+							<small class="form-text text-muted">
+								Description for the challenge Category
+							</small>
+						</label>
+						<textarea class="form-control" type="text" id="category_description" name="category_description" rows="5" placeholder="This is category description.."></textarea>
+					</div>
+			
+					<div class="form-group">
+						<label for="category_image">
+							Category Image
+							<small class="form-text text-muted">Category Image (Thumbnail)</small>
+						</label>
+						<br>
+						<input  type="file" id="category_image" name="category_image" accept=".png,,jpg,.jpeg">
+					</div>
+			
+					<button type="submit" class="btn btn-md btn-primary float-right">Create</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- update Modal -->
+<div class="modal team_logo_update fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Team Logo</h5> <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"> <span aria-hidden="true">×</span> </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{url_for('c3.player_logo',id=0)}}" method="post" enctype=multipart/form-data>
+                    <div id="player_logo-create" class="pt-3">
+                        <div class="form-group">
+                            <label for="category_image">
+                                Team Logo Image
+                                <small class="form-text text-muted">Team Logo Image (Thumbnail)</small>
+                                <small class="form-text text-muted">Insert New Logo to replace!</small>
+                            </label>
+                            <br>
+                            <input  type="file" id="team_logo" name="team_logo" accept=".png,,jpg,.jpeg">
+                        </div>
+                
+                        <button type="submit" class="btn btn-md btn-primary float-right">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete Modal -->
+<div class="modal cat_delete fade" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Challenge Category</h5> <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close"> <span aria-hidden="true">×</span> </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to Challenge Category?</p>
+            </div>
+            <div class="modal-footer"> 
+                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                <button id="cat_delete" type="button" class="btn btn-primary" data-dismiss="modal">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
