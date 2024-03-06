@@ -902,8 +902,8 @@ def c3_category_api():
 
 #c3 category edit/update
 @c3.route('/api/v2/challenge-category/<int:c3_id>', methods=['GET','POST','DELETE'])
-@bypass_csrf_protection
 @admins_only
+@bypass_csrf_protection
 def c3_category_update_api(c3_id):
     results = []
     #update data
@@ -913,25 +913,28 @@ def c3_category_update_api(c3_id):
         if lockout != None:
             if request.form['lockout'] == 'true':
                 db.session.query(c3_lockout).filter_by(ctf_category_id = c3_id).update(dict(lockout_percentage = request.form['lockout-percent']))
-        else:
-            cat_name = request.form['challenge-c3-category-name']
-            cat_desc = request.form['challenge-c3-category-description']
-            if request.files['c3_image']:
-                cat_image = request.files['c3_image']
-                filename = secure_filename(cat_image.filename)
-                cat_image.save(os.path.join(app.config['UPLOAD_PATH']+"admin/assets/img", filename))
-                loc = CATEGORY_FILE_LOCATON+filename
-                doc_exist = db.session.query(C3_category).filter_by(id = c3_id).first()
-                if doc_exist is None:
-                    db.session.merge(C3_category(category = cat_name, description = cat_desc,location=loc, image_name = filename))
+        #c3 category update
+        c3_update = request.form.get('c3-category', None)
+        if c3_update != None:
+            if request.form['c3-category'] == 'true':
+                cat_name = request.form['challenge-c3-category-name']
+                cat_desc = request.form['challenge-c3-category-description']
+                if request.files['c3_image']:
+                    cat_image = request.files['c3_image']
+                    filename = secure_filename(cat_image.filename)
+                    cat_image.save(os.path.join(app.config['UPLOAD_PATH']+"admin/assets/img", filename))
+                    loc = CATEGORY_FILE_LOCATON+filename
+                    doc_exist = db.session.query(C3_category).filter_by(id = c3_id).first()
+                    if doc_exist is None:
+                        db.session.merge(C3_category(category = cat_name, description = cat_desc,location=loc, image_name = filename))
+                    else:
+                        db.session.query(C3_category).filter_by(id = c3_id).update(dict(category = cat_name, description = cat_desc, location=loc, image_name = filename))
                 else:
-                    db.session.query(C3_category).filter_by(id = c3_id).update(dict(category = cat_name, description = cat_desc, location=loc, image_name = filename))
-            else:
-                doc_exist = db.session.query(C3_category).filter_by(id = c3_id).first()
-                if doc_exist is None:
-                    db.session.merge(C3_category(category = cat_name, description = cat_desc))
-                else:
-                    db.session.query(C3_category).filter_by(id = c3_id).update(dict(category = cat_name, description = cat_desc))
+                    doc_exist = db.session.query(C3_category).filter_by(id = c3_id).first()
+                    if doc_exist is None:
+                        db.session.merge(C3_category(category = cat_name, description = cat_desc))
+                    else:
+                        db.session.query(C3_category).filter_by(id = c3_id).update(dict(category = cat_name, description = cat_desc))
         db.session.commit()
         return redirect(request.referrer)
         
