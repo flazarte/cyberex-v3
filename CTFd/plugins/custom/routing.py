@@ -105,6 +105,7 @@ from CTFd.schemas.hints import HintSchema
 from collections import defaultdict
 from CTFd.utils.uploads import delete_file
 from slugify import slugify
+from CTFd.plugins.custom.vpn.api import VPNConnector
 from pprint import pp, pprint #for Debugging purpose only remove in Production
 
 #custom blue print in view and routing
@@ -2308,7 +2309,7 @@ def ctk_register():
 
     #unit Branch
     branch = ctk_branch()
-
+    
     if request.method == "POST":
         name = request.form.get("name", "").strip()
         email_address = request.form.get("email", "").strip().lower()
@@ -2318,7 +2319,6 @@ def ctk_register():
         if user_mode == 'directorate':
             return abort(404)
      
-
         website = request.form.get("website")
         affiliation = request.form.get("affiliation")
         country = request.form.get("country")
@@ -2435,7 +2435,20 @@ def ctk_register():
                     user.affiliation = affiliation
                 if country:
                     user.country = country
+                #get the  full name from custom fields
+                fullname = ""
+                for field_id, value in entries.items():
+                    entry = UserFieldEntries(
+                        field_id=field_id, value=value, user_id=user.id
+                    )
+                    #get the user full name
+                    if entry.field_id == 1:
+                        fullname = entry.value
 
+                #vpn connection
+                connector = VPNConnector()
+                connector.CreateUser(username=name, user_full_name=fullname, user_password=password)
+                #Save the registartion if vpn connection successful
                 db.session.add(user)
                 db.session.commit()
                 db.session.flush()
