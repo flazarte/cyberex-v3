@@ -9,7 +9,8 @@ from pprint import pp, pprint #for Debugging purpose only remove in Production
 #VPN Username Super User
 CYBEREX_VPN_USERNAME = "Administrator"
 CYBEREX_VPN_PASSWORD = "Cyber@1992"
-CYBEREX_VPN_URL = "https://121.58.248.18/api/"
+#CYBEREX_VPN_URL = "https://121.58.248.18/api/"
+CYBEREX_VPN_URL = "https://121.58.248.18:5555/api/"
 CYBEREX_VPN_HUBNAME = "Cyberex-VPN"
 CYBEREX_VPN_GROUP_NAME = "Cyberex-Participants"
 
