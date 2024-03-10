@@ -167,6 +167,9 @@ class ChallengeWriteUps(C3WriteUps):
         db.Integer, db.ForeignKey("teams.id", ondelete="CASCADE")
     )
     points = db.Column(db.Integer,default=0)
+    know_score = db.Column(db.Integer,default=0)
+    do_score = db.Column(db.Integer,default=0)
+    learn_score = db.Column(db.Integer,default=0)
 
     def __init__(self, *args, **kwargs):
         super(ChallengeWriteUps, self).__init__(**kwargs)
@@ -283,7 +286,7 @@ class CountermeasureDirectorate(db.Model):
     __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     countermeasures_id = db.Column(
-        db.Integer, db.ForeignKey("c3CounterMeasure.id", ondelete="CASCADE")
+        db.Integer, db.ForeignKey("c3writeups.id", ondelete="CASCADE")
     )
     directorate_id = db.Column(
         db.Integer, db.ForeignKey("users.id", ondelete="CASCADE")
@@ -376,6 +379,25 @@ class logo(db.Model):
         return "<File type={type} location={location}>".format(
             type=self.type, location=self.location
         )
+    
+
+#Directorate Chronicles Scoring version 3
+class DocumentationDirectorate(db.Model):
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True)
+    writeups_id = db.Column(
+        db.Integer, db.ForeignKey("c3writeups.id", ondelete="CASCADE")
+    )
+    directorate_id = db.Column(
+        db.Integer, db.ForeignKey("users.id", ondelete="CASCADE")
+    )
+    rater_know = db.Column(db.Integer,default=0)
+    rater_do = db.Column(db.Integer,default=0)
+    rater_learn = db.Column(db.Integer,default=0)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, *args, **kwargs):
+        super(DocumentationDirectorate, self).__init__(**kwargs)
 
 # class team_logo(db.Model):
 #     __tablename__ = "team_logo"

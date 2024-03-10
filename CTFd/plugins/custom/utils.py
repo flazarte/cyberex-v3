@@ -15,7 +15,8 @@ from CTFd.plugins.custom.models import (
     ChroniclesDirectorate,
     CountermeasureDirectorate,
     KnowledgeWellDocs,
-    KnowledgeDirectorate
+    KnowledgeDirectorate,
+    DocumentationDirectorate
     )
 from CTFd.utils.user import is_admin, get_current_user
 from CTFd.utils.scores import get_standings, get_user_standings, get_team_standings
@@ -115,13 +116,13 @@ def ctk_knowledge_scores(mode, account_id):
         if published.countermeasure_published == False:
             know_exist  = None
         else:
-            know_exist = db.session.query(db.func.sum(KnowledgeWellDocs.points)).filter_by(team_id = account_id).scalar()
+            know_exist = db.session.query(db.func.sum(ChallengeWriteUps.know_score)).filter_by(team_id = account_id).scalar()
     if mode == 'user':
         #writeups
         if published.countermeasure_published == False:
             know_exist = None
         else:
-            know_exist = db.session.query(db.func.sum(KnowledgeWellDocs.points)).filter_by(user_id = account_id).scalar()
+            know_exist = db.session.query(db.func.sum(ChallengeWriteUps.know_score)).filter_by(user_id = account_id).scalar()
     if know_exist is None:
         know_exist = 0
 
@@ -138,13 +139,13 @@ def ctk_writeups_scores(mode, account_id):
         if published.countermeasure_published == False:
             doc_exist  = None
         else:
-            doc_exist = db.session.query(db.func.sum(ChallengeWriteUps.points)).filter_by(team_id = account_id).scalar()
+            doc_exist = db.session.query(db.func.sum(ChallengeWriteUps.do_score)).filter_by(team_id = account_id).scalar()
     if mode == 'user':
         #writeups
         if published.countermeasure_published == False:
             doc_exist = None
         else:
-            doc_exist = db.session.query(db.func.sum(ChallengeWriteUps.points)).filter_by(user_id = account_id).scalar()
+            doc_exist = db.session.query(db.func.sum(ChallengeWriteUps.do_score)).filter_by(user_id = account_id).scalar()
     if doc_exist is None:
         doc_exist = 0
 
@@ -162,13 +163,13 @@ def ctk_countermeasure_scores(mode, account_id):
         if published.countermeasure_published is None:
             counter_exist = None
         else:
-            counter_exist = db.session.query(db.func.sum(ChallengeCounterMeasure.points)).filter_by(team_id = account_id).scalar()  
+            counter_exist = db.session.query(db.func.sum(ChallengeWriteUps.learn_score)).filter_by(team_id = account_id).scalar()  
     if mode == 'user':
         #countermeasure
         if published.countermeasure_published == False:
             counter_exist = None
         else:
-            counter_exist = db.session.query(db.func.sum(ChallengeCounterMeasure.points)).filter_by(user_id = account_id).scalar()
+            counter_exist = db.session.query(db.func.sum(ChallengeWriteUps.learn_score)).filter_by(user_id = account_id).scalar()
     if counter_exist is None:
         counter_exist = 0
             
@@ -301,20 +302,43 @@ def All_scores(users=None):
                         # doc_exist = ctk_writeups_scores(mode='user',account_id=standing.user_id)
                         published = db.session.query(docs_publish).first()
                         #if published.countermeasure_published == True or ctk_directorate_mode():
+                        # if published.countermeasure_published == True:
+                        #     #countermeasures
+                        #     counter_exist = ctk_directorate_averageScore_countermeasures(mode='user',account_id=standing.user_id)
+                        #     for cgrade in counter_exist['data']:
+                        #                 total_counter = total_counter+int(cgrade['average'])
+                        #     #chronicles
+                        #     doc_exist = ctk_directorate_averageScore_chronicles(mode='user', account_id=standing.user_id)
+                        #     for grade in doc_exist['data']:
+                        #                 total_chronicles = total_chronicles+int(grade['average'])
+                        #     #knowledge-well
+                        #     knowledge_exist = ctk_directorate_averageScore_knowledge(mode='user', account_id=standing.user_id)
+                        #     for knowledge in knowledge_exist['data']:
+                        #                 total_knowledge = total_knowledge+int(knowledge['average'])
+                        # total_scores = decimal.Decimal(standing.score) + total_counter +  total_chronicles + total_knowledge
+                        #if published.countermeasure_published == True or ctk_directorate_mode() == True:    #countermeasure
                         if published.countermeasure_published == True:
-                            #countermeasures
-                            counter_exist = ctk_directorate_averageScore_countermeasures(mode='user',account_id=standing.user_id)
-                            for cgrade in counter_exist['data']:
-                                        total_counter = total_counter+int(cgrade['average'])
+                            # counter_exist = ctk_directorate_averageScore_countermeasures(mode='team',account_id=standing.team_id)
+                            # for cgrade in counter_exist['data']:
+                            #             total_counter = total_counter+int(cgrade['average'])
+                            total_counter = ctk_countermeasure_scores(mode='user',account_id=standing.user_id)
                             #chronicles
-                            doc_exist = ctk_directorate_averageScore_chronicles(mode='user', account_id=standing.user_id)
-                            for grade in doc_exist['data']:
-                                        total_chronicles = total_chronicles+int(grade['average'])
+                            # doc_exist = ctk_directorate_averageScore_chronicles(mode='team', account_id=standing.team_id)
+                            # for grade in doc_exist['data']:
+                            #             total_chronicles = total_chronicles+int(grade['average'])
+                            total_chronicles = ctk_writeups_scores(mode='user', account_id=standing.user_id)
                             #knowledge-well
-                            knowledge_exist = ctk_directorate_averageScore_knowledge(mode='user', account_id=standing.user_id)
-                            for knowledge in knowledge_exist['data']:
-                                        total_knowledge = total_knowledge+int(knowledge['average'])
-                        total_scores = decimal.Decimal(standing.score) + total_counter +  total_chronicles + total_knowledge
+                            # knowledge_exist = ctk_directorate_averageScore_knowledge(mode='team', account_id=standing.team_id)
+                            # for knowledge in knowledge_exist['data']:
+                            #             total_knowledge = total_knowledge+int(knowledge['average'])
+                            total_knowledge = ctk_knowledge_scores(mode='user', account_id=standing.user_id)
+                        total_scores = decimal.Decimal(standing.score) +  total_counter +  total_chronicles + total_knowledge
+                        #awards
+                        for award in awards:
+                            ctk_user = Users.query.filter_by(id=award.user_id, user_id=standing.user_id).first()
+                            if ctk_user != None:
+                                if award.user_id == ctk_user.id:
+                                    total_scores = total_scores + (award.value)
                         flag = Users.query.filter(Users.id == standing.user_id).first()
                         user_standings.append({
                             'account_id': standing.user_id,
@@ -1978,3 +2002,261 @@ def docs_graded(mode, account_id):
             }
         }
     return data
+#new documentation calculations version 3
+def ctk_directorate_averageScore_documentations_do(mode, account_id):
+    result = {}
+    if mode == 'team':
+        team = Teams.query.filter_by(id=account_id, banned=False, hidden=False).first_or_404()
+        solves = team.get_solves()
+        challenge_solved = [solve.challenge_id for solve in solves]
+        chronicles = ChallengeWriteUps.query.filter(ChallengeWriteUps.team_id==account_id, ChallengeWriteUps.challenge_id.in_(challenge_solved)).all()
+        chronicles_ids = [chronicle.id for chronicle in chronicles]
+        graded = DocumentationDirectorate.query.filter(DocumentationDirectorate.writeups_id.in_(chronicles_ids)).all()
+        graded_ids = [directorate.writeups_id for directorate in graded]
+        total_rater = []
+        for grade in graded:
+            graded_chronicles = []
+            rater = Users.query.filter_by(id=grade.directorate_id).first()
+            graded_chronicles.append({
+                    'writeups_id': grade.writeups_id,
+                    'rater_name': rater.name,
+                    'grade': grade.rater_do,
+            })
+            total_rater.append({
+                'writeups_id': grade.writeups_id,
+                'rater': graded_chronicles
+            })
+        total_graded = set(graded_ids)
+        final_count = []
+        for list in total_graded:
+            groups = []
+            sum = 0
+            for list_rated in total_rater:
+                if list == list_rated['writeups_id']:
+                    sum = sum + int(list_rated['rater'][0]['grade'])
+                    groups.append({
+                        'rater_name': list_rated['rater'][0]['rater_name'],
+                        'writeups_id': list_rated['writeups_id'],
+                        'grade': list_rated['rater'][0]['grade']
+                    })
+                count = len(groups)
+            final_count.append({
+                list:groups,
+                'average': int(sum / count),
+            })
+        result = final_count
+    #user
+    if mode == 'user':
+        user = Users.query.filter_by(id=account_id, banned=False, hidden=False).first_or_404()
+        solves = user.get_solves()
+        challenge_solved = [solve.challenge_id for solve in solves]
+        chronicles = ChallengeWriteUps.query.filter(ChallengeWriteUps.user_id==account_id, ChallengeWriteUps.challenge_id.in_(challenge_solved)).all()
+        chronicles_ids = [chronicle.id for chronicle in chronicles]
+        graded = DocumentationDirectorate.query.filter(DocumentationDirectorate.writeups_id.in_(chronicles_ids)).all()
+        graded_ids = [directorate.writeups_id for directorate in graded]
+        total_rater = []
+        for grade in graded:
+            graded_chronicles = []
+            rater = Users.query.filter_by(id=grade.directorate_id).first()
+            graded_chronicles.append({
+                    'writeups_id': grade.writeups_id,
+                    'rater_name': rater.name,
+                    'grade': grade.rater_do,
+            })
+            total_rater.append({
+                'writeups_id': grade.writeups_id,
+                'rater': graded_chronicles
+            })
+        total_graded = set(graded_ids)
+        final_count = []
+        for list in total_graded:
+            groups = []
+            sum = 0
+            for list_rated in total_rater:
+                if list == list_rated['writeups_id']:
+                    sum = sum + int(list_rated['rater'][0]['grade'])
+                    groups.append({
+                        'rater_name': list_rated['rater'][0]['rater_name'],
+                        'writeups_id': list_rated['writeups_id'],
+                        'grade': list_rated['rater'][0]['grade']
+                    })
+                count = len(groups)
+            final_count.append({
+                list:groups,
+                'average': int(sum / count),
+            })
+        result = final_count
+    return {"success": True, "data": result}
+
+
+def ctk_directorate_averageScore_know(mode, account_id):
+    result = {}
+    if mode == 'team':
+        team = Teams.query.filter_by(id=account_id, banned=False, hidden=False).first_or_404()
+        solves = team.get_solves()
+        challenge_solved = [solve.challenge_id for solve in solves]
+        knowledges = ChallengeWriteUps.query.filter(ChallengeWriteUps.team_id==account_id, ChallengeWriteUps.challenge_id.in_(challenge_solved)).all()
+        knowledge_ids = [knowledge.id for knowledge in knowledges]
+        graded =  DocumentationDirectorate.query.filter(DocumentationDirectorate.writeups_id.in_(knowledge_ids)).all()
+        graded_ids = [directorate.writeups_id for directorate in graded]
+        total_rater = []
+        for grade in graded:
+            graded_knowledge = []
+            rater = Users.query.filter_by(id=grade.directorate_id).first()
+            graded_knowledge.append({
+                    'knowledge_id': grade.writeups_id,
+                    'rater_name': rater.name,
+                    'grade': grade.rater_know,
+            })
+            total_rater.append({
+                'knowledge_id': grade.writeups_id,
+                'rater': graded_knowledge
+            })
+        total_graded = set(graded_ids)
+        final_count = []
+        for list in total_graded:
+            groups = []
+            sum = 0
+            for list_rated in total_rater:
+                if list == list_rated['knowledge_id']:
+                    sum = sum + int(list_rated['rater'][0]['grade'])
+                    groups.append({
+                        'rater_name': list_rated['rater'][0]['rater_name'],
+                        'knowledge_id': list_rated['knowledge_id'],
+                        'grade': list_rated['rater'][0]['grade']
+                    })
+                count = len(groups)
+            final_count.append({
+                list:groups,
+                'average': int(sum / count),
+            })
+        result = final_count
+    #user
+    if mode == 'user':
+        user = Users.query.filter_by(id=account_id, banned=False, hidden=False).first_or_404()
+        solves = user.get_solves()
+        challenge_solved = [solve.challenge_id for solve in solves]
+        knowledges = ChallengeWriteUps.query.filter(ChallengeWriteUps.user_id==account_id, ChallengeWriteUps.challenge_id.in_(challenge_solved)).all()
+        knowledge_ids = [knowledge.id for knowledge in knowledges]
+        graded =  DocumentationDirectorate.query.filter(DocumentationDirectorate.writeups_id.in_(knowledge_ids)).all()
+        graded_ids = [directorate.writeups_id for directorate in graded]
+        total_rater = []
+        for grade in graded:
+            graded_chronicles = []
+            rater = Users.query.filter_by(id=grade.directorate_id).first()
+            graded_chronicles.append({
+                    'knowledge_id': grade.writeups_id,
+                    'rater_name': rater.name,
+                    'grade': grade.rater_know,
+            })
+            total_rater.append({
+                'knowledge_id': grade.writeups_id,
+                'rater': graded_chronicles
+            })
+        total_graded = set(graded_ids)
+        final_count = []
+        for list in total_graded:
+            groups = []
+            sum = 0
+            for list_rated in total_rater:
+                if list == list_rated['knowledge_id']:
+                    sum = sum + int(list_rated['rater'][0]['grade'])
+                    groups.append({
+                        'rater_name': list_rated['rater'][0]['rater_name'],
+                        'knowledge_id': list_rated['knowledge_id'],
+                        'grade': list_rated['rater'][0]['grade']
+                    })
+                count = len(groups)
+            final_count.append({
+                list:groups,
+                'average': int(sum / count),
+            })
+        result = final_count
+    return {"success": True, "data": result}
+
+
+#average countermeasures verssion3
+def ctk_directorate_averageScore_learn(mode, account_id):
+    result = {}
+    if mode == 'team':
+        team = Teams.query.filter_by(id=account_id, banned=False, hidden=False).first_or_404()
+        solves = team.get_solves()
+        challenge_solved = [solve.challenge_id for solve in solves]
+        countermeasure = ChallengeWriteUps.query.filter(ChallengeWriteUps.team_id==account_id, ChallengeWriteUps.challenge_id.in_(challenge_solved)).all()
+        countermeasure_ids = [counter.id for counter in countermeasure]
+        graded =  DocumentationDirectorate.query.filter(DocumentationDirectorate.writeups_id.in_(countermeasure_ids)).all()
+        graded_ids = [directorate.writeups_id for directorate in graded]
+        total_rater = []
+        for grade in graded:
+            graded_countermeasures = []
+            rater = Users.query.filter_by(id=grade.directorate_id).first()
+            graded_countermeasures.append({
+                    'countermeasures_id': grade.writeups_id,
+                    'rater_name': rater.name,
+                    'grade': grade.rater_learn,
+            })
+            total_rater.append({
+                'countermeasures_id': grade.writeups_id,
+                'rater': graded_countermeasures
+            })
+        total_graded = set(graded_ids)
+        final_count = []
+        for list in total_graded:
+            groups = []
+            sum = 0
+            for list_rated in total_rater:
+                if list == list_rated['countermeasures_id']:
+                    sum = sum + int(list_rated['rater'][0]['grade'])
+                    groups.append({
+                        'rater_name': list_rated['rater'][0]['rater_name'],
+                        'countermeasures_id': list_rated['countermeasures_id'],
+                        'grade': list_rated['rater'][0]['grade']
+                    })
+                count = len(groups)
+            final_count.append({
+                list:groups,
+                'average': int(sum / count),
+            })
+        result = final_count
+    #user
+    if mode == 'user':
+        user = Users.query.filter_by(id=account_id, banned=False, hidden=False).first_or_404()
+        solves = user.get_solves()
+        challenge_solved = [solve.challenge_id for solve in solves]
+        countermeasure = ChallengeWriteUps.query.filter(ChallengeWriteUps.user_id==account_id, ChallengeWriteUps.challenge_id.in_(challenge_solved)).all()
+        countermeasure_ids = [counter.id for counter in countermeasure]
+        graded =  DocumentationDirectorate.query.filter(DocumentationDirectorate.writeups_id.in_(countermeasure_ids)).all()
+        graded_ids = [directorate.writeups_id for directorate in graded]
+        total_rater = []
+        for grade in graded:
+            graded_countermeasures = []
+            rater = Users.query.filter_by(id=grade.directorate_id).first()
+            graded_countermeasures.append({
+                    'countermeasures_id': grade.writeups_id,
+                    'rater_name': rater.name,
+                    'grade': grade.rater_learn,
+            })
+            total_rater.append({
+                'countermeasures_id': grade.writeups_id,
+                'rater': graded_countermeasures
+            })
+        total_graded = set(graded_ids)
+        final_count = []
+        for list in total_graded:
+            groups = []
+            sum = 0
+            for list_rated in total_rater:
+                if list == list_rated['countermeasures_id']:
+                    sum = sum + int(list_rated['rater'][0]['grade'])
+                    groups.append({
+                        'rater_name': list_rated['rater'][0]['rater_name'],
+                        'countermeasures_id': list_rated['countermeasures_id'],
+                        'grade': list_rated['rater'][0]['grade']
+                    })
+                count = len(groups)
+            final_count.append({
+                list:groups,
+                'average': int(sum / count),
+            })
+        result = final_count 
+    return {"success": True, "data": result}

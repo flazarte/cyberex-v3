@@ -254,61 +254,14 @@
 		
 		<!-- Directorate Coulumn -->
 		{%if directorate%}
-		<!-- Knowledge-Well -->
-		<div class="row" id="knowledge-row">
-			<div class="col-md-12">
-				<h3>Knowledge Well</h3>
-				{% if knowledge %}
-				<table class="table table-striped">
-					<caption><small>List of submitted knowledge Well</small></caption>
-					<thead>
-					  <tr>
-						<th><b>Challenge</b></th>
-						<th><b>Category</b></th>
-						<th class="text-center"><b>Score</b></th>
-						<th class="text-center"><b>View</b></th>
-						<th class="text-center"><b>More info. <i class="fas fa-info-circle"></i></b></th>
-					  </tr>
-					</thead>
-					<tbody>
-						{%for know in knowledge %}
-					  <tr>
-						<td>
-							<a href="{{ url_for('challenges.listing') }}#{{ know.challenge_name }}-{{ know.challenge_id }}">
-								{{know.challenge_name}}
-		
-							</a>
-						</td>
-						<td>{{know.category}}</td>
-						<td class="text-center">{{know.points}}</td>
-						<td class="text-center"> <a  type="button" class="btn btn-outline-secondary" href="{{know.docs_location}}" target="_blank"><i class='fas fa-book-open fa-lg'></i></a></td>
-						<td class="text-center"> 
-							<button type="button" class="btn btn-outline-secondary individualKnowledge-directorate-edit-button" data-toggle="tooltip" data-id="{{know.docs_id}}" data-url="{{current_url}}"
-                            title="Grade Knowledge Well">
-                            	<i class="btn-fa fas fa-pencil-alt"></i>
-                        	</button>
-					   </td>
-					  </tr>
-					  	{%endfor%}
-					</tbody>
-				  </table>
-				  {%else%}
-				  <div class="row min-vh-25">
-					<h3 class="opacity-50 text-center w-100 justify-content-center align-self-center">
-						No Knowledge Well submitted yet
-					</h3>
-				</div>
-				{%endif%}
-			</div>
-		</div>
 		<div class="clearfix"></div>
 		<!-- Chronicles -->
 		<div class="row" id="chronicles-row">
 			<div class="col-md-12">
-				<h3>Chronicles</h3>
+				<h2><b style="color: blue;">KNOW-DO-LEARN DOCUMENTATIONS</h2>
 				{% if chronicles %}
 				<table class="table table-striped">
-					<caption><small>List of submitted chronicles</small></caption>
+					<caption><small>List of submitted documentations.</small></caption>
 					<thead>
 					  <tr>
 						<th><b>Challenge</b></th>
@@ -343,60 +296,12 @@
 				  {%else%}
 				  <div class="row min-vh-25">
 					<h3 class="opacity-50 text-center w-100 justify-content-center align-self-center">
-						No Chronicles submitted yet
+						No Documents Submitted yet!
 					</h3>
 				</div>
 				{%endif%}
 			</div>
 		</div>
-		<div class="clearfix"></div>
-			<!-- CounterMeasures -->
-			<div class="row" id="countermeasure-row">
-				<div class="col-md-12">
-					<h3>Countermeasures</h3>
-					{% if countermeasures %}
-					<table class="table table-striped">
-						<caption><small>List of submitted countermeasures</small></caption>
-						<thead>
-						  <tr>
-							<th><b>Challenge</b></th>
-							<th><b>Category</b></th>
-							<th class="text-center"><b>Score</b></th>
-							<th class="text-center"><b>View</b></th>
-							<th class="text-center"><b>More info. <i class="fas fa-info-circle"></i></b></th>
-						  </tr>
-						</thead>
-						<tbody>
-							{%for countermeasure in countermeasures %}
-						  <tr>
-							<td>
-								<a href="{{ url_for('challenges.listing') }}#{{ countermeasure.challenge_name }}-{{ countermeasure.challenge_id }}">
-									{{countermeasure.challenge_name}}
-			
-								</a>
-							</td>
-							<td>{{countermeasure.category}}</td>
-							<td class="text-center">{{countermeasure.points}}</td>
-							<td class="text-center"> <a  type="button" class="btn btn-outline-secondary" href="{{countermeasure.docs_location}}" target="_blank"><i class='fas fa-book-open fa-lg'></i></a></td>
-							<td class="text-center"> 
-								<button type="button" class="btn btn-outline-secondary individualCountermeasure-directorate-edit-button" data-toggle="tooltip" data-id="{{countermeasure.docs_id}}" data-url="{{current_url}}"
-								title="Grade Countermeasures">
-									<i class="btn-fa fas fa-pencil-alt"></i>
-								</button>
-						   </td>
-						  </tr>
-							  {%endfor%}
-						</tbody>
-					  </table>
-					  {%else%}
-					  <div class="row min-vh-25">
-						<h3 class="opacity-50 text-center w-100 justify-content-center align-self-center">
-							No Countermeasures submitted yet
-						</h3>
-					</div>
-					{%endif%}
-				</div>
-			</div>
 		{%endif%}
 		
 	</div>
@@ -408,7 +313,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Chronicles Graded Points Breakdown</h5> <button type="button" class="close" data-dismiss="modal"
+                <h5 class="modal-title">Documentation Graded Points Breakdown</h5> <button type="button" class="close" data-dismiss="modal"
                     aria-label="Close"> <span aria-hidden="true">×</span> </button>
             </div>
             <div class="modal-body"  style="background-color:azure">
@@ -421,7 +326,7 @@
 									<tr>
 										<th>Username</th>
 										<th>Points</th>
-										<th>Date</th>
+										<th>Breakdown</th>
 									</tr>
 								</thead>
 								<tbody id="chronicle-rater-points" style="text-transform: none;">
@@ -430,123 +335,57 @@
 							</table>
 						</div>
                         <div class="form-group">
-                            <select class="form-control custom-select w-100" id="counter-points"
-                                name="counter-points" required="">
-                                <option value="0">Select Points</option>
-                                <option value="10">10 points</option>
-                                <option value="20">20 points</option>
-                                <option value="30">30 points</option>
-                                <option value="40">40 points</option>
-                                <option value="50">50 points</option>
-                                <option value="60">60 points</option>
-                                <option value="70">70 points</option>
-                                <option value="80">80 points</option>
-                                <option value="90">90 points</option>
-                                <option value="100">100 points</option>
-                            </select>
-							<input type="hidden" name="site_url" value="{{current_url}}" readonly>
-                        </div>
-
-                        <button type="submit" class="btn btn-md btn-primary float-right">Update</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Update Countermeasures -->
-<div class="modal individualCountermeasure-directorate fade" tabindex="-1" role="dialog" aria-modal="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Countermeasures Graded Points Breakdown</h5> <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close"> <span aria-hidden="true">×</span> </button>
-            </div>
-            <div class="modal-body"  style="background-color:azure">
-                <form action="" method="post">
-                    <div id="counter-edit-button" class="pt-3">
-						<div class="form-group">
-							<h4 style="color: black;text-align:center"><i class="fas fa-crown fa-3x d-block mx-auto mb-4" width="10" height="auto" style="color: gold;"></i>CTK Judge <small>E</small>X</h4>
-							<table class="table table-striped">
+                            <table class="table table-striped">
 								<thead>
 									<tr>
-										<th>Username</th>
+										<th>KNOW-DO-LEARN</th>
 										<th>Points</th>
-										<th>Date</th>
 									</tr>
 								</thead>
-								<tbody id="chronicle-rater-points" style="text-transform: none;">
-									<tr></tr>
-								</tbody>
-							</table>
-						</div>
-                        <div class="form-group">
-                            <select class="form-control custom-select w-100" id="counter-points"
-                                name="counter-points" required="">
-                                <option value="0">Select Points</option>
-                                <option value="10">10 points</option>
-                                <option value="20">20 points</option>
-                                <option value="30">30 points</option>
-                                <option value="40">40 points</option>
-                                <option value="50">50 points</option>
-                                <option value="60">60 points</option>
-                                <option value="70">70 points</option>
-                                <option value="80">80 points</option>
-                                <option value="90">90 points</option>
-                                <option value="100">100 points</option>
-                            </select>
-							<input type="hidden" name="site_url" value="{{current_url}}" readonly>
-                        </div>
-
-                        <button type="submit" class="btn btn-md btn-primary float-right">Update</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Update Knowledge Well -->
-<div class="modal individualKnowledge-directorate fade" tabindex="-1" role="dialog" aria-modal="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Knowledge-Well Graded Points Breakdown</h5> <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close"> <span aria-hidden="true">×</span> </button>
-            </div>
-            <div class="modal-body"  style="background-color:azure">
-                <form action="" method="post">
-                    <div id="knowledge-edit-button" class="pt-3">
-						<div class="form-group">
-							<h4 style="color: black;text-align:center"><i class="fas fa-crown fa-3x d-block mx-auto mb-4" width="10" height="auto" style="color: gold;"></i>CTK Judge <small>E</small>X</h4>
-							<table class="table table-striped">
-								<thead>
+								<tbody style="text-transform: none;">
 									<tr>
-										<th>Username</th>
-										<th>Points</th>
-										<th>Date</th>
+										<td>Knowledge-Well</td>
+										<td>
+											<select class="form-control custom-select w-100" id="know-points"
+												name="know-points" required="">
+												<option value="0">Select Points</option>
+												<option value="5">5 points</option>
+												<option value="10">10 points</option>
+												<option value="15">15 points</option>
+												<option value="20">20 points</option>
+											</select>
+										</td>
 									</tr>
-								</thead>
-								<tbody id="knowledge-rater-points" style="text-transform: none;">
-									<tr></tr>
+									<tr>
+										<td>Chronicles</td>
+										<td>
+											<select class="form-control custom-select w-100" id="do-points"
+												name="do-points" required="">
+												<option value="0">Select Points</option>
+												<option value="10">10 points</option>
+												<option value="20">20 points</option>
+												<option value="30">30 points</option>
+												<option value="40">40 points</option>
+												<option value="50">50 points</option>
+												<option value="60">60 points</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td>Countermeasures</td>
+										<td>
+											<select class="form-control custom-select w-100" id="counter-points"
+												name="counter-points" required="">
+												<option value="0">Select Points</option>
+												<option value="5">5 points</option>
+												<option value="10">10 points</option>
+												<option value="15">15 points</option>
+												<option value="20">20 points</option>
+											</select>
+										</td>
+									</tr>
 								</tbody>
 							</table>
-						</div>
-                        <div class="form-group">
-                            <select class="form-control custom-select w-100" id="counter-points"
-                                name="counter-points" required="">
-                                <option value="0">Select Points</option>
-                                <option value="10">10 points</option>
-                                <option value="20">20 points</option>
-                                <option value="30">30 points</option>
-                                <option value="40">40 points</option>
-                                <option value="50">50 points</option>
-                                <option value="60">60 points</option>
-                                <option value="70">70 points</option>
-                                <option value="80">80 points</option>
-                                <option value="90">90 points</option>
-                                <option value="100">100 points</option>
-                            </select>
 							<input type="hidden" name="site_url" value="{{current_url}}" readonly>
                         </div>
 

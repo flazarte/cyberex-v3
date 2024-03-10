@@ -8,37 +8,14 @@
     </div>
 
 
-    <div class="upload-cover upload-knowledge">
+    <div class="upload-cover upload-documentation">
       <p id="msg"></p>
-      <form id="knowledge-docs" class="knowledge-well" action="" method="POST">
-        <input class="file-input"  type="file" id="knowledge-files" name="files" accept=".pdf" required/>
+      <form id="documentation-docs" class="knowledge-well" action="" method="POST">
+        <input class="file-input"  type="file" id="document-files" name="files" accept=".pdf" required/>
         <p>Drag your files here or click in this area.</p>
-        <input id="knowledge-submit" class="btn-upload" type="submit" value="Upload" disabled>
+        <input id="documentation-submit" class="btn-upload" type="submit" value="Upload" disabled>
       </form>      
     </div>
-
-    <!-- Chronicles -->
-    <div class="upload-cover upload-modal">
-      <p id="msg"></p>
-      <form id="challenge-writeup" action="/uploader" method="POST">
-        <input class="file-input"  type="file" id="multiFiles" name="files" accept=".pdf" required/>
-        <p>Drag your files here or click in this area.</p>
-        <input id="writeup-submit" class="btn-upload" type="submit" value="Upload" disabled>
-      </form>      
-    </div>
-
-    <!-- Counter Measure -->
-    <div class="upload-cover upload-countermeasure">
-      <p id="countermsg"></p>
-      <form id="challenge-counterMeasure" class="counter-measure" action="/api/v2/countermeasure/" method="POST">
-        <!-- <p id="countermsg"></p> -->
-        <input class="file-input" type="file" id="counterfiles" name="counterfiles" accept=".pdf"/>
-        <p>Drag your files here or click in this area.</p>
-        <input id="counter-submit" class="btn-upload" type="submit" value="Upload" disabled>
-      </form>      
-    </div>
-
-
 
 
     <div class="row">
@@ -131,14 +108,14 @@
             </div>
           </a>
           {% endblock %}
-          <!-- Knowledge Well -->
+          <!-- Documentation -->
           <a
             class="nav-link"
-            id="knowledge-well"
+            id="cyberex_documentation"
             data-toggle="pill"
-            href="#knowledge"
+            href="#documentation"
             role="tab"
-            aria-controls="knowledge-list"
+            aria-controls="cyberex_documentation-list"
             aria-selected="false"
           >
             <div class="d-flex">
@@ -152,66 +129,12 @@
                 "
               ></i>
               <div style="display: inline-block">
-                <b>Knowledge Well</b>
-                <p class="challenge-tab-p">Knowing your Target</p>
+                <b>Documentations</b>
+                <p class="challenge-tab-p">KNOW-DO-LEARN</p><br>
               </div>
             </div>
           </a>
-
-          <!-- Chronicles -->
-          <a
-            class="nav-link"
-            id="v-pills-forum-thread-tab"
-            data-toggle="pill"
-            href="#v-pills-forum-thread"
-            role="tab"
-            aria-controls="v-pills-forum-thread"
-            aria-selected="false"
-          >
-            <div class="d-flex">
-              <i
-                class="fa fa-newspaper fa-2x btn-icon"
-                style="
-                  margin-right: 15px;
-                  width: 61px;
-                  height: 55px;
-                  line-height: 2.3em;
-                "
-              ></i>
-              <div style="display: inline-block">
-                <b>Chronicles</b>
-                <p class="challenge-tab-p">Challenge Documentation</p>
-              </div>
-            </div>
-          </a>
-          <!-- countermeasure -->
-          <a
-          class="nav-link challenge-measure"
-          id="measure-tab"
-          data-toggle="pill"
-          href="#measure"
-          role="tab"
-          aria-controls="measure-list"
-          aria-selected="false"
-        >
-          <div class="d-flex">
-            <i
-              class="fas fa-weight fa-2x btn-icon"
-              style="
-                margin-right: 15px;
-                width: 70px;
-                height: 55px;
-                line-height: 55px;
-              "
-            ></i>
-            <div style="display: inline-block">
-              <b>Counter Measure</b>
-              <p class="challenge-tab-p">
-                Knowledge Gained Experience
-              </p>
-            </div>
-          </div>
-        </a>
+          <!-- End of Documentation-->
         </div>
       </div>
       <div
@@ -442,40 +365,17 @@
               </div>
             </div>
           </div>
-          <!-- Knowledge Well -->
+          <!-- cyberex_documentation -->
           <div
             class="tab-pane fade"
-            id="knowledge"
+            id="documentation"
             role="tabpanel"
-            aria-labelledby="knowledge-list"
+            aria-labelledby="cyberex-documentation-list"
           >
-          <!--  Knowledge Well Upload -->
-          {% block knowledge %}
+          <!--  cyberex-documentation Upload -->
+          {% block cyberex_documentation %}
           {% endblock %}
           </div>
-          <!-- Write-ups/Documentation -->
-          <div
-            class="tab-pane fade"
-            id="v-pills-forum-thread"
-            role="tabpanel"
-            aria-labelledby="v-pills-forum-thread-tab"
-          >
-          <!-- Write-Ups Upload -->
-          {% block writeups %}
-          {% endblock %}
-          </div>
-          <!-- counter measure -->
-          <div
-          class="tab-pane fade"
-          id="measure"
-          role="tabpanel"
-          aria-labelledby="measure-tab"
-        >
-        <!-- counter Upload -->
-        {% block countermeasure %}
-        {% endblock %}
-        </div>
-
         </div>
       </div>
     </div>

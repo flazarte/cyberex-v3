@@ -49,7 +49,10 @@ from CTFd.plugins.custom.utils import (
     docs_graded,
     ctk_directorate_averageScore_chronicles,
     ctk_directorate_averageScore_countermeasures,
-    ctk_directorate_averageScore_knowledge
+    ctk_directorate_averageScore_knowledge,
+    ctk_directorate_averageScore_documentations_do,
+    ctk_directorate_averageScore_know,
+    ctk_directorate_averageScore_learn
 )
 from CTFd.plugins.custom.modes import require_team_mode, require_user_mode
 from CTFd.utils.dates import isoformat, unix_time_to_utc
@@ -79,7 +82,8 @@ from CTFd.plugins.custom.models import (
     KnowledgeWellDocs,
     docs_publish,
     red_teaming,
-    logo
+    logo,
+    DocumentationDirectorate
 )
 from CTFd.utils.crypto import verify_password
 from CTFd.cache import clear_team_session, clear_user_session, make_cache_key, cache, clear_config, clear_pages, clear_standings
@@ -617,25 +621,25 @@ def c3_setting():
         if C3CategoryChallenge.__mapper__.has_property(field):
             filters.append(getattr(C3CategoryChallenge, field).like("%{}%".format(q)))
     #knowledge well for teams
-    knowledge_query = C3CategoryChallenge.query.join(KnowledgeWellDocs, Teams).filter(*filters).order_by(KnowledgeWellDocs.id.asc())
-    knowledge_list = knowledge_query.with_entities(C3CategoryChallenge ,KnowledgeWellDocs, Teams).all()
-    for knowledge_well in knowledge_list:
-        knowledge_chals = vars(knowledge_well[0])
-        knowledge = vars(knowledge_well[1])
-        Knowteams = vars(knowledge_well[2])
-        knowledge_multi.append({
-            'challenge_id': knowledge_chals['id'],
-            'challenge_name': knowledge_chals['name'],
-            'challenge_cat': knowledge_chals['category'],
-            'c3_category': knowledge_chals['c3_category'],
-            'knowledge_id': knowledge['id'],
-            'location': knowledge['location'],
-            'filename': knowledge['name'],
-            'points': knowledge['points'],
-            'team_id': Knowteams['id'],
-            'team_name': Knowteams['name'],
-            'writeup_link': knowledge_chals['writeups'],
-        })
+    # knowledge_query = C3CategoryChallenge.query.join(KnowledgeWellDocs, Teams).filter(*filters).order_by(KnowledgeWellDocs.id.asc())
+    # knowledge_list = knowledge_query.with_entities(C3CategoryChallenge ,KnowledgeWellDocs, Teams).all()
+    # for knowledge_well in knowledge_list:
+    #     knowledge_chals = vars(knowledge_well[0])
+    #     knowledge = vars(knowledge_well[1])
+    #     Knowteams = vars(knowledge_well[2])
+    #     knowledge_multi.append({
+    #         'challenge_id': knowledge_chals['id'],
+    #         'challenge_name': knowledge_chals['name'],
+    #         'challenge_cat': knowledge_chals['category'],
+    #         'c3_category': knowledge_chals['c3_category'],
+    #         'knowledge_id': knowledge['id'],
+    #         'location': knowledge['location'],
+    #         'filename': knowledge['name'],
+    #         'points': knowledge['points'],
+    #         'team_id': Knowteams['id'],
+    #         'team_name': Knowteams['name'],
+    #         'writeup_link': knowledge_chals['writeups'],
+    #     })
 
     #chronicles for Teams
     query = C3CategoryChallenge.query.join(ChallengeWriteUps, Teams).filter(*filters).order_by(ChallengeWriteUps.id.asc())
@@ -658,25 +662,25 @@ def c3_setting():
             'writeup_link': write_chals['writeups'],
         })
     #knowledge Well for Individuals
-    knowIndividuals_query = C3CategoryChallenge.query.join(KnowledgeWellDocs, CTK_Config).filter(*filters).filter(CTK_Config.mode == 'users').order_by(KnowledgeWellDocs.id.asc())
-    knowIndividuals_challenges =  knowIndividuals_query.with_entities(C3CategoryChallenge, KnowledgeWellDocs, CTK_Config).all()
-    for knowledge_well_indi in knowIndividuals_challenges:
-        knowledge_chals_indi = vars(knowledge_well_indi[0])
-        knowledge_indi = vars(knowledge_well_indi[1])
-        Knowteams_indi = vars(knowledge_well_indi[2])
-        knowledge_individual.append({
-            'challenge_id': knowledge_chals_indi['id'],
-            'challenge_name': knowledge_chals_indi['name'],
-            'challenge_cat': knowledge_chals_indi['category'],
-            'c3_category': knowledge_chals_indi['c3_category'],
-            'knowledge_id': knowledge_indi['id'],
-            'location': knowledge_indi['location'],
-            'filename': knowledge_indi['name'],
-            'points': knowledge_indi['points'],
-            'team_id': Knowteams_indi['id'],
-            'team_name': Knowteams_indi['name'],
-            'knowledge_link': knowledge_chals_indi['writeups'],
-        })
+    # knowIndividuals_query = C3CategoryChallenge.query.join(KnowledgeWellDocs, CTK_Config).filter(*filters).filter(CTK_Config.mode == 'users').order_by(KnowledgeWellDocs.id.asc())
+    # knowIndividuals_challenges =  knowIndividuals_query.with_entities(C3CategoryChallenge, KnowledgeWellDocs, CTK_Config).all()
+    # for knowledge_well_indi in knowIndividuals_challenges:
+    #     knowledge_chals_indi = vars(knowledge_well_indi[0])
+    #     knowledge_indi = vars(knowledge_well_indi[1])
+    #     Knowteams_indi = vars(knowledge_well_indi[2])
+    #     knowledge_individual.append({
+    #         'challenge_id': knowledge_chals_indi['id'],
+    #         'challenge_name': knowledge_chals_indi['name'],
+    #         'challenge_cat': knowledge_chals_indi['category'],
+    #         'c3_category': knowledge_chals_indi['c3_category'],
+    #         'knowledge_id': knowledge_indi['id'],
+    #         'location': knowledge_indi['location'],
+    #         'filename': knowledge_indi['name'],
+    #         'points': knowledge_indi['points'],
+    #         'team_id': Knowteams_indi['id'],
+    #         'team_name': Knowteams_indi['name'],
+    #         'knowledge_link': knowledge_chals_indi['writeups'],
+    #     })
 
     #chronicles for individuals
     individuals_query = C3CategoryChallenge.query.join(ChallengeWriteUps, CTK_Config).filter(*filters).filter(CTK_Config.mode == 'users').order_by(ChallengeWriteUps.id.asc())
@@ -700,44 +704,44 @@ def c3_setting():
         })
     total = query.count()
     #countermeasure for Teams
-    countermeasure = C3CategoryChallenge.query.join(ChallengeCounterMeasure, Teams).filter(*filters).order_by(ChallengeCounterMeasure.id.asc())
-    counters = countermeasure.with_entities(C3CategoryChallenge, ChallengeCounterMeasure, Teams).all()
-    for counter in counters:
-        count = vars(counter[0])
-        measure = vars(counter[1])
-        teams = vars(counter[2])
-        counterdata.append({
-            'challenge_id': count['id'],
-            'challenge_name': count['name'],
-            'challenge_cat': count['category'],
-            'c3_category': count['c3_category'],
-            'counter_id': measure['id'],
-            'location': measure['location'],
-            'filename': measure['name'],
-            'team_id': teams['id'],
-            'team_name': teams['name'],
-            'points': measure['points'],
-        })
+    # countermeasure = C3CategoryChallenge.query.join(ChallengeCounterMeasure, Teams).filter(*filters).order_by(ChallengeCounterMeasure.id.asc())
+    # counters = countermeasure.with_entities(C3CategoryChallenge, ChallengeCounterMeasure, Teams).all()
+    # for counter in counters:
+    #     count = vars(counter[0])
+    #     measure = vars(counter[1])
+    #     teams = vars(counter[2])
+    #     counterdata.append({
+    #         'challenge_id': count['id'],
+    #         'challenge_name': count['name'],
+    #         'challenge_cat': count['category'],
+    #         'c3_category': count['c3_category'],
+    #         'counter_id': measure['id'],
+    #         'location': measure['location'],
+    #         'filename': measure['name'],
+    #         'team_id': teams['id'],
+    #         'team_name': teams['name'],
+    #         'points': measure['points'],
+    #     })
     #countermeasure for individuals
-    individuals_counterquery = C3CategoryChallenge.query.join(ChallengeCounterMeasure, CTK_Config).filter(*filters).filter(CTK_Config.mode == 'users').order_by(ChallengeCounterMeasure.id.asc())
-    individuals_counterchallenges =  individuals_counterquery.with_entities(C3CategoryChallenge, ChallengeCounterMeasure, CTK_Config).all()
-    for individ_counterchals in individuals_counterchallenges:
-        users_write_counterchals = vars(individ_counterchals[0])
-        users_countercronicles = vars(individ_counterchals[1])
-        users_counternames = vars(individ_counterchals[2])
-        counter_individuals.append({
-            'challenge_id': users_write_counterchals['id'],
-            'challenge_name': users_write_counterchals['name'],
-            'challenge_cat': users_write_counterchals['category'],
-            'c3_category': users_write_counterchals['c3_category'],
-            'counter_id': users_countercronicles['id'],
-            'location': users_countercronicles['location'],
-            'filename': users_countercronicles['name'],
-            'points': users_countercronicles['points'],
-            'team_id': users_counternames['id'],
-            'team_name': users_counternames['name'],
-            'writeup_link': users_write_counterchals['writeups'],
-        })
+    # individuals_counterquery = C3CategoryChallenge.query.join(ChallengeCounterMeasure, CTK_Config).filter(*filters).filter(CTK_Config.mode == 'users').order_by(ChallengeCounterMeasure.id.asc())
+    # individuals_counterchallenges =  individuals_counterquery.with_entities(C3CategoryChallenge, ChallengeCounterMeasure, CTK_Config).all()
+    # for individ_counterchals in individuals_counterchallenges:
+    #     users_write_counterchals = vars(individ_counterchals[0])
+    #     users_countercronicles = vars(individ_counterchals[1])
+    #     users_counternames = vars(individ_counterchals[2])
+    #     counter_individuals.append({
+    #         'challenge_id': users_write_counterchals['id'],
+    #         'challenge_name': users_write_counterchals['name'],
+    #         'challenge_cat': users_write_counterchals['category'],
+    #         'c3_category': users_write_counterchals['c3_category'],
+    #         'counter_id': users_countercronicles['id'],
+    #         'location': users_countercronicles['location'],
+    #         'filename': users_countercronicles['name'],
+    #         'points': users_countercronicles['points'],
+    #         'team_id': users_counternames['id'],
+    #         'team_name': users_counternames['name'],
+    #         'writeup_link': users_write_counterchals['writeups'],
+    #     })
     #Article | Blog 
     blog_filters = []
     if q:
@@ -1872,33 +1876,33 @@ def user_public(user_id):
         #get knowledge-well
         knowledge_well = KnowledgeWellDocs.query.filter(KnowledgeWellDocs.user_id==user_id, KnowledgeWellDocs.challenge_id.in_(challenge_solved)).all()
         #knowledge-well
-        if knowledge_well:
-            for knowledge in knowledge_well:
-                for solve in solves:
-                    if knowledge.challenge_id == solve.challenge_id:
-                        my_rate = 0
-                        rated = KnowledgeDirectorate.query.filter_by(directorate_id = currentuser.id, knowledge_id=knowledge.id).first()
-                        if rated != None:
-                            my_rate = rated.rater_points
-                        knowledge_docs.append({
-                            'docs_id': knowledge.id,
-                            'challenge_id': knowledge.challenge_id,
-                            'user_id':knowledge.user_id,
-                            'challenge_name': solve.challenge.name,
-                            'category': solve.challenge.category,
-                            'docs_location': knowledge.location,
-                            'docs_name':knowledge.name,
-                            'points': my_rate
-                        })
+        # if knowledge_well:
+        #     for knowledge in knowledge_well:
+        #         for solve in solves:
+        #             if knowledge.challenge_id == solve.challenge_id:
+        #                 my_rate = 0
+        #                 rated = KnowledgeDirectorate.query.filter_by(directorate_id = currentuser.id, knowledge_id=knowledge.id).first()
+        #                 if rated != None:
+        #                     my_rate = rated.rater_points
+        #                 knowledge_docs.append({
+        #                     'docs_id': knowledge.id,
+        #                     'challenge_id': knowledge.challenge_id,
+        #                     'user_id':knowledge.user_id,
+        #                     'challenge_name': solve.challenge.name,
+        #                     'category': solve.challenge.category,
+        #                     'docs_location': knowledge.location,
+        #                     'docs_name':knowledge.name,
+        #                     'points': my_rate
+        #                 })
         #chronicles
         if chronicles:
             for chronicle in chronicles:
                 for solve in solves:
                     if chronicle.challenge_id == solve.challenge_id:
                         my_rate = 0
-                        rated = ChroniclesDirectorate.query.filter_by(directorate_id = currentuser.id, writeups_id=chronicle.id).first()
+                        rated = DocumentationDirectorate.query.filter_by(directorate_id = currentuser.id, writeups_id=chronicle.id).first()
                         if rated != None:
-                            my_rate = rated.rater_points
+                            my_rate = rated.rater_know+rated.rater_do+rated.rater_learn
                         chronicles_docs.append({
                             'docs_id': chronicle.id,
                             'challenge_id': chronicle.challenge_id,
@@ -1910,24 +1914,24 @@ def user_public(user_id):
                             'points': my_rate
                         })
         #countermeasure
-        if countermeasures:
-            for countermeasure in countermeasures:
-                for solve in solves:
-                    if countermeasure.challenge_id == solve.challenge_id:
-                        my_rates = 0
-                        rated_chronicles = CountermeasureDirectorate.query.filter_by(directorate_id = currentuser.id, countermeasures_id=countermeasure.id).first()
-                        if  rated_chronicles != None:
-                            my_rates = rated_chronicles.rater_points
-                        countermeasure_docs.append({
-                            'docs_id': countermeasure.id,
-                            'challenge_id': countermeasure.challenge_id,
-                            'user_id':countermeasure.user_id,
-                            'challenge_name': solve.challenge.name,
-                            'category': solve.challenge.category,
-                            'docs_location': countermeasure.location,
-                            'docs_name':countermeasure.name,
-                            'points': my_rates
-                        })
+        # if countermeasures:
+        #     for countermeasure in countermeasures:
+        #         for solve in solves:
+        #             if countermeasure.challenge_id == solve.challenge_id:
+        #                 my_rates = 0
+        #                 rated_chronicles = CountermeasureDirectorate.query.filter_by(directorate_id = currentuser.id, countermeasures_id=countermeasure.id).first()
+        #                 if  rated_chronicles != None:
+        #                     my_rates = rated_chronicles.rater_points
+        #                 countermeasure_docs.append({
+        #                     'docs_id': countermeasure.id,
+        #                     'challenge_id': countermeasure.challenge_id,
+        #                     'user_id':countermeasure.user_id,
+        #                     'challenge_name': solve.challenge.name,
+        #                     'category': solve.challenge.category,
+        #                     'docs_location': countermeasure.location,
+        #                     'docs_name':countermeasure.name,
+        #                     'points': my_rates
+        #                 })
     #chronicles and countermesures views permission
     published = db.session.query(docs_publish).first()
     document_chart = False
@@ -2015,24 +2019,24 @@ def team_public(team_id):
         #get knowledge-well
         knowledge_well = KnowledgeWellDocs.query.filter(KnowledgeWellDocs.team_id==team_id, KnowledgeWellDocs.challenge_id.in_(challenge_solved)).all()
         #knowledge-well
-        if knowledge_well:
-            for knowledge in knowledge_well:
-                for solve in solves:
-                    if knowledge.challenge_id == solve.challenge_id:
-                        my_rate = 0
-                        rated = KnowledgeDirectorate.query.filter_by(directorate_id = user.id, knowledge_id=knowledge.id).first()
-                        if rated != None:
-                            my_rate = rated.rater_points
-                        knowledge_docs.append({
-                            'docs_id': knowledge.id,
-                            'challenge_id': knowledge.challenge_id,
-                            'user_id':knowledge.user_id,
-                            'challenge_name': solve.challenge.name,
-                            'category': solve.challenge.category,
-                            'docs_location': knowledge.location,
-                            'docs_name':knowledge.name,
-                            'points': my_rate
-                        })
+        # if knowledge_well:
+        #     for knowledge in knowledge_well:
+        #         for solve in solves:
+        #             if knowledge.challenge_id == solve.challenge_id:
+        #                 my_rate = 0
+        #                 rated = KnowledgeDirectorate.query.filter_by(directorate_id = user.id, knowledge_id=knowledge.id).first()
+        #                 if rated != None:
+        #                     my_rate = rated.rater_points
+        #                 knowledge_docs.append({
+        #                     'docs_id': knowledge.id,
+        #                     'challenge_id': knowledge.challenge_id,
+        #                     'user_id':knowledge.user_id,
+        #                     'challenge_name': solve.challenge.name,
+        #                     'category': solve.challenge.category,
+        #                     'docs_location': knowledge.location,
+        #                     'docs_name':knowledge.name,
+        #                     'points': my_rate
+        #                 })
         #chronicles
         if chronicles:
             for chronicle in chronicles:
@@ -2040,9 +2044,9 @@ def team_public(team_id):
                 for solve in solves:
                     if chronicle.challenge_id == solve.challenge_id:
                         my_rate = 0
-                        rated = ChroniclesDirectorate.query.filter_by(directorate_id = user.id, writeups_id=chronicle.id).first()
+                        rated = DocumentationDirectorate.query.filter_by(directorate_id = user.id, writeups_id=chronicle.id).first()
                         if rated != None:
-                            my_rate = rated.rater_points
+                            my_rate = rated.rater_know+rated.rater_do+rated.rater_learn
                         chronicles_docs.append({
                             'docs_id': chronicle.id,
                             'challenge_id': chronicle.challenge_id,
@@ -2054,24 +2058,24 @@ def team_public(team_id):
                             'points': my_rate
                         })
         #countermeasure
-        if countermeasures:
-            for countermeasure in countermeasures:
-                for solve in solves:
-                    if countermeasure.challenge_id == solve.challenge_id:
-                            my_rates = 0
-                            rated_chronicles = CountermeasureDirectorate.query.filter_by(directorate_id = user.id, countermeasures_id=countermeasure.id).first()
-                            if  rated_chronicles != None:
-                                my_rates = rated_chronicles.rater_points
-                            countermeasure_docs.append({
-                                'docs_id': countermeasure.id,
-                                'challenge_id': countermeasure.challenge_id,
-                                'team_id':countermeasure.team_id,
-                                'challenge_name': solve.challenge.name,
-                                'category': solve.challenge.category,
-                                'docs_location': countermeasure.location,
-                                'docs_name':countermeasure.name,
-                                'points': my_rates
-                            })
+        # if countermeasures:
+        #     for countermeasure in countermeasures:
+        #         for solve in solves:
+        #             if countermeasure.challenge_id == solve.challenge_id:
+        #                     my_rates = 0
+        #                     rated_chronicles = CountermeasureDirectorate.query.filter_by(directorate_id = user.id, countermeasures_id=countermeasure.id).first()
+        #                     if  rated_chronicles != None:
+        #                         my_rates = rated_chronicles.rater_points
+        #                     countermeasure_docs.append({
+        #                         'docs_id': countermeasure.id,
+        #                         'challenge_id': countermeasure.challenge_id,
+        #                         'team_id':countermeasure.team_id,
+        #                         'challenge_name': solve.challenge.name,
+        #                         'category': solve.challenge.category,
+        #                         'docs_location': countermeasure.location,
+        #                         'docs_name':countermeasure.name,
+        #                         'points': my_rates
+        #                     })
 
     fields = UserFieldEntries.query.join(Users).all()
     fields_entries = []
@@ -4228,17 +4232,23 @@ def ctk_directorate_OverallChroniclesaverage(mode):
             if all_players:
                 for standing in get_user_standings():
                     for user_player in all_players:
-                        total = 0
-                        if user_player.id == standing.user_id:
-                            directorateChronicles = ctk_directorate_average_chronicles(mode='user', account_id=standing.user_id)
-                            graded = directorateChronicles.json
-                            for grade in graded['data']:
-                                total = total+int(grade['average'])
-                            results.append({
-                                'account_id':standing.user_id,
-                                'name':standing.name,
-                                'value':total
-                             }) 
+                        # total = 0
+                        # if user_player.id == standing.user_id:
+                        #     directorateChronicles = ctk_directorate_average_chronicles(mode='user', account_id=standing.user_id)
+                        #     graded = directorateChronicles.json
+                        #     for grade in graded['data']:
+                        #         total = total+int(grade['average'])
+                        #     results.append({
+                        #         'account_id':standing.user_id,
+                        #         'name':standing.name,
+                        #         'value':total
+                        #      }) 
+                        total_chronicles = ctk_writeups_scores(mode='user', account_id=user_player.id)
+                        results.append({
+                            'account_id':user_player.id,
+                            'name':user_player.name,
+                            'value':total_chronicles
+                        }) 
     return {"success": True, "data": results}
 
 # @authed_only
@@ -4268,17 +4278,23 @@ def ctk_directorate_OverallCountermeasuresaverage(mode):
             if all_players:
                 for standing in get_user_standings():
                     for user_player in all_players:
-                        total = 0
-                        if user_player.id == standing.user_id:
-                            directorate_countermeasures = ctk_directorate_average_countermeasures(mode='user', account_id=standing.user_id) 
-                            graded = directorate_countermeasures.json
-                            for grade in graded['data']:
-                                total = total+int(grade['average'])
-                            results.append({
-                                'account_id': standing.user_id,
-                                'name': standing.name,
-                                'value':total
-                            })   
+                        # total = 0
+                        # if user_player.id == standing.user_id:
+                        #     directorate_countermeasures = ctk_directorate_average_countermeasures(mode='user', account_id=standing.user_id) 
+                        #     graded = directorate_countermeasures.json
+                        #     for grade in graded['data']:
+                        #         total = total+int(grade['average'])
+                        #     results.append({
+                        #         'account_id': standing.user_id,
+                        #         'name': standing.name,
+                        #         'value':total
+                        #     }) 
+                        total_counter = ctk_countermeasure_scores(mode='user',account_id=user_player.id)
+                        results.append({
+                            'account_id':user_player.id,
+                            'name':user_player.name,
+                            'value':total_counter
+                        })   
     return {"success": True, "data": results}
 
 #get the knowledge Well Average
@@ -4308,17 +4324,23 @@ def ctk_directorate_OverallKnowledgeaverage(mode):
             if all_players:
                 for standing in get_user_standings():
                     for user_player in all_players:
-                        total = 0
-                        if user_player.id == standing.user_id:
-                            ctk_directorate_knowledge = ctk_directorate_average_knowledge(mode='user', account_id=standing.user_id) 
-                            graded = ctk_directorate_knowledge.json
-                            for grade in graded['data']:
-                                total = total+int(grade['average'])
-                            results.append({
-                                'account_id': standing.user_id,
-                                'name': standing.name,
-                                'value':total
-                            })   
+                        # total = 0
+                        # if user_player.id == standing.user_id:
+                        #     ctk_directorate_knowledge = ctk_directorate_average_knowledge(mode='user', account_id=standing.user_id) 
+                        #     graded = ctk_directorate_knowledge.json
+                        #     for grade in graded['data']:
+                        #         total = total+int(grade['average'])
+                        #     results.append({
+                        #         'account_id': standing.user_id,
+                        #         'name': standing.name,
+                        #         'value':total
+                        #     })  
+                        total_knowledge = ctk_knowledge_scores(mode='user', account_id=user_player.id)
+                        results.append({
+                            'account_id':user_player.id,
+                            'name':user_player.name,
+                            'value':total_knowledge
+                        })  
     return {"success": True, "data": results}
 
 #override navbar
@@ -4523,10 +4545,183 @@ def red_teaming_api(id):
 
     if request.method == 'GET':
         counter =  db.session.query(red_teaming).first()
-        pp(counter)
+        pprint(counter)
         success = True
         results.append({
             'activate': '',
             'success': success
         })
     return jsonify(results)
+
+
+
+#directorate scoring API version 3
+@authed_only
+@bypass_csrf_protection
+@c3.route('/api/v2/directorate/<int:id>', methods=['GET', 'POST'])
+def ctk_directorate(id):
+    results = []
+    rater = []
+    rated = False
+    user = get_current_user()
+    ctk_user = CTK_Config.query.filter_by(mode='directorate').all()
+    #set super admin privilege
+    if is_admin():
+            rated = True
+            rates = 0
+            #Get all rater score breakdown
+            for directorate in ctk_user:
+               rater_grade = DocumentationDirectorate.query.filter_by(writeups_id=id).all()
+               if len(rater_grade) > 0:
+                    for rate in rater_grade:
+                        if directorate.id == rate.directorate_id:
+                            rates = rate.rater_know+rate.rater_do+rate.rater_learn
+                            rater.append({
+                                'id':rate.id,
+                                'writeups_id':rate.writeups_id,
+                                'directorate_id':rate.directorate_id,
+                                'directorate_name': directorate.name,
+                                'rater_know':rate.rater_know,
+                                'rater_do':rate.rater_do,
+                                'rater_learn':rate.rater_learn,
+                                'grade':rates,
+                                'date':rate.date,
+                                'admin': True
+                            })
+    if ctk_directorate_mode():
+        if request.method == 'GET':
+            rates = 0
+            rater_grade_exist = DocumentationDirectorate.query.filter_by(writeups_id=id, directorate_id=user.id).first()
+            if rater_grade_exist != None:
+                if rater_grade_exist.directorate_id == user.id:
+                    rated = True
+            #Get all rater score breakdown
+            for directorate in ctk_user:
+               rater_grade = DocumentationDirectorate.query.filter_by(writeups_id=id, directorate_id=user.id).all()
+               if len(rater_grade) > 0:
+                    for rate in rater_grade:
+                        if directorate.id == rate.directorate_id:
+                            rates = rate.rater_know+rate.rater_do+rate.rater_learn
+                            rater.append({
+                                'id':rate.id,
+                                'writeups_id':rate.writeups_id,
+                                'directorate_id':rate.directorate_id,
+                                'directorate_name': directorate.name,
+                                'rater_know':rate.rater_know,
+                                'rater_do':rate.rater_do,
+                                'rater_learn':rate.rater_learn,
+                                'grade':rates,
+                                'date':rate.date,
+                                'admin': False
+                            })
+    
+        #Saved Directorate Grade
+        if request.method == 'POST':
+            rater_know = request.form['know-points']
+            rater_do = request.form['do-points']
+            rater_learn = request.form['counter-points']
+            if int(rater_know) > 20:
+                abort(404)
+            if int(rater_do) > 60:
+                abort(404)
+            if int(rater_learn) > 20:
+                abort(404)
+            site_url = request.form['site_url']
+            rater_grade = DocumentationDirectorate.query.filter_by(writeups_id=id, directorate_id=user.id).first()
+            if rater_grade != None:
+                # abort(404)
+                db.session.query(DocumentationDirectorate).filter_by(writeups_id=id, directorate_id=user.id).update(dict(rater_know = int(rater_know), rater_do = int(rater_do), rater_learn = int(rater_learn)))
+                db.session.commit()
+                return redirect(site_url+"#chronicles-row")
+            else:
+                db.session.add(DocumentationDirectorate(writeups_id = id, directorate_id = user.id, rater_know = int(rater_know), rater_do = int(rater_do), rater_learn = int(rater_learn)))
+                db.session.commit()
+                return redirect(site_url+"#chronicles-row")
+                
+    #teams ratings breakdown
+    if ctk_teams_mode():
+        if request.method == 'GET':
+            rater_grade_exist = DocumentationDirectorate.query.filter_by(writeups_id=id, directorate_id=user.id).first()
+            if rater_grade_exist != None:
+                if rater_grade_exist.directorate_id == user.id:
+                    rated = True
+            #Get all rater score breakdown
+            for directorate in ctk_user:
+               rater_grade = DocumentationDirectorate.query.filter_by(writeups_id=id).all()
+               if len(rater_grade) > 0:
+                    for rate in rater_grade:
+                        if directorate.id == rate.directorate_id:
+                            rater.append({
+                                'id':rate.id,
+                                'writeups_id':rate.writeups_id,
+                                'directorate_id':rate.directorate_id,
+                                'directorate_name': directorate.name,
+                                'rater_know':rate.rater_know,
+                                'rater_do':rate.rater_do,
+                                'rater_learn':rate.rater_learn,
+                                'date':rate.date
+                            })
+    return jsonify(results=results, rater=rater, rated=rated)
+
+
+#Calculate  documentation points
+@authed_only
+@admins_only
+@bypass_csrf_protection
+@c3.route('/api/v2/documentation/<mode>', methods=['GET','POST'])
+def admin_documentations_grade(mode):
+    message = ''
+    if request.method == 'POST':
+        if mode == 'multiplayers':
+            teams = Teams.query.filter_by(hidden=False, banned=False).all()
+            if teams:
+                for team in teams:
+                    #know
+                    directorateKnowledge = ctk_directorate_averageScore_know(mode='team', account_id=team.id)
+                    # graded = directorateKnowledge.json
+                    for grade in directorateKnowledge['data']:
+                        id = list(grade.keys())
+                        db.session.query(ChallengeWriteUps).filter_by( id = int(id[0]), team_id = team.id).update(dict(know_score = int(grade['average'])))
+                        db.session.commit()
+                    #DO
+                    directorateChronicles = ctk_directorate_averageScore_documentations_do(mode='team', account_id=team.id)
+                    # graded = directorateChronicles.json
+                    for grade in directorateChronicles['data']:
+                        id = list(grade.keys())
+                        db.session.query(ChallengeWriteUps).filter_by( id = int(id[0]), team_id = team.id).update(dict(do_score = int(grade['average'])))
+                        db.session.commit()
+                    #learn ctk_directorate_averageScore_learn
+                    directoratelearn = ctk_directorate_averageScore_learn(mode='team', account_id=team.id)
+                    # graded = directorateKnowledge.json
+                    for grade in directoratelearn['data']:
+                        id = list(grade.keys())
+                        db.session.query(ChallengeWriteUps).filter_by( id = int(id[0]), team_id = team.id).update(dict(learn_score = int(grade['average'])))
+                        db.session.commit()
+                message = 'Documentations for Multiplayers Already Recorded!'
+        #individuals documents
+        if mode == 'individual':
+            users = Users.query.filter_by(hidden=False, banned=False).all()
+            if users:
+                for user in users:
+                    #know
+                    directorateKnowledge = ctk_directorate_averageScore_know(mode='user', account_id=user.id)
+                    for grade in directorateKnowledge['data']:
+                        id = list(grade.keys())
+                        db.session.query(ChallengeWriteUps).filter_by( id = int(id[0]), user_id = user.id).update(dict(know_score = int(grade['average'])))
+                        db.session.commit()
+                    #do
+                    directorateChronicles = ctk_directorate_averageScore_documentations_do(mode='user', account_id=user.id)
+                    # graded = directorateChronicles.json
+                    for grade in directorateChronicles['data']:
+                        id = list(grade.keys())
+                        db.session.query(ChallengeWriteUps).filter_by( id = int(id[0]), user_id = user.id).update(dict(do_score = int(grade['average'])))
+                        db.session.commit()
+                    #learn
+                    directoratelearn = ctk_directorate_averageScore_learn(mode='user', account_id=user.id)
+                    for grade in directoratelearn['data']:
+                        id = list(grade.keys())
+                        db.session.query(ChallengeWriteUps).filter_by( id = int(id[0]), user_id = user.id).update(dict(learn_score = int(grade['average'])))
+                        db.session.commit()
+                message = 'Documentations for Individuals Already Recorded!'
+        
+    return jsonify(success=True, message=message)

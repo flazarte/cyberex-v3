@@ -333,7 +333,7 @@ $(document).ready(function () {
             if (item.countermeasure == true) {
               counter = 1
             }
-            $(".modal.countermeasure_publish .modal-body form#counter-publish").attr('action','/api/v2/docs/document_publish');
+            $(".modal.countermeasure_publish .modal-body form#counter-publish").attr('action', '/api/v2/docs/document_publish');
             $(".modal.countermeasure_publish .modal-body select#counter-publish").val(counter);
           });
         });
@@ -346,7 +346,7 @@ $(document).ready(function () {
             if (item.chronicles == true) {
               chronicles = 1
             }
-            $(".modal.countermeasure_publish .modal-body form#counter-publish").attr('action','/api/v2/docs/view_rating');
+            $(".modal.countermeasure_publish .modal-body form#counter-publish").attr('action', '/api/v2/docs/view_rating');
             $(".modal.countermeasure_publish .modal-body select#counter-publish").val(chronicles);
           });
         });
@@ -541,10 +541,48 @@ $(document).ready(function () {
     var directorate_score = ''
     $(".modal.individualChronicles-directorate .modal-body table tbody#chronicle-rater-points").empty();
     if (id) {
-      $.getJSON(`/api/v2/chronicles/directorate/${id}`, function (directorate_chronicles_data) {
+      $.getJSON(`/api/v2/directorate/${id}`, function (directorate_chronicles_data) {
         if (directorate_chronicles_data.rater) {
           $.each(directorate_chronicles_data.rater, function (key, rater_item) {
-            directorate_score += `<tr><td>${ rater_item.directorate_name}</td><td>${ rater_item.rater_points}</td><td>${ rater_item.date}</td></tr>`;
+            // directorate_score += `<tr><td>${ rater_item.directorate_name}</td><td>${ rater_item.rater_points}</td><td>${ rater_item.date}</td></tr>`;
+            //version3
+            if(rater_item.admin){
+              directorate_score += `<tr>
+                                    <td>${rater_item.directorate_name}</td>
+                                    <td>${rater_item.grade}</td>
+                                    <td><small><em>Know:${rater_item.rater_know} pts<br>Do:${rater_item.rater_do} pts<br>Learn:${rater_item.rater_learn} pts<em><small></td>
+                                    <td>${rater_item.date}</td>
+                                    </tr>
+                                  `;
+
+            }else{
+
+              directorate_score += `<tr>
+              <td>${rater_item.directorate_name}</td>
+              <td>${rater_item.grade}</td>
+              <td><small><em>Know:${rater_item.rater_know} pts<br>Do:${rater_item.rater_do} pts<br>Learn:${rater_item.rater_learn} pts<em><small></td>
+            </tr>
+            `;
+
+
+            }
+              // directorate_score += `<tr>
+              //                       <td>Knowledge-Well</td>
+              //                       <td>${rater_item.rater_know}</td>
+              //                       <td>${rater_item.directorate_name}/${rater_item.date}</td>
+              //                     </tr>
+              //                     <tr>
+              //                       <td>Chronicles</td>
+              //                       <td>${rater_item.rater_do}</td>
+              //                       <td>${rater_item.directorate_name}/${rater_item.date}</td>
+              //                     </tr>
+              //                     <tr>
+              //                       <td>Countermeasures</td>
+              //                       <td>${rater_item.rater_learn}</td>
+              //                       <td>${rater_item.directorate_name}/${rater_item.date}</td>
+              //                     </tr>
+              //                     `;
+            //}
           });
         }
         //remove rdated judge eX
@@ -559,7 +597,7 @@ $(document).ready(function () {
           // $(".modal.individualChronicles-directorate .modal-body select#counter-points").css({visibility: "hidden"});
           // $(".modal.individualChronicles-directorate .modal-body button.btn.btn-md.btn-primary.float-right").css({visibility: "hidden", "margin-bottom" : "-10rem"});
         }
-        $(".modal.individualChronicles-directorate .modal-body form").attr('action', `/api/v2/chronicles/directorate/${id}`);
+        $(".modal.individualChronicles-directorate .modal-body form").attr('action', `/api/v2/directorate/${id}`);
         $(".modal.individualChronicles-directorate .modal-body table tbody#chronicle-rater-points").append(directorate_score);
         $(".modal.individualChronicles-directorate").modal("show");
       });
@@ -567,68 +605,68 @@ $(document).ready(function () {
   });
 
   //individual countermeasure graded  points update for direcorate
-  $("button.individualCountermeasure-directorate-edit-button").click(function () {
-    var id = $(this).data('id');
-    // var url = $(this).data('url');
-    var directorate_score = ''
-    $(".modal.individualCountermeasure-directorate .modal-body table tbody#chronicle-rater-points").empty();
-    if (id) {
-      $.getJSON(`/api/v2/countermeasures/directorate/${id}`, function (directorate_chronicles_data) {
-        if (directorate_chronicles_data.rater) {
-          $.each(directorate_chronicles_data.rater, function (key, rater_item) {
-            directorate_score += `<tr><td>${ rater_item.directorate_name}</td><td>${ rater_item.rater_points}</td><td>${ rater_item.date}</td></tr>`;
-          });
-        }
-        //remove rdated judge eX
-        $(".modal.individualCountermeasure-directorate .modal-body select#counter-points").css({
-          visibility: "visible"
-        });
-        $(".modal.individualCountermeasure-directorate .modal-body button.btn.btn-md.btn-primary.float-right").css({
-          visibility: "visible",
-          "margin-bottom": "0rem"
-        });
-        if (directorate_chronicles_data.rated == true) {
-          // $(".modal.individualCountermeasure-directorate .modal-body select#counter-points").css({visibility: "hidden"});
-          // $(".modal.individualCountermeasure-directorate .modal-body button.btn.btn-md.btn-primary.float-right").css({visibility: "hidden", "margin-bottom" : "-10rem"});
-        }
-        $(".modal.individualCountermeasure-directorate .modal-body form").attr('action', `/api/v2/countermeasures/directorate/${id}`);
-        $(".modal.individualCountermeasure-directorate .modal-body table tbody#chronicle-rater-points").append(directorate_score);
-        $(".modal.individualCountermeasure-directorate").modal("show");
-      });
-    }
-  });
+  // $("button.individualCountermeasure-directorate-edit-button").click(function () {
+  //   var id = $(this).data('id');
+  //   // var url = $(this).data('url');
+  //   var directorate_score = ''
+  //   $(".modal.individualCountermeasure-directorate .modal-body table tbody#chronicle-rater-points").empty();
+  //   if (id) {
+  //     $.getJSON(`/api/v2/countermeasures/directorate/${id}`, function (directorate_chronicles_data) {
+  //       if (directorate_chronicles_data.rater) {
+  //         $.each(directorate_chronicles_data.rater, function (key, rater_item) {
+  //           directorate_score += `<tr><td>${ rater_item.directorate_name}</td><td>${ rater_item.rater_points}</td><td>${ rater_item.date}</td></tr>`;
+  //         });
+  //       }
+  //       //remove rdated judge eX
+  //       $(".modal.individualCountermeasure-directorate .modal-body select#counter-points").css({
+  //         visibility: "visible"
+  //       });
+  //       $(".modal.individualCountermeasure-directorate .modal-body button.btn.btn-md.btn-primary.float-right").css({
+  //         visibility: "visible",
+  //         "margin-bottom": "0rem"
+  //       });
+  //       if (directorate_chronicles_data.rated == true) {
+  //         // $(".modal.individualCountermeasure-directorate .modal-body select#counter-points").css({visibility: "hidden"});
+  //         // $(".modal.individualCountermeasure-directorate .modal-body button.btn.btn-md.btn-primary.float-right").css({visibility: "hidden", "margin-bottom" : "-10rem"});
+  //       }
+  //       $(".modal.individualCountermeasure-directorate .modal-body form").attr('action', `/api/v2/countermeasures/directorate/${id}`);
+  //       $(".modal.individualCountermeasure-directorate .modal-body table tbody#chronicle-rater-points").append(directorate_score);
+  //       $(".modal.individualCountermeasure-directorate").modal("show");
+  //     });
+  //   }
+  // });
 
   //individual knowledge-well graded  points update for direcorate
-  $("button.individualKnowledge-directorate-edit-button").click(function () {
-    var id = $(this).data('id');
-    // var url = $(this).data('url');
-    var directorate_score = ''
-    $(".modal.individualKnowledge-directorate .modal-body table tbody#knowledge-rater-points").empty();
-    if (id) {
-      $.getJSON(`/api/v2/knowledge-well/directorate/${id}`, function (directorate_knowledge_data) {
-        if (directorate_knowledge_data.rater) {
-          $.each(directorate_knowledge_data.rater, function (key, rater_item) {
-            directorate_score += `<tr><td>${ rater_item.directorate_name}</td><td>${ rater_item.rater_points}</td><td>${ rater_item.date}</td></tr>`;
-          });
-        }
-        //remove rdated judge eX
-        $(".modal.individualKnowledge-directorate .modal-body select#counter-points").css({
-          visibility: "visible"
-        });
-        $(".modal.individualKnowledge-directorate .modal-body button.btn.btn-md.btn-primary.float-right").css({
-          visibility: "visible",
-          "margin-bottom": "0rem"
-        });
-        if (directorate_knowledge_data.rated == true) {
-          // $(".modal.individualKnowledge-directorate .modal-body select#counter-points").css({visibility: "hidden"});
-          // $(".modal.individualKnowledge-directorate .modal-body button.btn.btn-md.btn-primary.float-right").css({visibility: "hidden", "margin-bottom" : "-10rem"});
-        }
-        $(".modal.individualKnowledge-directorate .modal-body form").attr('action', `/api/v2/knowledge-well/directorate/${id}`);
-        $(".modal.individualKnowledge-directorate .modal-body table tbody#knowledge-rater-points").append(directorate_score);
-        $(".modal.individualKnowledge-directorate").modal("show");
-      });
-    }
-  });
+  // $("button.individualKnowledge-directorate-edit-button").click(function () {
+  //   var id = $(this).data('id');
+  //   // var url = $(this).data('url');
+  //   var directorate_score = ''
+  //   $(".modal.individualKnowledge-directorate .modal-body table tbody#knowledge-rater-points").empty();
+  //   if (id) {
+  //     $.getJSON(`/api/v2/knowledge-well/directorate/${id}`, function (directorate_knowledge_data) {
+  //       if (directorate_knowledge_data.rater) {
+  //         $.each(directorate_knowledge_data.rater, function (key, rater_item) {
+  //           directorate_score += `<tr><td>${ rater_item.directorate_name}</td><td>${ rater_item.rater_points}</td><td>${ rater_item.date}</td></tr>`;
+  //         });
+  //       }
+  //       //remove rdated judge eX
+  //       $(".modal.individualKnowledge-directorate .modal-body select#counter-points").css({
+  //         visibility: "visible"
+  //       });
+  //       $(".modal.individualKnowledge-directorate .modal-body button.btn.btn-md.btn-primary.float-right").css({
+  //         visibility: "visible",
+  //         "margin-bottom": "0rem"
+  //       });
+  //       if (directorate_knowledge_data.rated == true) {
+  //         // $(".modal.individualKnowledge-directorate .modal-body select#counter-points").css({visibility: "hidden"});
+  //         // $(".modal.individualKnowledge-directorate .modal-body button.btn.btn-md.btn-primary.float-right").css({visibility: "hidden", "margin-bottom" : "-10rem"});
+  //       }
+  //       $(".modal.individualKnowledge-directorate .modal-body form").attr('action', `/api/v2/knowledge-well/directorate/${id}`);
+  //       $(".modal.individualKnowledge-directorate .modal-body table tbody#knowledge-rater-points").append(directorate_score);
+  //       $(".modal.individualKnowledge-directorate").modal("show");
+  //     });
+  //   }
+  // });
 
   //directorate user statisctics
   $('a.multiplayer .fa-chart-pie').click(function () {
@@ -946,7 +984,7 @@ $(document).ready(function () {
     $(".modal.chronicles_calculate_multi").modal("show");
     setTimeout(function () {
       $.ajax({
-        url: "/api/v2/chronicles-Grade/multiplayers",
+        url: "/api/v2/documentation/multiplayers",
         dataType: 'json',
         cache: false,
         contentType: false,
@@ -966,11 +1004,11 @@ $(document).ready(function () {
   });
 
   //Calculate Countermeasures Grades | Multiplayers
-  $("#counter-calculate-button").click(function () {
-    $(".modal.counter_calculate_multi").modal("show");
+  $("#document-individual-calculate-button").click(function () {
+    $(".modal.chronicles_calculate_multi").modal("show");
     setTimeout(function () {
       $.ajax({
-        url: "/api/v2/countermeasure-Grade/multiplayers",
+        url: "/api/v2/documentation/individual",
         dataType: 'json',
         cache: false,
         contentType: false,
@@ -979,7 +1017,7 @@ $(document).ready(function () {
         type: 'post',
         success: function (response) {
           //process response data
-          $(".modal.counter_calculate_multi").modal("hide");
+          $(".modal.chronicles_calculate_multi").modal("hide");
           alert(response.message);
         },
         error: function (response) {
@@ -992,44 +1030,45 @@ $(document).ready(function () {
 
   //activate conqueror red teaming
   $("#conqueror-activate-button").click(function () {
-        $(".modal.conqueror_activate").modal("show");
-        var published2 = $.getJSON("/api/v2/redteaming", function (data_chronicles) { console.log(data_chronicles);
-          $.each(data_chronicles, function (index, item) {
-            chronicles = 0
-            if (item.chronicles == true) {
-              chronicles = 1
-            }
-            $(".modal.conqueror_activate .modal-body select#conqueror-activate").val(chronicles);
-          });
-        });
+    $(".modal.conqueror_activate").modal("show");
+    var published2 = $.getJSON("/api/v2/redteaming", function (data_chronicles) {
+      console.log(data_chronicles);
+      $.each(data_chronicles, function (index, item) {
+        chronicles = 0
+        if (item.chronicles == true) {
+          chronicles = 1
+        }
+        $(".modal.conqueror_activate .modal-body select#conqueror-activate").val(chronicles);
+      });
+    });
   });
-//Delete knowledge Well under admin page | Individual
-$("#team-info-edit-modal").click(function () {
-  // $('input[name="individual-know-id"]:checked').each(function () {
-  //   if (this.value) {
-  //     $(".modal.knowledge_delete").modal("show");
-  //   }
-  // });
-});
+  //Delete knowledge Well under admin page | Individual
+  $("#team-info-edit-modal").click(function () {
+    // $('input[name="individual-know-id"]:checked').each(function () {
+    //   if (this.value) {
+    //     $(".modal.knowledge_delete").modal("show");
+    //   }
+    // });
+  });
 
- //update team logo
+  //update team logo
   //challenge category update to select only one
   $('input[name="team_logo_checkbox"]').on('change', function () {
     $('input[name="team_logo_checkbox"]').not(this).prop('checked', false);
   });
- $("#team-logo-edit-button").click(function () {
-  $('input[name="team_logo_checkbox"]:checked').each(function () {
-    $(".modal.team_logo_update .modal-body form").attr('action', '/api/v2/logo/' + this.value);
-    $(".modal.team_logo_update").modal("show");
-    if (this.value) {
-      // var chal = $.getJSON("/api/v2/category-challenge/" + this.value, function (data) {
-      //   $.each(data, function (index, item) {
-      //     $(".modal.team_logo_update .modal-body form").attr('action', '/api/v2/logo/' + item.id);
-      //     $(".modal.team_logo_update").modal("show");
-      //   });
-      // });
-    }
+  $("#team-logo-edit-button").click(function () {
+    $('input[name="team_logo_checkbox"]:checked').each(function () {
+      $(".modal.team_logo_update .modal-body form").attr('action', '/api/v2/logo/' + this.value);
+      $(".modal.team_logo_update").modal("show");
+      if (this.value) {
+        // var chal = $.getJSON("/api/v2/category-challenge/" + this.value, function (data) {
+        //   $.each(data, function (index, item) {
+        //     $(".modal.team_logo_update .modal-body form").attr('action', '/api/v2/logo/' + item.id);
+        //     $(".modal.team_logo_update").modal("show");
+        //   });
+        // });
+      }
+    });
   });
-});
 
 });
