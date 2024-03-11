@@ -92,66 +92,31 @@ CTFd._internal.challenge.postRender = function () {
         if (data_mysolves) {
             if (data_mysolves[0].solved_by_me) {
 
-                var knowledge = `
-                    <div id="knowledge-well">
+                var cyberex_documentation = `
+                    <div id="cyberex_documentation">
                         <div>
-                            <table id="knowledge" class="table table-striped">
+                            <table id="cyberex_documentation" class="table table-striped">
                                 <thead>
                                     <tr style="color: white">
-                                        <td class="text-center" id="del-know"><b>Delete</b></td>
+                                        <td class="text-center" id="del-cyberex_documentation"><b>Delete</b></td>
                                         <td style="color: white" class="text-center"><b>File</b></td>
-                                        <td style="color: white" class="text-center"><b>Points</b></td>
+                                        <td style="color: white" class="text-center"><b>Average Score</b></td>
                                     </tr>
                                 </thead>
-                                <tbody id="knowledge-well"></tbody>
+                                <tbody id="cyberex_documentation"></tbody>
                             </table>        
                             <div class="btn-cont">
-                                <button id="popup-knowledge"> ATTACH KNOWLEDGE WELL (+ POINTS) </button>
+                                <button id="popup-cyberex_documentation"> Attach documentation in (.pdf) Format! - 100 Points</button>
                             </div>
-                            <p>Download knowledge format <a href="/plugins/custom/chronicles/know.docx"><i class="fas fa-download"></i><small>here..</small></a></p>
-                        </div>
-                    </div>
-                `;
-
-                var upload = `
-                    <div id="challenge-files">
-                        <div>
-                            <table id="filesboard" class="table table-striped">
-                                <thead>
-                                    <tr style="color: white">
-                                        <td class="text-center" id="del-do"><b>Delete</b></td>
-                                        <td style="color: white" class="text-center"><b>Documentation</b></td>
-                                        <td style="color: white" class="text-center"><b>Points</b></td>
-                                    </tr>
-                                </thead>
-                                <tbody id="write-up"></tbody>
-                            </table>
-                            <div class="btn-cont">
-                                <button id="popup-upload"> ATTACH WRITEUPS FOR DELIBERATION (+ POINTS) </button>
-                            </div>
-                            <p>Download chronicles format <a href="/plugins/custom/chronicles/do.docx"><i class="fas fa-download"></i><small>here..</small></a></p>
-                        </div>
-                    </div>
-                `;
-
-
-                var counterMeasure = `
-                    <div id="challenge-counterMeasure">
-                        <div>
-                            <table id="counterMeasure" class="table table-striped">
-                                <thead>
-                                    <tr style="color: white">
-                                        <td class="text-center" id="del-learn"><b>Delete</b></td>
-                                        <td style="color: white" class="text-center"><b>File</b></td>
-                                        <td style="color: white" class="text-center"><b>Points</b></td>
-                                    </tr>
-                                </thead>
-                                <tbody id="counterMeasure"></tbody>
-                            </table>        
-                            <div class="btn-cont">
-                                <button id="popup-countermeasure"> ATTACH KNOWLEDGE GAIN EXPERIENCE (+ POINTS) </button>
-                            </div>
-                            <p>Download countermeasure format <a href="/plugins/custom/chronicles/learn.docx"><i class="fas fa-download"></i><small>here..</small></a></p>
+                            <br>
+                                <p>
+                                    <small>Points Tip!</small><br>
+                                    <small><em>KNOW-Knowledge Well: 20%</em></small><br>
+                                    <small><em>DO-Chronicles: 60%</em></small><br>
+                                    <small><em>LEARN-Countermeasures: 20%</em></small><br>
+                                <p>
+                            <br>
+                            <p>Download the documentation template <a href="/plugins/custom/chronicles/ctk_documentation.docx"><i class="fas fa-download"></i><small>Download!</small></a></p>
                         </div>
                     </div>
                 `;
@@ -161,35 +126,17 @@ CTFd._internal.challenge.postRender = function () {
                 $("button#challenge-submit").prop('disabled', true);
 
                 //show knowledge-well upload
-                $("#knowledge-section").append(knowledge);
-                $("#popup-knowledge").on('click', function(){
-                   $('.upload-knowledge').css({
-                       visibility: "visible"
-                   });
-               });
-               
-                //show chronicles upload
-                $("#upload-section").append(upload);
-
-                $("#popup-upload").on('click', function () {
-                    $('.upload-modal').css({
-                        visibility: "visible"
-                    });
-                });
-                //show counter measure upload
-                $("#upload-counter").append(counterMeasure);
-
-                $("#popup-countermeasure").on('click', function () {
-                    $('.upload-countermeasure').css({
+                $("#cyberex-documentation-section").append(cyberex_documentation);
+                $("#popup-cyberex_documentation").on('click', function () {
+                    $('.upload-documentation').css({
                         visibility: "visible"
                     });
                 });
 
+                
                 //remove upload Button when published
                 if (data_mysolves[0].published){
-                    $("#popup-countermeasure").remove();
-                    $("#popup-upload").remove();
-                    $("#popup-knowledge").remove();
+                    $("#popup-cyberex_documentation").remove();
                 }
             }
         }
@@ -200,18 +147,19 @@ CTFd._internal.challenge.postRender = function () {
         setTimeout(function () {
             if (!$.isEmptyObject(data_chronicles)) {
                 $('input#multiFiles').remove();
-                $('input#writeup-submit').remove();
-                $('#popup-upload').remove();
+                $('input#documentation-submit').remove();
+                $('#popup-cyberex_documentation').remove();
                 if(data_chronicles.published && !data_chronicles.view_ratings){
                     var file_writeup = "<tr><td style=\"color: white\" class=\"text-center\"><i class=\"fas fa-ban\"></i></td><td class=\"text-center\"><a class=\"btn btn-info btn-file mb-1 d-inline-block px-2 w-100 text-truncate\" target=\"_blank\" href=\"" + data_chronicles.location + "\"><i class=\"fas fa-download\"></i><small>" + data_chronicles.name + "</small></a></td><td style=\"color: white\" class=\"text-center\"><p>" + data_chronicles.points + "</p></td></tr>";
-                }else if(data_chronicles.published && data_chronicles.view_ratings){
+                }else if(data_chronicles.published && data_chronicles.view_ratings) {
                     $('#del-do').empty();
                     $('#del-do').append("<b>View Ratings</b>");
                     var file_writeup = "<tr><td style=\"color: white\" class=\"text-center\"><button type=\"button\" class=\"btn btn-outline-secondary individualKnowledge-directorate-do-button\" data-toggle=\"tooltip\" data-id=\"" + data_chronicles.id + "\" title=\"View Judge eX Ratings\" data-original-title=\"View Judge eX Ratings\"><i class=\"fas fa-eye do\"></i></button></td><td class=\"text-center\"><a class=\"btn btn-info btn-file mb-1 d-inline-block px-2 w-100 text-truncate\" target=\"_blank\" href=\"" + data_chronicles.location + "\"><i class=\"fas fa-download\"></i><small>" + data_chronicles.name + "</small></a></td><td style=\"color: white\" class=\"text-center\"><p>" + data_chronicles.points + "</p></td></tr>";
-                }else{
+                } else {
                     var file_writeup = "<tr><td style=\"color: white\" class=\"text-center\"><i id=\"delete-file\" role=\"button\"class=\"btn-fa fas fa-times delete-file\"></i></td><td class=\"text-center\"><a class=\"btn btn-info btn-file mb-1 d-inline-block px-2 w-100 text-truncate\" target=\"_blank\" href=\"" + data_chronicles.location + "\"><i class=\"fas fa-download\"></i><small>" + data_chronicles.name + "</small></a></td><td style=\"color: white\" class=\"text-center\"><p>" + data_chronicles.points + "</p></td></tr>";
-                }  
-                $("tbody#write-up").append(file_writeup);
+                }
+
+                $("tbody#cyberex_documentation").append(file_writeup);
             }
         }, 500);
     });
@@ -257,81 +205,79 @@ CTFd._internal.challenge.postRender = function () {
     $('.modal#challenge-window').on('click', function (event) {
         var $button = $(event.target);
 
-        $('#challenge-writeup').find('input').eq(0).on('change', function (index, el) {
-            $("input#writeup-submit").prop('disabled', false);
+        $('#documentation-docs').find('input').eq(0).on('change', function (index, el) {
+            $("input#documentation-submit").prop('disabled', false);
         })
 
-        if ($button.is("input#writeup-submit")) {
+        if ($button.is("input#documentation-submit")) {
 
             // Disabled submit button to avoid multiple submission
-            $("input#writeup-submit").prop('disabled', true);
+            $("input#documentation-submit").prop('disabled', true);
 
 
             //upload documenations/write ups
-            if ($('#challenge-writeup').length) {
+            if ($('#documentation-docs').length) {
 
+                    $('.upload-documentation').css({
+                        visibility: "hidden"
+                    })
 
-
-                $('.upload-modal').css({
-                    visibility: "hidden"
-                })
-
-                var form_data = new FormData();
-                var ins = document.getElementById('multiFiles').files.length;
-                if (ins == 0) {
-                    $('#msg').html('<span style="color:red">Select at least one file</span>');
-                    return;
-                }
-                //get files upload
-                form_data.append("files", document.getElementById('multiFiles').files[0]);
-                //get challenge data
-                form_data.append("challenge", challenge_id_writeups);
-                $('input#writeup-submit').prop('disabled', true);
-
-
-                $('.loading-status').css({
-                    visibility: "visible"
-                })
-                $.ajax({
-                    url: '/uploader',
-                    dataType: 'json',
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: form_data,
-                    type: 'post',
-                    success: function (chronicles_response) {
-
-                        $('input#multiFiles').remove();
-                        $('input#writeup-submit').remove();
-                        $('#popup-upload').remove();
-                        $(".modal.upload").modal("show");
-                        $.each(chronicles_response, function (key, data_chronicles) {
-                            if (key !== 'message') {
-                                // $('#msg').append(key + ' -> ' + data + '<br/>');
-                            } else {
-                                $('#msg').append(data_chronicles + '<br/>');
-                                setTimeout(function () {
-                                    $('#msg').empty();
-                                }, 800);
-                            }
-                        })
-
-                        $('.loading-status').css({
-                            visibility: "hidden"
-                        })
-                    },
-                    error: function (chronicles_response) {
-                        // $('#msg').html(chronicles_response.message);
-                        alert(chronicles_response.responseJSON.message);
-                        $('input#writeup-submit').prop('disabled', false);
+                    var form_data = new FormData();
+                    var ins = document.getElementById('document-files').files.length;
+                    if (ins == 0) {
+                        $('#msg').html('<span style="color:red">Select at least one file</span>');
+                        return;
                     }
-                });
+                    //get files upload
+                    form_data.append("files", document.getElementById('document-files').files[0]);
+                    //get challenge data
+                    form_data.append("challenge", challenge_id_writeups);
+                    $('input#documentation-submit').prop('disabled', true);
+
+                    $('.loading-status').css({
+                        visibility: "visible"
+                    })
+                    $.ajax({
+                        url: '/uploader',
+                        dataType: 'json',
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: form_data,
+                        type: 'post',
+                        success: function (chronicles_response) {
+
+                            $('input#document-files').remove();
+                            $('input#documentation-submit').remove();
+                            $('#popup-cyberex_documentation').remove();
+                            $(".modal.upload").modal("show");
+                            $.each(chronicles_response, function (key, data_chronicles) {
+                                // alert(data_chronicles.response.message);
+                                if (key !== 'message') {
+                                    // $('#msg').append(key + ' -> ' + data + '<br/>');
+                                } else {
+                                    $('#msg').append(data_chronicles + '<br/>');
+                                    setTimeout(function () {
+                                        $('#msg').empty();
+                                    }, 800);
+                                }
+                            })
+
+                            $('.loading-status').css({
+                                visibility: "hidden"
+                            })
+                        },
+                        error: function (chronicles_response) {
+                            // $('#msg').html(chronicles_response.message);
+                            alert(chronicles_response.responseJSON.message);
+                            $('input#documentation-submit').prop('disabled', false);
+                        }
+                    });
 
 
             } else {
                 // Enabled submit button to avoid multiple submission
-                $("input#writeup-submit").prop('disabled', false);
+                $("input#documentation-submit").prop('disabled', false);
             }
         }
     });

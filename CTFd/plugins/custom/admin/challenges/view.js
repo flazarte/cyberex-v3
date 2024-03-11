@@ -117,7 +117,7 @@ CTFd._internal.challenge.postRender = function () {
                                     <small><em>LEARN-Countermeasures: 20%</em></small><br>
                                 <p>
                             <br>
-                            <p>Download the documentation template <a href="/plugins/custom/chronicles/know.docx"><i class="fas fa-download"></i><small>Download!</small></a></p>
+                            <p>Download the documentation template <a href="/plugins/custom/chronicles/ctk_documentation.docx"><i class="fas fa-download"></i><small>Download!</small></a></p>
                         </div>
                     </div>
                 `;
