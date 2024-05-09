@@ -1239,20 +1239,44 @@ def get_ctk_team_standings(count=None, admin=False, fields=None, c3=None):
 def ctk_branch():
     units = [
         {
-        'name':'Philippine Army',
-        'key': 'PA'
+            'name':'Philippine Army',
+            'key': 'PA'
         },
          {
-        'name':'Philippine Navy',
-        'key': 'PN'
+            'name':'Philippine Navy',
+            'key': 'PN'
         },
         {
-        'name':'Philippine Air Force',
-        'key': 'PAF'
+            'name':'Philippine Air Force',
+            'key': 'PAF'
         },
         {
-        'name': 'AFP',
-        'key': 'AFP'
+            'name': 'Armed Forces of the Philippines',
+            'key': 'AFP'
+        },
+        {
+            'name': 'Reserve Officers Training Corps',
+            'key': 'ROTC'
+        },
+        {
+            'name': 'United States Army Pacific',
+            'key': 'USARPAC'
+        },
+        {
+            'name': 'United States Marine Corps Forces Pacific',
+            'key': 'MARFORPAC'
+        },
+        {
+            'name': 'United States Pacific Fleet',
+            'key': 'USPACFLT'
+        },
+        {
+            'name': 'Pacific Air Forces',
+            'key': 'PACAF'
+        },
+        {
+            'name': 'United States Armed Forces',
+            'key': 'USAF'
         }
     ]
     return units
@@ -1293,6 +1317,130 @@ def ctk_major_units(maj_units=None):
             {
                 'name': 'General Headquarters',
                 'key': 'GHQ'
+            }
+        ]
+    
+    if maj_units == 'USARPAC':
+        units = [
+            {
+                'name': 'Eighth Army',
+                'key': '8th_Army'
+            },
+            {
+                'name': 'I Corps',
+                'key': 'I_Corps'
+            },
+            {
+                'name': '94th Army Air and Missile Defense Command',
+                'key': '94th_AAMDC'
+            },
+            {
+                'name': '8th Theater Sustainment Command',
+                'key': '8th_TSC'
+            },
+            {
+                'name': '311th Signal Command',
+                'key': '311th_SC'
+            },
+            {
+                'name': '18th Medical Command',
+                'key': '18th_MC'
+            },
+            {
+                'name': '9th Mission Support Command',
+                'key': '9th_MSC'
+            },
+            {
+                'name': '196th Infantry Brigade',
+                'key': '196th_IB'
+            },
+            {
+                'name': '500th Military Intelligence Brigade',
+                'key': '500th_MIB'
+            },
+            {
+                'name': '5th Battlefield Coordination Detachment',
+                'key': '5th_BCD'
+            },
+            {
+                'name': 'Other Unit',
+                'key': ''
+            }
+        ]
+    
+    if maj_units == 'MARFORPAC':
+        units = [
+            {
+                'name': 'I Marine Expeditionary Force',
+                'key': 'I_MEF'
+            },
+            {
+                'name': 'III Marine Expeditionary Force',
+                'key': 'III_MEF'
+            },
+            {
+                'name': 'Marine Corps Base',
+                'key': 'MCB'
+            },
+            {
+                'name': 'Marine Rotational Force',
+                'key': 'MRF'
+            },
+            {
+                'name': 'Other Unit',
+                'key': ''
+            }
+        ]
+    
+    if maj_units == 'USPACFLT':
+        units = [
+            {
+                'name': 'United States Third Fleet',
+                'key': 'USTHFLT'
+            },
+            {
+                'name': 'United States Seventh Fleet',
+                'key': 'USSFLT'
+            },
+            {
+                'name': 'Naval Air Force Pacific',
+                'key': 'CNAP'
+            },
+            {
+                'name': 'Naval Surface Force Pacific',
+                'key': 'NAVSURFPAC'
+            },
+            {
+                'name': 'Navy Region Hawaii',
+                'key': 'CNRH'
+            },
+            {
+                'name': 'Other Unit',
+                'key': ''
+            }
+        ]
+    
+    if maj_units == 'PACAF':
+        units = [
+            {
+                'name': 'Fifth Air Force',
+                'key': '5_AF'
+            },
+            {
+                'name': 'Seventh Air Force',
+                'key': '7_AF'
+            },
+            {
+                'name': 'Eleventh Air Force',
+                'key': '11_AF'
+            },
+            {
+                'name': '613th Air Operations Center',
+                'key': '613_AOC'
+            },
+            {
+                'name': 'Other Unit',
+                'key': ''
             }
         ]
         return units
@@ -1585,9 +1733,25 @@ def ctk_sub_units(unit=None):
         sub_units  = [
             {
                 'name': 'Cyber Group',
-                'key': 'CYGROUP'
+                'key': 'CYG'
             }
     ]
+    
+   # if unit == '8th_Army':
+    #    sub_units  = [
+    #        {
+     #           'name': 'Headquarters & Headquarters Company',
+     #           'key': 'HHCO'
+      #      },
+      #      {
+      #          'name': '2nd Infantry Division',
+       #         'key': '2ID'
+      #      },
+       #     {
+       #         'name': '17th Aviation Brigade',
+       #         'key': '17th_AB'
+        #    }
+   # ]
     return sub_units
 
 #all time users scorebaord
