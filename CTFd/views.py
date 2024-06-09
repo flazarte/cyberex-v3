@@ -565,7 +565,7 @@ def robots():
 
 @views.route("/ads.txt")
 def ads():
-    text = get_config("ads_txt", "google.com, pub-1434047129939927,\nDIRECT, f08c47fec0942fa0\n")
+    text = get_config("ads_txt", "google.com, pub-1434047129939927, DIRECT, f08c47fec0942fa0")
     r = make_response(text, 200)
     r.mimetype = "text/plain"
     return r
