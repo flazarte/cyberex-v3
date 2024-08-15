@@ -253,6 +253,7 @@ class docs_publish(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     countermeasure_published = db.Column(db.Boolean, default=False)
     chronicles_published = db.Column(db.Boolean, default=False)
+    bugbounty_published = db.Column(db.Boolean, default=False)
 
     def __init__(self, *args, **kwargs):
         super(docs_publish, self).__init__(**kwargs)

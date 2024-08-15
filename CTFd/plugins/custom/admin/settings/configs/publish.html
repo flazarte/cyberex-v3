@@ -1,8 +1,8 @@
 <div role="tabpanel" class="tab-pane config-section" id="publish">
-        <h5>Know | DO | Learn Publication</h5>
+        <h5>Other Settings</h5>
 
         <small class="form-text text-muted">
-            Publish Documentation Score Ratings.
+            Other Cyberex settings for operations.
         </small>
 
         <ul class="nav nav-tabs mt-3" role="tablist">
@@ -62,6 +62,17 @@
                                 <td class="text-center">{{ publish.id }}</td>
                                 <td><a href="#">User View Judge eX Ratings</a></td>
                                 <td>{{publish.chronicles_published}}</td>
+                            </tr>
+                            <tr>
+                                <td class="d-block border-right text-center" data-checkbox>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" value="bug_bounty"
+                                            name="publish_id">&nbsp;
+                                    </div>
+                                </td>
+                                <td class="text-center">{{ publish.id }}</td>
+                                <td><a href="#">Enable Bug Bounty Concept - First to submit only.</a></td>
+                                <td>{{publish.bugbounty_published}}</td>
                             </tr>
                             {% endif %}
                         </tbody>

@@ -2285,6 +2285,9 @@ def docs_publish_api(publish_id):
         if publish_id == 'view_rating':
             db.session.query(docs_publish).update(dict(chronicles_published = int(publish)))
             db.session.commit()
+        if publish_id == 'bug_bounty':
+            db.session.query(docs_publish).update(dict(bugbounty_published = int(publish)))
+            db.session.commit()
         success = True
         results.append({
             'success':success
@@ -2297,6 +2300,7 @@ def docs_publish_api(publish_id):
         results.append({
             'countermeasure': counter.countermeasure_published,
             'chronicles': counter.chronicles_published,
+            'bugbounty': counter.bugbounty_published,
             'success': success
         })
     return jsonify(results)
