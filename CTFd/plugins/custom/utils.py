@@ -284,7 +284,7 @@ def overall_score(users=None):
 #get total score | overall
 def All_scores(users=None):
     total_standings = []
-    awards = Awards.query.all()
+    #awards = Awards.query.all()
    
     #user mode support
     if users == 'users':
@@ -334,11 +334,11 @@ def All_scores(users=None):
                             total_knowledge = ctk_knowledge_scores(mode='user', account_id=standing.user_id)
                         total_scores = decimal.Decimal(standing.score) +  total_counter +  total_chronicles + total_knowledge
                         #awards
-                        for award in awards:
-                            ctk_user = Users.query.filter_by(id=award.user_id, user_id=standing.user_id).first()
-                            if ctk_user != None:
-                                if award.user_id == ctk_user.id:
-                                    total_scores = total_scores + (award.value)
+                        # for award in awards:
+                        #     ctk_user = Users.query.filter_by(id=award.user_id, user_id=standing.user_id).first()
+                        #     if ctk_user != None:
+                        #         if award.user_id == ctk_user.id:
+                        #             total_scores = total_scores + (award.value)
                         flag = Users.query.filter(Users.id == standing.user_id).first()
                         user_standings.append({
                             'account_id': standing.user_id,
@@ -375,11 +375,11 @@ def All_scores(users=None):
                 total_knowledge = ctk_knowledge_scores(mode='team', account_id=standing.team_id)
             total_scores = decimal.Decimal(standing.score) +  total_counter +  total_chronicles + total_knowledge
             #awards
-            for award in awards:
-                ctk_team = Users.query.filter_by(id=award.user_id, team_id=standing.team_id).first()
-                if ctk_team != None:
-                    if award.user_id == ctk_team.id:
-                        total_scores = total_scores + (award.value)
+            # for award in awards:
+            #     ctk_team = Users.query.filter_by(id=award.user_id, team_id=standing.team_id).first()
+            #     if ctk_team != None:
+            #         if award.user_id == ctk_team.id:
+            #             total_scores = total_scores + (award.value)
             #final score
             flag = Teams.query.filter(Teams.id == standing.team_id).first()
             total_standings.append({
