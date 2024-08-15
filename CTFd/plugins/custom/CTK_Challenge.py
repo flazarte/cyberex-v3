@@ -25,8 +25,7 @@ from CTFd.utils.dates import ctf_ended, ctf_paused, ctftime, isoformat, unix_tim
 from CTFd.utils.logging import log
 from CTFd.cache import clear_standings
 from CTFd.plugins.custom.utils import ctk_users_mode, ctk_teams_mode
-from CTFd.plugins.custom.models import docs_publish
-from CTFd.plugins.custom.routing import get_solves_api
+from CTFd.plugins.custom.models import docs_publish, CTK_Config
 from pprint import pprint #for Debugging purpose only remove in Production
 
 @check_challenge_visibility
@@ -75,16 +74,6 @@ def CTKpost():
 
     #used feature for challenge 1 submission of challenges policy (Bug Bounty Program Concept)
     counter = db.session.query(docs_publish).first()
-    if counter.bugbounty_published:
-        chal_solved = get_solves_api(challenge_id)
-        if chal_solved:
-            return {
-                "success": True,
-                "data": {
-                    "status": "already_solved",
-                    "message": "Your cyberex team mate/opponent already solved this",
-                },
-            }
 
     # TODO: Convert this into a re-useable decorator
     # if config.is_teams_mode() and team is None:
@@ -92,6 +81,17 @@ def CTKpost():
 
     #Individual Players Multiplayers 
     if ctk_teams_mode():
+        #bug bounty program
+        if counter.bugbounty_published:
+            solves_exist = db.session.query(Solves).join(CTK_Config).filter(Solves.challenge_id == challenge_id).filter(CTK_Config.mode == 'teams').all()
+            if solves_exist:
+                return {
+                    "success": True,
+                    "data": {
+                        "status": "already_solved",
+                        "message": "Your cyberex team mate/opponent already solved this",
+                    },
+                }
 
         fails = Fails.query.filter_by(
             team_id=user.team_id, challenge_id=challenge_id
@@ -253,6 +253,19 @@ def CTKpost():
 
     #Attemp post for user | Individuals
     if ctk_users_mode():
+
+        #bug bounty program
+        if counter.bugbounty_published:
+            solves_exist = db.session.query(Solves).join(CTK_Config).filter(Solves.challenge_id == challenge_id).filter(CTK_Config.mode == 'users').all()
+            if solves_exist:
+                return {
+                    "success": True,
+                    "data": {
+                        "status": "already_solved",
+                        "message": "Your cyberex team mate/opponent already solved this",
+                    },
+                }
+            
         fails = Fails.query.filter_by(
             user_id=user.id, challenge_id=challenge_id
         ).count()
