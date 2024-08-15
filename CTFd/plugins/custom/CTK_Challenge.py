@@ -25,6 +25,8 @@ from CTFd.utils.dates import ctf_ended, ctf_paused, ctftime, isoformat, unix_tim
 from CTFd.utils.logging import log
 from CTFd.cache import clear_standings
 from CTFd.plugins.custom.utils import ctk_users_mode, ctk_teams_mode
+from CTFd.plugins.custom.models import docs_publish
+from CTFd.plugins.custom.routing import get_solves_api
 from pprint import pprint #for Debugging purpose only remove in Production
 
 @check_challenge_visibility
@@ -71,7 +73,18 @@ def CTKpost():
     user = get_current_user()
     team = get_current_team()
 
-   
+    #used feature for challenge 1 submission of challenges policy (Bug Bounty Program Concept)
+    counter = db.session.query(docs_publish).first()
+    if counter.bugbounty_published:
+        chal_solved = get_solves_api(challenge_id)
+        if chal_solved:
+            return {
+                "success": True,
+                "data": {
+                    "status": "already_solved",
+                    "message": "Your cyberex team mate/opponent already solved this",
+                },
+            }
 
     # TODO: Convert this into a re-useable decorator
     # if config.is_teams_mode() and team is None:
