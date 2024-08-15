@@ -351,6 +351,20 @@ $(document).ready(function () {
           });
         });
       }
+      //bug bounty program
+      if (this.value == 'bug_bounty') {
+        $(".modal.countermeasure_publish").modal("show");
+        var published2 = $.getJSON("/api/v2/docs", function (data_bugbounty) {
+          $.each(data_bugbounty, function (index, item) {
+            bug_bounty = 0
+            if (item.bugbounty == true) {
+              bug_bounty = 1
+            }
+            $(".modal.countermeasure_publish .modal-body form#counter-publish").attr('action', '/api/v2/docs/bug_bounty');
+            $(".modal.countermeasure_publish .modal-body select#counter-publish").val(bug_bounty);
+          });
+        });
+      }
     });
   });
 
