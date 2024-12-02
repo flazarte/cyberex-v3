@@ -1277,7 +1277,15 @@ def ctk_branch():
         {
             'name': 'United States Armed Forces',
             'key': 'USAF'
-        }
+        },
+         {
+            'name':'Department of National Defense',
+            'key': 'DND'
+        },
+         {
+            'name':'Department of Information and Communications Technology',
+            'key': 'DICT'
+        },
     ]
     return units
 
@@ -1310,12 +1318,34 @@ def ctk_major_units(maj_units=None):
                 'name': 'Army Intelligence Regiment',
                 'key': 'AIR'
             },
-	    {
+	        {
                 'name':'Headquarters and Headquarters Support Group',
                 'key':'HHSG'
             },
-	    }
-  		'name':   
+            {
+                'name':'52nd Engineer Brigade',
+                'key':'52EBde'
+            },
+            {
+                'name':'53rd Engineer Brigade',
+                'key':'53EBde'
+            },
+            {
+                'name':'54th Engineer Brigade',
+                'key':'54EBde'
+            },
+            {
+                'name':'55th Engineer Brigade',
+                'key':'55EBde'
+            },
+            {
+                'name':'Army Personnel Management Center',
+                'key':'APMC'
+            },
+            {
+                'name':'Reserve Command',
+                'key':'RESCOM'
+            }
         ]
 
     if maj_units == 'AFP':
@@ -1323,6 +1353,30 @@ def ctk_major_units(maj_units=None):
             {
                 'name': 'General Headquarters',
                 'key': 'GHQ'
+            }
+        ]
+
+    if maj_units == 'DND':
+        units = [
+            {
+                'name': 'Office of Civil Defense',
+                'key': 'OCD'
+            },
+            {
+                'name': 'Philippine Veterans Affairs Office',
+                'key': 'PVAO'
+            },
+            {
+                'name': 'National Defense College of the Philippines',
+                'key': 'NDCP'
+            },
+            {
+                'name': 'Government Arsenal',
+                'key': 'GA'
+            },
+             {
+                'name': 'Veterans Memorial Medical Center',
+                'key': 'VMMC'
             }
         ]
     
