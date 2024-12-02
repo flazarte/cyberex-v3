@@ -1309,7 +1309,13 @@ def ctk_major_units(maj_units=None):
             {
                 'name': 'Army Intelligence Regiment',
                 'key': 'AIR'
-            }
+            },
+	    {
+                'name':'Headquarters and Headquarters Support Group',
+                'key':'HHSG'
+            },
+	    }
+  		'name':   
         ]
 
     if maj_units == 'AFP':
