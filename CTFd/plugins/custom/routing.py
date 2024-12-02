@@ -109,7 +109,7 @@ from CTFd.schemas.hints import HintSchema
 from collections import defaultdict
 from CTFd.utils.uploads import delete_file
 from slugify import slugify
-from CTFd.plugins.custom.vpn.api import VPNConnector
+#from CTFd.plugins.custom.vpn.api import VPNConnector
 from pprint import pp, pprint #for Debugging purpose only remove in Production
 
 #custom blue print in view and routing
@@ -2454,8 +2454,8 @@ def ctk_register():
                         fullname = entry.value
 
                 #vpn connection
-                connector = VPNConnector()
-                connector.CreateUser(username=name, user_full_name=fullname, user_password=password)
+                #connector = VPNConnector()
+                #connector.CreateUser(username=name, user_full_name=fullname, user_password=password)
                 #Save the registartion if vpn connection successful
                 db.session.add(user)
                 db.session.commit()
