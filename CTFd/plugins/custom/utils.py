@@ -1335,8 +1335,8 @@ def ctk_major_units(maj_units=None):
                 'key':'54EBde'
             },
             {
-                'name':'55th Engineer Brigade',
-                'key':'55EBde'
+                'name':'Combat Engineer Regiment',
+                'key':'CER'
             },
             {
                 'name':'Army Personnel Management Center',
