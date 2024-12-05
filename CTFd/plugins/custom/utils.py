@@ -1356,6 +1356,14 @@ def ctk_major_units(maj_units=None):
             }
         ]
 
+    if maj_units == 'PN':
+        units  = [
+            {
+                'name': 'Technical Intelligence Group',
+                'key': 'TIG'
+            }
+        ]
+
     if maj_units == 'DND':
         units = [
             {
@@ -1800,14 +1808,6 @@ def ctk_sub_units(unit=None):
                 'key': 'AFPCyCom'
             }
     ]
-        
-    if unit == 'PN':
-        sub_units  = [
-            {
-                'name': 'Technical Intelligence Group',
-                'key': 'TIG'
-            }
-        ]
     
    # if unit == '8th_Army':
     #    sub_units  = [
