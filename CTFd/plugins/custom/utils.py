@@ -1377,6 +1377,10 @@ def ctk_major_units(maj_units=None):
              {
                 'name': 'Veterans Memorial Medical Center',
                 'key': 'VMMC'
+            },
+            {
+                'name': 'DND Proper',
+                'key': 'DND'
             }
         ]
     
@@ -1792,10 +1796,18 @@ def ctk_sub_units(unit=None):
     if unit == 'GHQ':
         sub_units  = [
             {
-                'name': 'Cyber Group',
-                'key': 'CYG'
+                'name': 'AFP Cyber Command',
+                'key': 'AFPCyCom'
             }
     ]
+        
+    if unit == 'PN':
+        sub_units  = [
+            {
+                'name': 'Technical Intelligence Group',
+                'key': 'TIG'
+            }
+        ]
     
    # if unit == '8th_Army':
     #    sub_units  = [
