@@ -156,8 +156,8 @@ def load(app):
     override_template('admin/challenges/challenge.html', open(admin_new_challenge).read())
     admin_user = os.path.join(dir_path, 'admin/user/user.html')
     override_template('admin/users/user.html', open(admin_user).read())
-    admin_team_edit = os.path.join(dir_path, 'admin/teams/modal/edit.html')
-    override_template('admin/modals/teams/edit.html', open(admin_team_edit).read())
+    # admin_team_edit = os.path.join(dir_path, 'admin/teams/modal/edit.html')
+    # override_template('admin/modals/teams/edit.html', open(admin_team_edit).read())
     # admin_team = os.path.join(dir_path, 'admin/teams/team.html') #disabl for update bugs
     # override_template('admin/teams/team.html', open(admin_team).read())
     #reset 
